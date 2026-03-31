@@ -27,7 +27,7 @@ export function Topbar({ notifications, user }: { notifications: NotificationIte
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/60 bg-background/68 backdrop-blur-2xl">
-      <div className="flex flex-col gap-4 px-4 py-4 lg:px-8">
+      <div className="flex flex-col gap-4 px-4 py-4 lg:px-4 xl:px-6">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button variant="outline" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)}>
