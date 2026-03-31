@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bell, Command, Menu, Search, Settings2 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { Bell, Menu, Search, Settings2 } from "lucide-react";
 
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -20,10 +19,7 @@ import { useSidebar } from "@/components/providers/sidebar-provider";
 import type { NotificationItem, User } from "@/lib/types";
 
 export function Topbar({ notifications, user }: { notifications: NotificationItem[]; user: User }) {
-  const pathname = usePathname();
   const { setMobileOpen } = useSidebar();
-  const segments = pathname.split("/").filter(Boolean).slice(1);
-  const current = segments[segments.length - 1]?.replace("-", " ") ?? "dashboard";
 
   return (
     <header className="sticky top-0 z-20 border-b border-border/60 bg-background/68 backdrop-blur-2xl">
@@ -34,11 +30,18 @@ export function Topbar({ notifications, user }: { notifications: NotificationIte
               <Menu className="size-4" />
             </Button>
             <div className="space-y-1">
-              <p className="eyebrow">Workspace</p>
-              <h2 className="font-display text-2xl font-semibold capitalize tracking-[-0.04em]">{current}</h2>
+              <p className="eyebrow">Welcome Back</p>
+              <h2 className="font-display text-2xl font-semibold tracking-[-0.04em]">{user.name}</h2>
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <div className="relative hidden md:block">
+              <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input className="h-11 w-[260px] rounded-full border-border/70 bg-[color:var(--surface-1)] pl-11 pr-16 lg:w-[300px]" placeholder="Cari transaksi, wallet, goal..." />
+              <span className="pointer-events-none absolute right-3 top-1/2 hidden -translate-y-1/2 rounded-full border border-border/70 bg-background/60 px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground lg:inline-flex">
+                ⌘K
+              </span>
+            </div>
             <ThemeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -82,18 +85,11 @@ export function Topbar({ notifications, user }: { notifications: NotificationIte
             </DropdownMenu>
           </div>
         </div>
-        <div className="flex flex-col gap-3 md:flex-row md:items-center">
-          <div className="relative flex-1">
+        <div className="md:hidden">
+          <div className="relative">
             <Search className="absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input className="h-12 rounded-full border-border/70 bg-[color:var(--surface-1)] pl-11 pr-20" placeholder="Cari transaksi, wallet, goal, atau insight..." />
-            <span className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-full border border-border/70 bg-background/60 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-muted-foreground md:inline-flex">
-              ⌘K
-            </span>
+            <Input className="h-11 rounded-full border-border/70 bg-[color:var(--surface-1)] pl-11 pr-4" placeholder="Cari transaksi, wallet, goal..." />
           </div>
-          <Button variant="outline" className="justify-start bg-[color:var(--surface-1)] md:w-auto">
-            <Command className="size-4" />
-            Quick search
-          </Button>
         </div>
       </div>
     </header>
