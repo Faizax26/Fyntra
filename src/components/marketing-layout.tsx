@@ -6,12 +6,14 @@ import { Button } from "@/components/ui/button";
 import { marketingNav } from "@/lib/navigation";
 
 export function MarketingLayout({ children }: { children: React.ReactNode }) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/70 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 lg:px-8">
           <Logo />
-          <nav className="hidden items-center gap-8 rounded-full border border-border/60 bg-[color:var(--surface-1)] px-5 py-2 md:flex">
+          <nav className="hidden items-center gap-6 md:flex">
             {marketingNav.map((item) => (
               <Link key={item.href} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-foreground">
                 {item.label}
@@ -30,12 +32,13 @@ export function MarketingLayout({ children }: { children: React.ReactNode }) {
       </header>
       {children}
       <footer className="border-t border-border/70 bg-linear-to-b from-transparent to-[color:var(--surface-2)]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[1.15fr_0.85fr_0.85fr_0.9fr] lg:px-8">
           <div className="space-y-4">
             <Logo />
             <p className="max-w-md text-sm leading-6 text-muted-foreground">
               fyntra. membantu pengguna awam memahami cashflow, budget, asset, debt, dan security account dalam satu dashboard yang terasa ringan.
             </p>
+            <p className="text-sm text-muted-foreground">support@fyntra.com</p>
             <div className="flex items-center gap-3 text-muted-foreground">
               <div className="flex size-9 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-1)]"><Instagram className="size-4" /></div>
               <div className="flex size-9 items-center justify-center rounded-full border border-border/70 bg-[color:var(--surface-1)]"><Twitter className="size-4" /></div>
@@ -66,6 +69,22 @@ export function MarketingLayout({ children }: { children: React.ReactNode }) {
               Help Center
             </Link>
           </div>
+          <div className="space-y-3 text-sm">
+            <p className="font-medium text-foreground">Account</p>
+            <Link href="/login" className="block text-muted-foreground hover:text-foreground">
+              Login
+            </Link>
+            <Link href="/register" className="block text-muted-foreground hover:text-foreground">
+              Signup
+            </Link>
+            <Link href="/forgot-password" className="block text-muted-foreground hover:text-foreground">
+              Forgot Password
+            </Link>
+          </div>
+        </div>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 border-t border-border/60 px-4 py-5 text-sm text-muted-foreground lg:px-8">
+          <p>© {currentYear} fyntra. All rights reserved.</p>
+          <p>Built for clear personal finance.</p>
         </div>
       </footer>
     </div>

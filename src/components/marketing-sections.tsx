@@ -19,56 +19,28 @@ const reveal = {
 export function LandingPage({ data }: { data: AppData }) {
   return (
     <div className="pb-8">
-      <section className="mx-auto grid max-w-7xl gap-12 px-4 py-14 lg:grid-cols-[1.06fr_0.94fr] lg:items-start lg:px-8 lg:py-24">
-        <motion.div initial="hidden" animate="visible" variants={reveal} transition={{ duration: 0.55 }} className="space-y-8 pt-4">
+      <section className="mx-auto grid max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:px-8 lg:py-20">
+        <motion.div initial="hidden" animate="visible" variants={reveal} transition={{ duration: 0.55 }} className="space-y-6 pt-2">
           <Badge variant="secondary" className="gap-2">
             <Sparkles className="size-3.5" />
-            Money clarity for real life
+            Personal finance, made clear
           </Badge>
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <p className="eyebrow">Finance OS for modern households</p>
-              <h1 className="font-display max-w-4xl text-5xl font-semibold leading-[0.97] tracking-[-0.06em] md:text-7xl">
-                Manage money with the calm of an editorial product, not the clutter of a spreadsheet.
-              </h1>
-            </div>
-            <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr]">
-              <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-                fyntra. menggabungkan budgeting, asset tracking, debt control, goal progress, dan security center dalam satu dashboard yang tetap terasa sederhana.
-              </p>
-              <div className="rounded-[26px] border border-border/70 bg-[color:var(--surface-1)] px-5 py-4 shadow-sm">
-                <p className="eyebrow">Why it converts</p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  Users langsung melihat balance, alerts, dan next action tanpa harus memahami istilah akuntansi.
-                </p>
-              </div>
-            </div>
+          <div className="space-y-4">
+            <p className="eyebrow">Finance OS for modern households</p>
+            <h1 className="font-display max-w-4xl text-5xl font-semibold leading-[0.97] tracking-[-0.06em] md:text-7xl">
+              Uangmu, rapi dalam satu dashboard.
+            </h1>
+            <p className="max-w-xl text-base leading-7 text-muted-foreground md:text-lg">
+              Catat transaksi, atur budget, pantau asset, debt, dan goal tanpa spreadsheet yang bikin ribet.
+            </p>
           </div>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/register">Mulai gratis</Link>
-              </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/app/dashboard">Lihat demo app</Link>
-              </Button>
-            </div>
-            <p className="text-sm leading-6 text-muted-foreground">No setup friction. Explore the interface with seeded realistic data.</p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {data.landingStats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial="hidden"
-                animate="visible"
-                variants={reveal}
-                transition={{ delay: 0.08 * index, duration: 0.4 }}
-                className="rounded-[24px] border border-border/60 bg-[color:var(--surface-2)] px-4 py-4 shadow-sm"
-              >
-                <p className="font-display text-3xl font-semibold tracking-[-0.05em]">{stat.value}</p>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{stat.label}</p>
-              </motion.div>
-            ))}
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Button asChild size="lg">
+              <Link href="/register">Mulai gratis</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/app/dashboard">Lihat demo app</Link>
+            </Button>
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, x: 18, y: 12 }} animate={{ opacity: 1, x: 0, y: 0 }} transition={{ duration: 0.7, delay: 0.12 }} className="relative lg:pt-6">
@@ -78,79 +50,84 @@ export function LandingPage({ data }: { data: AppData }) {
         </motion.div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-10 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[0.75fr_1.25fr]">
-          <Card className="surface-elevated overflow-hidden bg-[#18211a] text-white">
-            <CardContent className="space-y-5 p-7">
-              <Badge variant="warning" className="border-white/10 bg-white/10 text-white">
-                Trust Layer
-              </Badge>
-              <div className="space-y-3">
-                <h2 className="font-display text-3xl font-semibold tracking-[-0.05em]">Security center is part of the product, not an afterthought.</h2>
-                <p className="text-sm leading-7 text-white/72">
-                  Audit logs, 2FA checkpoints, and device visibility are surfaced in the same calm visual language as budgeting and reporting.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                icon: Target,
-                title: "Goal-led flow",
-                description: "Setiap transfer ke wallet tertentu langsung terlihat sebagai progres target finansial."
-              },
-              {
-                icon: TrendingUp,
-                title: "Portfolio pulse",
-                description: "Asset dan cashflow disajikan dalam visual yang mudah dibaca, bukan tabel panjang."
-              },
-              {
-                icon: LockKeyhole,
-                title: "Trust by design",
-                description: "2FA, audit logs, dan device visibility ditampilkan sebagai fitur yang benar-benar bisa dipahami."
-              }
-            ].map((item) => (
-              <motion.div key={item.title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.35 }} variants={reveal}>
-                <Card className="h-full">
-                  <CardContent className="space-y-4 p-6">
-                    <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                      <item.icon className="size-5" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="font-display text-2xl font-semibold">{item.title}</h3>
-                      <p className="text-sm leading-6 text-muted-foreground">{item.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+      <section className="mx-auto max-w-7xl px-4 py-4 lg:px-8">
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {data.landingStats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial="hidden"
+              animate="visible"
+              variants={reveal}
+              transition={{ delay: 0.08 * index, duration: 0.4 }}
+              className="rounded-[24px] border border-border/60 bg-[color:var(--surface-2)] px-4 py-4 shadow-sm"
+            >
+              <p className="font-display text-3xl font-semibold tracking-[-0.05em]">{stat.value}</p>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{stat.label}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-        <div className="mb-8 grid gap-5 lg:grid-cols-[0.95fr_1.05fr] lg:items-end">
-          <div className="space-y-3">
-            <Badge variant="secondary">Core Features</Badge>
-            <h2 className="section-title">Built for people who want control, not complexity.</h2>
-          </div>
-          <p className="max-w-2xl text-base leading-8 text-muted-foreground">
-            Seluruh pengalaman dirancang untuk pengguna umum yang ingin rapi, cepat, dan tidak pusing memetakan hubungan antara transaksi, budget, asset, debt, dan goal.
-          </p>
+        <div className="mb-8 space-y-3">
+          <Badge variant="secondary">Features</Badge>
+          <h2 className="section-title">Fitur utama yang langsung kepakai.</h2>
         </div>
-        <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr_0.85fr]">
-          {data.featureHighlights.map((feature, index) => (
-            <Card key={feature.title} className={index === 0 ? "surface-elevated lg:row-span-2" : "h-full"}>
+        <div className="grid gap-6 lg:grid-cols-3">
+          {[
+            {
+              icon: Target,
+              title: "Goal tracking",
+              description: "Pantau progres tabungan dan target finansial langsung dari wallet atau alokasi transaksi."
+            },
+            {
+              icon: TrendingUp,
+              title: "Budget & analytics",
+              description: "Lihat cashflow, kategori pengeluaran, dan budget yang hampir habis dengan cepat."
+            },
+            {
+              icon: LockKeyhole,
+              title: "Security center",
+              description: "Audit log, device history, dan 2FA dibuat jelas untuk pengguna non-teknis."
+            }
+          ].map((feature) => (
+            <Card key={feature.title} className="h-full">
               <CardContent className="space-y-4 p-6">
-                <div className="inline-flex rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">Feature highlight</div>
+                <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <feature.icon className="size-5" />
+                </div>
                 <div className="space-y-2">
-                  <h3 className={index === 0 ? "font-display text-3xl font-semibold tracking-[-0.05em]" : "font-display text-2xl font-semibold"}>{feature.title}</h3>
+                  <h3 className="font-display text-2xl font-semibold">{feature.title}</h3>
                   <p className="text-sm leading-7 text-muted-foreground">{feature.description}</p>
                 </div>
               </CardContent>
             </Card>
           ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
+        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+          <Card className="surface-card">
+            <CardContent className="space-y-3 p-6">
+              <Badge variant="secondary">Keamanan</Badge>
+              <h2 className="font-display text-3xl font-semibold tracking-[-0.05em]">Keamanan tetap jelas dan mudah dipahami.</h2>
+              <p className="text-sm leading-7 text-muted-foreground">
+                Audit logs, riwayat perangkat, dan 2FA ditampilkan langsung dalam produk supaya pengguna tahu apa yang terjadi di akun mereka.
+              </p>
+            </CardContent>
+          </Card>
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              "Riwayat login dan aktivitas sensitif.",
+              "Verifikasi 2FA untuk akses baru.",
+              "Notifikasi saat ada perubahan penting akun."
+            ].map((item) => (
+              <Card key={item}>
+                <CardContent className="p-5 text-sm leading-7 text-muted-foreground">{item}</CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -207,9 +184,7 @@ export function LandingPage({ data }: { data: AppData }) {
         <div className="mb-8 space-y-3 text-center">
           <Badge variant="secondary">FAQ</Badge>
           <h2 className="font-display text-4xl font-semibold tracking-[-0.05em]">Pertanyaan yang paling sering muncul.</h2>
-          <p className="mx-auto max-w-2xl text-sm leading-7 text-muted-foreground">
-            Bagian penutup dibuat lebih tenang agar pengguna bisa menyelesaikan evaluasi produk tanpa distraksi visual tambahan.
-          </p>
+          <p className="mx-auto max-w-2xl text-sm leading-7 text-muted-foreground">Jawaban cepat untuk pertanyaan umum tentang penggunaan, keamanan, dan paket.</p>
         </div>
         <Accordion type="single" collapsible className="space-y-4">
           {data.faqItems.map((item) => (

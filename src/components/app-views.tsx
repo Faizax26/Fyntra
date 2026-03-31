@@ -225,11 +225,11 @@ export function TransactionsView({ data }: { data: AppData }) {
         action={<FormDrawer title="Tambah transaksi" description="Expense, income, atau transfer demo." triggerLabel="Tambah transaksi" />}
       />
       <div className="grid gap-4 md:grid-cols-3">
-        <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Income</p><p className="mt-2 text-3xl font-semibold">{formatCompactCurrency(data.dashboardSummary.monthlyIncome)}</p></CardContent></Card>
-        <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Expense</p><p className="mt-2 text-3xl font-semibold">{formatCompactCurrency(data.dashboardSummary.monthlyExpense)}</p></CardContent></Card>
-        <Card><CardContent className="p-5"><p className="text-sm text-muted-foreground">Linked flows</p><p className="mt-2 text-3xl font-semibold">3</p><p className="mt-1 text-sm text-muted-foreground">Debt, asset, dan goal relation aktif.</p></CardContent></Card>
+        <Card className="surface-elevated"><CardContent className="p-5"><p className="eyebrow">Income</p><p className="metric-figure mt-2">{formatCompactCurrency(data.dashboardSummary.monthlyIncome)}</p></CardContent></Card>
+        <Card className="surface-elevated"><CardContent className="p-5"><p className="eyebrow">Expense</p><p className="metric-figure mt-2">{formatCompactCurrency(data.dashboardSummary.monthlyExpense)}</p></CardContent></Card>
+        <Card className="surface-elevated"><CardContent className="p-5"><p className="eyebrow">Linked flows</p><p className="metric-figure mt-2">3</p><p className="mt-1 text-sm text-muted-foreground">Debt, asset, dan goal relation aktif.</p></CardContent></Card>
       </div>
-      <Card>
+      <Card className="surface-card">
         <CardHeader>
           <CardTitle>Transaction ledger</CardTitle>
           <CardDescription>Searchable table dengan linked entity chips.</CardDescription>
@@ -297,7 +297,7 @@ export function BudgetsView({ data }: { data: AppData }) {
         <ChartCard title="Budget progress" description="Bar progress menonjolkan kategori paling rawan overspend.">
           <BudgetBars data={data.budgetProgress} />
         </ChartCard>
-        <Card className="border-amber-500/30">
+        <Card className="border-amber-500/20 bg-linear-to-b from-amber-500/8 to-transparent">
           <CardHeader>
             <CardTitle>Recommended adjustments</CardTitle>
             <CardDescription>AI-style recommendations dengan konteks yang mudah dipahami.</CardDescription>
@@ -308,7 +308,7 @@ export function BudgetsView({ data }: { data: AppData }) {
               "Pindahkan budget makanan ke transport jika intensitas meeting di luar naik bulan ini.",
               "Buat reminder review budget mingguan setiap Jumat sore."
             ].map((item) => (
-              <div key={item} className="rounded-[22px] border border-border/70 px-4 py-4 text-sm text-muted-foreground">
+              <div key={item} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm leading-6 text-muted-foreground">
                 {item}
               </div>
             ))}
@@ -317,10 +317,10 @@ export function BudgetsView({ data }: { data: AppData }) {
       </div>
       <div className="grid gap-4 md:grid-cols-3">
         {data.budgets.map((budget) => (
-          <Card key={budget.id}>
+          <Card key={budget.id} className="surface-elevated">
             <CardContent className="space-y-3 p-5">
               <div className="flex items-center justify-between">
-              <p className="font-medium">{linkedLabel(data, budget.categoryId)}</p>
+                <p className="font-medium">{linkedLabel(data, budget.categoryId)}</p>
                 <Badge variant={budget.spent / budget.amountLimit > 0.9 ? "warning" : "success"}>{Math.round((budget.spent / budget.amountLimit) * 100)}%</Badge>
               </div>
               <Progress value={(budget.spent / budget.amountLimit) * 100} />
@@ -348,14 +348,14 @@ export function AssetsView({ data }: { data: AppData }) {
         <ChartCard title="Asset allocation" description="Komposisi aset fisik dan digital.">
           <AllocationChart data={data.assetAllocation} />
         </ChartCard>
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Holdings</CardTitle>
             <CardDescription>Table sederhana untuk nilai saat ini dan cost basis.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {data.assets.map((asset) => (
-              <div key={asset.id} className="rounded-[24px] border border-border/70 bg-background/70 px-4 py-4">
+              <div key={asset.id} className="rounded-[24px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="font-medium">{asset.name}</p>
@@ -398,7 +398,7 @@ export function DebtsView({ data }: { data: AppData }) {
           <TabsContent key={type} value={type}>
             <div className="grid gap-4">
               {data.debts.filter((debt) => debt.type === type).map((debt) => (
-                <Card key={debt.id}>
+                <Card key={debt.id} className="surface-card">
                   <CardContent className="space-y-4 p-5">
                     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                       <div>
@@ -446,7 +446,7 @@ export function GoalsView({ data }: { data: AppData }) {
               "Liburan Jepang butuh tambahan Rp1,2 juta per bulan agar tepat waktu.",
               "Tambahkan auto transfer mingguan untuk menjaga konsistensi."
             ].map((item) => (
-              <div key={item} className="rounded-[22px] border border-border/70 px-4 py-4 text-sm text-muted-foreground">
+              <div key={item} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm leading-6 text-muted-foreground">
                 {item}
               </div>
             ))}
@@ -455,7 +455,7 @@ export function GoalsView({ data }: { data: AppData }) {
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
         {data.goals.map((goal) => (
-          <Card key={goal.id}>
+          <Card key={goal.id} className="surface-elevated">
             <CardContent className="space-y-4 p-5">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -503,7 +503,7 @@ export function AnalyticsView({ data }: { data: AppData }) {
             "Tren asset tumbuh moderat, tetapi debt payoff bisa dipercepat dengan satu pembayaran ekstra bulan ini."
           ]}
         />
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Key ratios</CardTitle>
             <CardDescription>Metrix singkat untuk membaca kesehatan finansial.</CardDescription>
@@ -528,14 +528,14 @@ export function AutomationsView({ data }: { data: AppData }) {
         action={<FormDrawer title="Buat automasi" description="Simulasi recurring transaction atau bill reminder." triggerLabel="Buat automasi" />}
       />
       <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Recurring bills</CardTitle>
             <CardDescription>Daftar tagihan berulang yang biasanya perlu dipantau per bulan.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {data.reminders.map((reminder) => (
-              <div key={reminder.id} className="flex items-center justify-between rounded-[24px] border border-border/70 bg-background/70 px-4 py-4">
+              <div key={reminder.id} className="flex items-center justify-between rounded-[24px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
                 <div>
                   <p className="font-medium">{reminder.title}</p>
                   <p className="text-sm text-muted-foreground">{reminder.category}</p>
@@ -573,7 +573,7 @@ export function RemindersView({ data }: { data: AppData }) {
       />
       <div className="grid gap-4 md:grid-cols-3">
         {data.reminders.map((reminder) => (
-          <Card key={reminder.id}>
+          <Card key={reminder.id} className="surface-elevated">
             <CardContent className="space-y-4 p-5">
               <div className="flex items-center justify-between">
                 <Badge variant={reminder.status === "today" ? "warning" : reminder.status === "done" ? "success" : "secondary"}>{reminder.status}</Badge>
@@ -602,14 +602,14 @@ export function NotificationsView({ data }: { data: AppData }) {
         description="Pusat notifikasi memisahkan budget alerts, AI insight, dan security updates agar pengguna tahu mana yang butuh aksi."
       />
       <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Notification feed</CardTitle>
             <CardDescription>Seeded data dengan status unread, channel, dan message copy.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {data.notifications.map((item) => (
-              <div key={item.id} className="rounded-[24px] border border-border/70 px-4 py-4">
+              <div key={item.id} className="rounded-[24px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
                 <div className="mb-2 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-2">
                     <BellRing className="size-4 text-primary" />
@@ -623,7 +623,7 @@ export function NotificationsView({ data }: { data: AppData }) {
             ))}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Channel preferences</CardTitle>
             <CardDescription>Contoh toggle settings yang konsisten dengan halaman Settings.</CardDescription>
@@ -658,7 +658,7 @@ export function AuditLogsView({ data }: { data: AppData }) {
         description="Setiap aktivitas sensitif dikelompokkan per hari, lengkap dengan device info dan tingkat urgensi."
       />
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Activity history</CardTitle>
             <CardDescription>Grouping per hari untuk memudahkan review device dan tindakan akun.</CardDescription>
@@ -668,7 +668,7 @@ export function AuditLogsView({ data }: { data: AppData }) {
               <div key={group.date} className="space-y-4">
                 <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">{group.date}</p>
                 {group.items.map((item) => (
-                  <div key={item.id} className="rounded-[22px] border border-border/70 bg-background/70 px-4 py-4">
+                  <div key={item.id} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
                     <div className="flex items-center justify-between gap-4">
                       <div>
                         <p className="font-medium">{item.action}</p>
@@ -683,7 +683,7 @@ export function AuditLogsView({ data }: { data: AppData }) {
             ))}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Security center</CardTitle>
             <CardDescription>Area penguatan trust untuk fitur akun sensitif.</CardDescription>
@@ -706,7 +706,7 @@ export function AuditLogsView({ data }: { data: AppData }) {
                 icon: BrainCircuit
               }
             ].map((item) => (
-              <div key={item.title} className="rounded-[22px] border border-border/70 px-4 py-4">
+              <div key={item.title} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
                 <div className="mb-2 flex items-center gap-3">
                   <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                     <item.icon className="size-4" />
@@ -732,7 +732,7 @@ export function SettingsView({ data }: { data: AppData }) {
         description="Bagian ini merangkum profil, tema, billing, AI credits, notifikasi, keamanan, dan help references dalam satu struktur."
       />
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Profil & tema</CardTitle>
             <CardDescription>Pengaturan dasar yang paling sering dipakai.</CardDescription>
@@ -759,13 +759,13 @@ export function SettingsView({ data }: { data: AppData }) {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Billing & AI credits</CardTitle>
             <CardDescription>Status plan premium dan sisa kuota fitur pintar.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div className="rounded-[24px] border border-primary/20 bg-primary/8 p-4">
+            <div className="rounded-[24px] border border-primary/20 bg-primary/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
               <p className="font-medium">Premium plan aktif</p>
               <p className="text-sm text-muted-foreground">Unlimited wallets, advanced analytics, AI assistant.</p>
             </div>
@@ -783,7 +783,7 @@ export function SettingsView({ data }: { data: AppData }) {
         </Card>
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Keamanan</CardTitle>
             <CardDescription>2FA, device checks, dan password routines.</CardDescription>
@@ -796,12 +796,12 @@ export function SettingsView({ data }: { data: AppData }) {
               </div>
               <Switch defaultChecked={data.currentUser.twoFactorEnabled} />
             </div>
-            <div className="rounded-[22px] border border-border/70 px-4 py-4 text-sm text-muted-foreground">
+            <div className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm leading-6 text-muted-foreground">
               Perubahan keamanan sensitif akan tercatat di Audit Logs dan memicu notifikasi.
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>About fyntra.</CardTitle>
             <CardDescription>Blok informasi produk dan pusat bantuan.</CardDescription>
@@ -832,7 +832,7 @@ export function HelpView() {
           "Menghubungkan transaksi ke goal, debt, atau asset.",
           "Memahami budget alerts, audit logs, dan AI insights."
         ].map((item) => (
-          <Card key={item}>
+          <Card key={item} className="surface-elevated">
             <CardContent className="p-6">
               <p className="font-medium">{item}</p>
               <p className="mt-3 text-sm text-muted-foreground">Konten bantuan lengkap dapat dipasang nanti tanpa mengubah struktur halaman ini.</p>
@@ -856,11 +856,11 @@ export function UpgradeView({ data }: { data: AppData }) {
       <UpgradePrompt />
       <div className="grid gap-6 lg:grid-cols-2">
         {data.subscriptionPlans.map((plan) => (
-          <Card key={plan.id}>
+          <Card key={plan.id} className={plan.id === "premium" ? "surface-elevated border-primary/20" : "surface-card"}>
             <CardContent className="space-y-5 p-6">
               <div>
                 <p className="text-sm uppercase tracking-[0.18em] text-muted-foreground">{plan.name}</p>
-                <p className="mt-2 font-display text-4xl font-semibold">{plan.price}</p>
+                <p className="mt-2 font-display text-4xl font-semibold tracking-[-0.05em]">{plan.price}</p>
               </div>
               <div className="space-y-3">
                 {plan.features.map((feature) => (
@@ -889,7 +889,7 @@ export function OnboardingView({ data }: { data: AppData }) {
         action={<Button asChild><Link href="/app/dashboard">Lewati ke dashboard</Link></Button>}
       />
       <div className="grid gap-6 xl:grid-cols-[0.85fr_1.15fr]">
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Progress setup</CardTitle>
             <CardDescription>Step-by-step yang ringan untuk pengguna baru.</CardDescription>
@@ -901,7 +901,7 @@ export function OnboardingView({ data }: { data: AppData }) {
               { label: "Tetapkan goal pertama", done: false },
               { label: "Aktifkan reminder", done: false }
             ].map((item) => (
-              <div key={item.label} className="flex items-center gap-3 rounded-[22px] border border-border/70 px-4 py-4">
+              <div key={item.label} className="flex items-center gap-3 rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
                 <div className={`flex size-10 items-center justify-center rounded-full ${item.done ? "bg-primary/10 text-primary" : "bg-secondary text-secondary-foreground"}`}>
                   {item.done ? <CheckCircle2 className="size-4" /> : <Clock3 className="size-4" />}
                 </div>
@@ -913,7 +913,7 @@ export function OnboardingView({ data }: { data: AppData }) {
             ))}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="surface-card">
           <CardHeader>
             <CardTitle>Setup recommendations</CardTitle>
             <CardDescription>Data awal yang sudah disiapkan agar user langsung melihat value product.</CardDescription>

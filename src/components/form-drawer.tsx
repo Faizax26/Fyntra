@@ -57,7 +57,7 @@ export function FormDrawer({
               </SelectContent>
             </Select>
           </div>
-          <div className="rounded-[24px] border border-dashed border-border p-4 text-sm text-muted-foreground">
+          <div className="rounded-[24px] border border-dashed border-border bg-[color:var(--surface-2)] p-4 text-sm leading-6 text-muted-foreground">
             Form ini dipakai ulang untuk wallet, transaction, goal, dan subscription mock agar alur produk tetap terasa nyata tanpa backend.
           </div>
           <Button type="submit" className="w-full">

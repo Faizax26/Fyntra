@@ -11,7 +11,7 @@ describe("LandingPage", () => {
 
     render(<LandingPage data={data} />);
 
-    expect(screen.getByText(/Manage money with the calm of an editorial product/i)).toBeInTheDocument();
+    expect(screen.getByText(/Uangmu, rapi dalam satu dashboard/i)).toBeInTheDocument();
     expect(screen.getByText(/Mulai gratis, upgrade saat butuh lebih/i)).toBeInTheDocument();
     expect(screen.getByText(/Pertanyaan yang paling sering muncul/i)).toBeInTheDocument();
   });

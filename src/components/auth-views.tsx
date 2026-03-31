@@ -56,29 +56,29 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
   const content = copyMap[mode];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(132,204,22,0.15),transparent_22%),radial-gradient(circle_at_bottom_right,rgba(15,118,110,0.18),transparent_26%)]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(123,179,26,0.14),transparent_22%),radial-gradient(circle_at_bottom_right,rgba(13,122,112,0.18),transparent_26%)]">
       <div className="mx-auto grid min-h-screen max-w-7xl gap-10 px-4 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-        <div className="hidden flex-col justify-between rounded-[40px] border border-border/70 bg-[#172118] p-8 text-white lg:flex">
+        <div className="hidden flex-col justify-between rounded-[42px] border border-border/70 bg-linear-to-br from-[#162019] via-[#17231d] to-[#233024] p-8 text-white shadow-[0_44px_120px_-56px_rgba(10,18,13,0.92)] lg:flex">
           <Logo className="[&_span:last-child]:text-white/60 [&>div:last-child]:text-white" />
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-xs">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em]">
               <Sparkles className="size-3.5" />
               Premium-feel onboarding
             </div>
-            <h2 className="font-display text-5xl font-semibold leading-tight">Keamanan, budgeting, dan insight AI dalam alur yang tidak mengintimidasi.</h2>
+            <h2 className="font-display text-5xl font-semibold leading-[1.02] tracking-[-0.06em]">Keamanan, budgeting, dan insight AI dalam alur yang tidak mengintimidasi.</h2>
             <div className="grid gap-4">
               {[
                 "Sidebar SaaS yang bisa dikolaps dan tetap nyaman di mobile.",
                 "Budget, asset, debt, goal, dan audit logs terhubung ke data mock yang sama.",
                 "Upgrade prompts hadir natural tanpa mengganggu task utama pengguna."
               ].map((item) => (
-                <div key={item} className="rounded-[24px] bg-white/6 px-4 py-3 text-sm text-white/80">
+                <div key={item} className="rounded-[24px] border border-white/8 bg-white/6 px-4 py-3 text-sm leading-6 text-white/80">
                   {item}
                 </div>
               ))}
             </div>
           </motion.div>
-          <div className="rounded-[28px] bg-white/5 p-5">
+          <div className="rounded-[28px] border border-white/8 bg-white/5 p-5">
             <div className="mb-3 flex items-center gap-3">
               <div className="flex size-11 items-center justify-center rounded-2xl bg-lime-400/15 text-lime-300">
                 <LockKeyhole className="size-5" />
@@ -91,12 +91,13 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <Card className="w-full max-w-xl">
+          <Card className="surface-elevated w-full max-w-xl">
             <CardContent className="space-y-8 p-8">
               <div className="space-y-3">
                 <Logo className="lg:hidden" />
-                <h1 className="font-display text-4xl font-semibold tracking-tight">{content.title}</h1>
-                <p className="text-sm leading-6 text-muted-foreground">{content.description}</p>
+                <p className="eyebrow">Secure access</p>
+                <h1 className="font-display text-4xl font-semibold tracking-[-0.05em]">{content.title}</h1>
+                <p className="text-sm leading-7 text-muted-foreground">{content.description}</p>
               </div>
               <form
                 className="space-y-5"
@@ -129,7 +130,7 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
                 {mode === "verify" ? (
                   <div className="space-y-2">
                     <Label htmlFor="otp">Kode 2FA</Label>
-                    <Input id="otp" placeholder="123456" />
+                    <Input id="otp" placeholder="123456" className="text-center tracking-[0.4em]" />
                   </div>
                 ) : null}
                 <Button type="submit" className="w-full">
@@ -137,7 +138,7 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
                   <ArrowRight className="size-4" />
                 </Button>
               </form>
-              <div className="flex items-center justify-between gap-3 text-sm">
+              <div className="flex items-center justify-between gap-3 border-t border-border/60 pt-5 text-sm">
                 <Link href={mode === "login" ? "/forgot-password" : "/login"} className="text-muted-foreground hover:text-foreground">
                   {mode === "login" ? "Lupa password?" : content.footer}
                 </Link>
