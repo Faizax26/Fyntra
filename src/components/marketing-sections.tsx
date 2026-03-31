@@ -51,7 +51,7 @@ export function LandingPage({ data }: { data: AppData }) {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-4 lg:px-8">
-        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {data.landingStats.map((stat, index) => (
             <motion.div
               key={stat.label}
@@ -59,10 +59,10 @@ export function LandingPage({ data }: { data: AppData }) {
               animate="visible"
               variants={reveal}
               transition={{ delay: 0.08 * index, duration: 0.4 }}
-              className="rounded-[24px] border border-border/60 bg-[color:var(--surface-2)] px-4 py-4 shadow-sm"
+              className="flex min-h-32 flex-col items-center justify-center rounded-[26px] border border-border/60 bg-[color:var(--surface-2)] px-5 py-5 text-center shadow-sm"
             >
               <p className="font-display text-3xl font-semibold tracking-[-0.05em]">{stat.value}</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{stat.label}</p>
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -92,8 +92,8 @@ export function LandingPage({ data }: { data: AppData }) {
             }
           ].map((feature) => (
             <Card key={feature.title} className="h-full">
-              <CardContent className="space-y-4 p-6">
-                <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <CardContent className="space-y-4 p-6 md:p-7">
+                <div className="mb-1 flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
                   <feature.icon className="size-5" />
                 </div>
                 <div className="space-y-2">
@@ -109,7 +109,7 @@ export function LandingPage({ data }: { data: AppData }) {
       <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
           <Card className="surface-card">
-            <CardContent className="space-y-3 p-6">
+            <CardContent className="space-y-4 p-7 md:p-8">
               <Badge variant="secondary">Keamanan</Badge>
               <h2 className="font-display text-3xl font-semibold tracking-[-0.05em]">Keamanan tetap jelas dan mudah dipahami.</h2>
               <p className="text-sm leading-7 text-muted-foreground">
@@ -119,12 +119,17 @@ export function LandingPage({ data }: { data: AppData }) {
           </Card>
           <div className="grid gap-4 md:grid-cols-3">
             {[
-              "Riwayat login dan aktivitas sensitif.",
-              "Verifikasi 2FA untuk akses baru.",
-              "Notifikasi saat ada perubahan penting akun."
+              { icon: ShieldCheck, text: "Riwayat login dan aktivitas sensitif." },
+              { icon: LockKeyhole, text: "Verifikasi 2FA untuk akses baru." },
+              { icon: Sparkles, text: "Notifikasi saat ada perubahan penting akun." }
             ].map((item) => (
-              <Card key={item}>
-                <CardContent className="p-5 text-sm leading-7 text-muted-foreground">{item}</CardContent>
+              <Card key={item.text}>
+                <CardContent className="space-y-4 p-5">
+                  <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                    <item.icon className="size-5" />
+                  </div>
+                  <p className="text-sm leading-7 text-muted-foreground">{item.text}</p>
+                </CardContent>
               </Card>
             ))}
           </div>
@@ -132,8 +137,8 @@ export function LandingPage({ data }: { data: AppData }) {
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
-        <div className="rounded-[38px] border border-border/70 bg-linear-to-br from-[#18211a] via-[#162720] to-[#23301f] p-8 text-white shadow-[0_40px_120px_-60px_rgba(14,26,19,0.92)]">
-          <div className="mb-8 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div className="rounded-[38px] border border-border/70 bg-linear-to-br from-[#18211a] via-[#162720] to-[#23301f] p-8 text-white shadow-[0_40px_120px_-60px_rgba(14,26,19,0.92)] md:p-10">
+          <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
               <Badge variant="warning" className="border-white/10 bg-white/10 text-white">
                 Pricing
@@ -144,11 +149,11 @@ export function LandingPage({ data }: { data: AppData }) {
               Free cukup untuk mulai mencatat dan budgeting. Premium membuka AI coach, analytics mendalam, wallet tanpa batas, dan pusat keamanan yang lebih lengkap.
             </p>
           </div>
-          <div className="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
+          <div className="grid gap-8 lg:grid-cols-[0.88fr_1.12fr]">
             {data.subscriptionPlans.map((plan) => (
               <Card key={plan.id} className={plan.id === "premium" ? "surface-elevated border-lime-400/20 bg-white text-foreground" : "border-white/10 bg-white/6 text-white"}>
-                <CardContent className="space-y-6 p-6">
-                  <div className="space-y-2">
+                <CardContent className="space-y-7 p-7 md:p-8">
+                  <div className="space-y-3">
                     <p className={plan.id === "premium" ? "eyebrow" : "text-sm uppercase tracking-[0.22em] text-white/60"}>{plan.name}</p>
                     <div className="flex items-end gap-2">
                       <p className={plan.id === "premium" ? "font-display text-5xl font-semibold tracking-[-0.06em]" : "font-display text-4xl font-semibold tracking-[-0.05em]"}>{plan.price}</p>
@@ -156,7 +161,7 @@ export function LandingPage({ data }: { data: AppData }) {
                     </div>
                     <p className={plan.id === "premium" ? "text-sm text-muted-foreground" : "text-sm text-white/68"}>{plan.description}</p>
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {plan.features.map((feature) => (
                       <div key={feature} className="flex items-center gap-3 text-sm">
                         <div className={plan.id === "premium" ? "flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary" : "flex size-6 items-center justify-center rounded-full bg-white/10 text-lime-300"}>

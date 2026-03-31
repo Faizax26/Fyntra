@@ -12,7 +12,7 @@ export function MarketingLayout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-border/60 bg-background/70 backdrop-blur-2xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 lg:px-8">
-          <Logo />
+          <Logo className="shrink-0" />
           <nav className="hidden items-center gap-6 md:flex">
             {marketingNav.map((item) => (
               <Link key={item.href} href={item.href} className="text-sm font-medium text-muted-foreground hover:text-foreground">
@@ -34,7 +34,7 @@ export function MarketingLayout({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-border/70 bg-linear-to-b from-transparent to-[color:var(--surface-2)]">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 lg:grid-cols-[1.15fr_0.85fr_0.85fr_0.9fr] lg:px-8">
           <div className="space-y-4">
-            <Logo />
+            <Logo className="items-start" />
             <p className="max-w-md text-sm leading-6 text-muted-foreground">
               fyntra. membantu pengguna awam memahami cashflow, budget, asset, debt, dan security account dalam satu dashboard yang terasa ringan.
             </p>
