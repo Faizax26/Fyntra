@@ -54,7 +54,7 @@ const copyMap = {
 export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
   const router = useRouter();
   const content = copyMap[mode];
-  const showInfoPanel = mode !== "login";
+  const showInfoPanel = mode === "register";
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(123,179,26,0.14),transparent_22%),radial-gradient(circle_at_bottom_right,rgba(13,122,112,0.18),transparent_26%)]">
@@ -110,16 +110,16 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
                   router.push(content.route);
                 }}
               >
-                {mode !== "verify" ? (
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" placeholder="nama@fyntra.id" />
-                  </div>
-                ) : null}
                 {mode === "register" ? (
                   <div className="space-y-2">
                     <Label htmlFor="name">Nama</Label>
                     <Input id="name" placeholder="Faiza Akbar" />
+                  </div>
+                ) : null}
+                {mode !== "verify" ? (
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" type="email" placeholder="nama@fyntra.id" />
                   </div>
                 ) : null}
                 {mode !== "forgot" && mode !== "verify" ? (
