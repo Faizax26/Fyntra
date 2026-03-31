@@ -54,11 +54,12 @@ const copyMap = {
 export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
   const router = useRouter();
   const content = copyMap[mode];
+  const showInfoPanel = mode !== "login";
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(123,179,26,0.14),transparent_22%),radial-gradient(circle_at_bottom_right,rgba(13,122,112,0.18),transparent_26%)]">
-      <div className="mx-auto grid min-h-screen max-w-7xl gap-8 px-4 py-8 lg:grid-cols-[1fr_1fr] lg:gap-10 lg:px-8 lg:py-10">
-        <div className="hidden min-h-[720px] flex-col justify-between rounded-[42px] border border-border/70 bg-linear-to-br from-[#162019] via-[#17231d] to-[#233024] p-8 text-white shadow-[0_44px_120px_-56px_rgba(10,18,13,0.92)] lg:flex xl:p-10">
+      <div className={`mx-auto grid min-h-screen max-w-7xl gap-8 px-4 py-8 lg:gap-10 lg:px-8 lg:py-10 ${showInfoPanel ? "lg:grid-cols-[1fr_1fr]" : "lg:grid-cols-1"}`}>
+        <div className={`min-h-[720px] flex-col justify-between rounded-[42px] border border-border/70 bg-linear-to-br from-[#162019] via-[#17231d] to-[#233024] p-8 text-white shadow-[0_44px_120px_-56px_rgba(10,18,13,0.92)] xl:p-10 ${showInfoPanel ? "hidden lg:flex" : "hidden"}`}>
           <Logo className="[&_span:last-child]:text-white/60 [&>div:last-child]:text-white" />
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55 }} className="space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.18em]">
@@ -91,10 +92,10 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <Card className="surface-elevated w-full max-w-[640px]">
+          <Card className={`surface-elevated w-full ${showInfoPanel ? "max-w-[640px]" : "max-w-[720px]"}`}>
             <CardContent className="space-y-8 p-8 md:p-10 lg:px-12 xl:px-14">
               <div className="space-y-3">
-                <Logo className="lg:hidden" />
+                <Logo className={showInfoPanel ? "lg:hidden" : ""} />
                 <p className="eyebrow">Secure access</p>
                 <h1 className="font-display text-4xl font-semibold tracking-[-0.05em]">{content.title}</h1>
                 <p className="text-sm leading-7 text-muted-foreground">{content.description}</p>
@@ -123,15 +124,15 @@ export function AuthPage({ mode }: { mode: keyof typeof copyMap }) {
                 ) : null}
                 {mode !== "forgot" && mode !== "verify" ? (
                   <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
+                    <div className="flex items-center justify-between gap-4">
+                      <Label htmlFor="password">Password</Label>
+                      {mode === "login" ? (
+                        <Link href="/forgot-password" className="text-sm font-medium text-primary hover:text-primary/80">
+                          Lupa password?
+                        </Link>
+                      ) : null}
+                    </div>
                     <Input id="password" type="password" placeholder="••••••••" />
-                  </div>
-                ) : null}
-                {mode === "login" ? (
-                  <div className="flex justify-end">
-                    <Link href="/forgot-password" className="text-sm font-medium text-primary hover:text-primary/80">
-                      Lupa password?
-                    </Link>
                   </div>
                 ) : null}
                 {mode === "verify" ? (
