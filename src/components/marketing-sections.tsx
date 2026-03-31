@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, LockKeyhole, ShieldCheck, Sparkles, Target, TrendingUp } from "lucide-react";
+import { Check, LockKeyhole, Sparkles, Target, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 
 import type { AppData } from "@/lib/data";
@@ -106,36 +106,6 @@ export function LandingPage({ data }: { data: AppData }) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <Card className="surface-card">
-            <CardContent className="space-y-4 p-7 md:p-8">
-              <Badge variant="secondary">Keamanan</Badge>
-              <h2 className="font-display text-3xl font-semibold tracking-[-0.05em]">Keamanan tetap jelas dan mudah dipahami.</h2>
-              <p className="text-sm leading-7 text-muted-foreground">
-                Audit logs, riwayat perangkat, dan 2FA ditampilkan langsung dalam produk supaya pengguna tahu apa yang terjadi di akun mereka.
-              </p>
-            </CardContent>
-          </Card>
-          <div className="grid gap-4 md:grid-cols-3">
-            {[
-              { icon: ShieldCheck, text: "Riwayat login dan aktivitas sensitif." },
-              { icon: LockKeyhole, text: "Verifikasi 2FA untuk akses baru." },
-              { icon: Sparkles, text: "Notifikasi saat ada perubahan penting akun." }
-            ].map((item) => (
-              <Card key={item.text}>
-                <CardContent className="space-y-4 p-5">
-                  <div className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                    <item.icon className="size-5" />
-                  </div>
-                  <p className="text-sm leading-7 text-muted-foreground">{item.text}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="mx-auto max-w-7xl px-4 py-14 lg:px-8">
         <div className="rounded-[38px] border border-border/70 bg-linear-to-br from-[#18211a] via-[#162720] to-[#23301f] p-8 text-white shadow-[0_40px_120px_-60px_rgba(14,26,19,0.92)] md:p-10">
           <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -206,57 +176,124 @@ export function LandingPage({ data }: { data: AppData }) {
 
 function DashboardPreview({ data }: { data: AppData }) {
   return (
-    <div className="relative overflow-hidden rounded-[40px] border border-border/60 bg-[#111915] p-4 text-white shadow-[0_50px_140px_-56px_rgba(9,18,14,0.92)]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(123,179,26,0.14),transparent_26%),radial-gradient(circle_at_bottom_right,rgba(13,122,112,0.18),transparent_28%)]" />
-      <div className="relative grid gap-4 rounded-[30px] border border-white/6 bg-white/5 p-4 backdrop-blur-sm">
-        <div className="grid gap-3 md:grid-cols-[0.95fr_1.05fr]">
-          <div className="rounded-[26px] bg-white/7 p-5">
-            <p className="eyebrow text-white/58">Total balance</p>
-            <p className="mt-3 font-display text-5xl font-semibold tracking-[-0.06em]">{formatCurrency(data.dashboardSummary.totalBalance)}</p>
-            <p className="mt-3 text-sm text-emerald-300">+12.8% vs bulan lalu</p>
+    <div className="relative mx-auto w-full max-w-[760px] pt-6 lg:pt-0">
+      <div className="absolute left-8 top-8 h-32 w-32 rounded-full bg-lime-400/14 blur-3xl" />
+      <div className="absolute right-0 top-28 h-44 w-44 rounded-full bg-primary/16 blur-3xl" />
+
+      <div className="relative mx-auto w-full max-w-[700px]">
+        <div className="rounded-[32px] border border-[#3c433f] bg-[#d8ddd8] px-5 pt-5 shadow-[0_48px_120px_-56px_rgba(14,22,18,0.95)]">
+          <div className="overflow-hidden rounded-[22px] border border-[#29302b] bg-[#111915] text-white">
+            <div className="flex items-center gap-2 border-b border-white/8 bg-[#1a221d] px-4 py-3">
+              <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+              <span className="size-2.5 rounded-full bg-[#febc2e]" />
+              <span className="size-2.5 rounded-full bg-[#28c840]" />
+              <div className="ml-3 rounded-full border border-white/8 bg-white/6 px-3 py-1 text-[0.62rem] uppercase tracking-[0.18em] text-white/55">
+                Dashboard
+              </div>
+            </div>
+            <div className="grid gap-4 p-4 md:grid-cols-[0.95fr_1.05fr]">
+              <div className="rounded-[24px] bg-white/7 p-5">
+                <p className="eyebrow text-white/58">Total balance</p>
+                <p className="mt-3 font-display text-5xl font-semibold tracking-[-0.06em]">{formatCurrency(data.dashboardSummary.totalBalance)}</p>
+                <p className="mt-3 text-sm text-emerald-300">+12.8% vs bulan lalu</p>
+              </div>
+              <div className="rounded-[24px] bg-linear-to-br from-white/10 to-white/4 p-5">
+                <p className="eyebrow text-white/58">AI coach says</p>
+                <p className="mt-2 text-base leading-7 text-white/90">
+                  Kurangi spend transport 9% dan pindahkan freelance income ke emergency fund untuk mempercepat target 19 hari lebih awal.
+                </p>
+              </div>
+            </div>
+            <div className="grid gap-4 border-t border-white/8 p-4 lg:grid-cols-[1.12fr_0.88fr]">
+              <div className="rounded-[24px] bg-white/6 p-5">
+                <div className="mb-4 flex items-center justify-between">
+                  <p className="eyebrow text-white/58">Recent transactions</p>
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em]">Synced manually</span>
+                </div>
+                <div className="space-y-3">
+                  {data.transactions.slice(0, 3).map((transaction) => (
+                    <div key={transaction.id} className="flex items-center justify-between rounded-[18px] border border-white/6 bg-black/10 px-4 py-3">
+                      <div>
+                        <p className="font-medium">{transaction.merchant}</p>
+                        <p className="text-xs text-white/60">{transaction.notes}</p>
+                      </div>
+                      <p className={transaction.type === "income" ? "text-emerald-300" : "text-white"}>{formatCurrency(transaction.amount)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-[24px] bg-white/6 p-5">
+                <p className="mb-4 eyebrow text-white/58">Goals and budgets</p>
+                <div className="space-y-4">
+                  {data.goals.slice(0, 2).map((goal) => (
+                    <div key={goal.id}>
+                      <div className="mb-2 flex items-center justify-between text-sm">
+                        <span>{goal.name}</span>
+                        <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}%</span>
+                      </div>
+                      <div className="h-2 overflow-hidden rounded-full bg-white/10">
+                        <div className="h-full rounded-full bg-lime-400" style={{ width: `${Math.round((goal.currentAmount / goal.targetAmount) * 100)}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="rounded-[26px] bg-linear-to-br from-white/10 to-white/4 p-5">
-            <p className="eyebrow text-white/58">AI coach says</p>
-            <p className="mt-2 text-base leading-7 text-white/90">
-              Kurangi spend transport 9% dan pindahkan freelance income ke emergency fund untuk mempercepat target 19 hari lebih awal.
-            </p>
+          <div className="mx-auto h-5 w-[28%] rounded-b-[999px] bg-[#b5bcb6]" />
+        </div>
+      </div>
+
+      <div className="absolute -left-2 bottom-10 hidden w-[250px] rounded-[28px] border border-[#4d5750] bg-[#cfd6d0] p-3 shadow-[0_36px_80px_-44px_rgba(16,24,19,0.9)] md:block">
+        <div className="overflow-hidden rounded-[22px] border border-[#27302a] bg-[#121915] text-white">
+          <div className="border-b border-white/8 px-4 py-3 text-center text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white/55">
+            Tablet view
+          </div>
+          <div className="space-y-3 p-4">
+            <div className="rounded-[18px] bg-white/7 p-4">
+              <p className="text-xs uppercase tracking-[0.16em] text-white/55">Cashflow</p>
+              <div className="mt-3 flex items-end gap-2">
+                {data.cashflowSeries.slice(-4).map((item, index) => (
+                  <div
+                    key={item.label}
+                    className={`w-full rounded-full ${index % 2 === 0 ? "bg-primary/90" : "bg-lime-400/90"}`}
+                    style={{ height: `${48 + index * 14}px` }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="rounded-[18px] bg-white/7 p-4">
+              <p className="text-xs uppercase tracking-[0.16em] text-white/55">Upcoming</p>
+              <div className="mt-3 space-y-2">
+                {data.reminders.slice(0, 2).map((reminder) => (
+                  <div key={reminder.id} className="rounded-[14px] bg-black/12 px-3 py-2 text-sm">
+                    {reminder.title}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[26px] bg-white/6 p-5">
-            <div className="mb-4 flex items-center justify-between">
-              <p className="eyebrow text-white/58">Recent transactions</p>
-              <span className="rounded-full bg-white/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.16em]">Synced manually</span>
+      </div>
+
+      <div className="absolute -bottom-2 right-0 w-[150px] rounded-[34px] border border-[#3e4741] bg-[#d4dad4] p-2.5 shadow-[0_34px_80px_-42px_rgba(10,18,14,0.95)] sm:w-[170px]">
+        <div className="overflow-hidden rounded-[28px] border border-[#283029] bg-[#101713] text-white">
+          <div className="mx-auto mt-2 h-1.5 w-14 rounded-full bg-white/14" />
+          <div className="space-y-3 p-3">
+            <div className="rounded-[18px] bg-white/7 p-3">
+              <p className="text-[0.58rem] uppercase tracking-[0.16em] text-white/55">Mobile</p>
+              <p className="mt-2 font-display text-xl font-semibold tracking-[-0.05em]">{formatCurrency(data.wallets[0]?.balance ?? 0)}</p>
             </div>
-            <div className="space-y-3">
-              {data.transactions.slice(0, 4).map((transaction) => (
-                <div key={transaction.id} className="flex items-center justify-between rounded-[20px] border border-white/6 bg-black/10 px-4 py-3">
-                  <div>
-                    <p className="font-medium">{transaction.merchant}</p>
-                    <p className="text-xs text-white/60">{transaction.notes}</p>
-                  </div>
-                  <p className={transaction.type === "income" ? "text-emerald-300" : "text-white"}>{formatCurrency(transaction.amount)}</p>
-                </div>
-              ))}
+            <div className="rounded-[18px] bg-white/7 p-3">
+              <p className="text-[0.58rem] uppercase tracking-[0.16em] text-white/55">Goal</p>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
+                <div className="h-full rounded-full bg-lime-400" style={{ width: `${Math.round((data.goals[0].currentAmount / data.goals[0].targetAmount) * 100)}%` }} />
+              </div>
+              <p className="mt-2 text-xs text-white/72">{data.goals[0].name}</p>
             </div>
-          </div>
-          <div className="rounded-[26px] bg-white/6 p-5">
-            <p className="mb-4 eyebrow text-white/58">Goals and budgets</p>
-            <div className="space-y-4">
-              {data.goals.map((goal) => (
-                <div key={goal.id}>
-                  <div className="mb-2 flex items-center justify-between text-sm">
-                    <span>{goal.name}</span>
-                    <span>{Math.round((goal.currentAmount / goal.targetAmount) * 100)}%</span>
-                  </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                    <div className="h-full rounded-full bg-lime-400" style={{ width: `${Math.round((goal.currentAmount / goal.targetAmount) * 100)}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-6 rounded-[22px] border border-amber-300/10 bg-amber-400/15 p-4 text-sm leading-6 text-amber-100">
-              Budget tagihan bulan ini sudah 95%. Sistem akan menyorot kategori ini di dashboard dan notifications.
+            <div className="rounded-[18px] bg-white/7 p-3">
+              <p className="text-[0.58rem] uppercase tracking-[0.16em] text-white/55">Alert</p>
+              <p className="mt-2 text-xs leading-5 text-amber-200">Budget tagihan hampir habis.</p>
             </div>
           </div>
         </div>
