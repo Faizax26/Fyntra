@@ -1,7 +1,5 @@
 import {
   Activity,
-  Bell,
-  BookOpen,
   CircleDollarSign,
   CreditCard,
   Goal,
@@ -9,7 +7,6 @@ import {
   LineChart,
   Repeat,
   Settings,
-  ShieldCheck,
   Sparkles,
   WalletCards
 } from "lucide-react";
@@ -30,9 +27,5 @@ export const appNav = [
   { href: "/app/goals", label: "Goals", icon: Goal },
   { href: "/app/analytics", label: "Analytics", icon: Sparkles },
   { href: "/app/automations", label: "Automations", icon: Repeat },
-  { href: "/app/reminders", label: "Reminders", icon: Bell },
-  { href: "/app/notifications", label: "Notifications", icon: Bell },
-  { href: "/app/audit-logs", label: "Audit Logs", icon: ShieldCheck },
-  { href: "/app/settings", label: "Settings", icon: Settings },
-  { href: "/app/help", label: "Help", icon: BookOpen }
+  { href: "/app/settings", label: "Settings", icon: Settings }
 ];

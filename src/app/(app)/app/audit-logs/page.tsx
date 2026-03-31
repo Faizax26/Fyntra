@@ -1,8 +1,5 @@
-import { AuditLogsView } from "@/components/app-views";
-import { getAppData } from "@/lib/data";
+import { redirect } from "next/navigation";
 
-export default async function AuditLogsPage() {
-  const data = await getAppData();
-
-  return <AuditLogsView data={data} />;
+export default function AuditLogsPage() {
+  redirect("/app/settings?tab=auditlog");
 }

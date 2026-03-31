@@ -723,97 +723,328 @@ export function AuditLogsView({ data }: { data: AppData }) {
   );
 }
 
-export function SettingsView({ data }: { data: AppData }) {
+export function SettingsView({ data, initialTab = "profile" }: { data: AppData; initialTab?: string }) {
   return (
     <div className="space-y-8">
       <SectionHeader
         eyebrow="Settings"
         title="Seluruh kontrol akun, preferensi, dan langganan."
-        description="Bagian ini merangkum profil, tema, billing, AI credits, notifikasi, keamanan, dan help references dalam satu struktur."
+        description="Profile, keamanan, billing, notifikasi, audit log, dan informasi produk sekarang dirangkum dalam satu halaman settings."
       />
-      <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Card className="surface-card">
-          <CardHeader>
-            <CardTitle>Profil & tema</CardTitle>
-            <CardDescription>Pengaturan dasar yang paling sering dipakai.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-5">
-            <div>
-              <p className="font-medium">{data.currentUser.name}</p>
-              <p className="text-sm text-muted-foreground">{data.currentUser.email}</p>
+      <Tabs defaultValue={initialTab} className="space-y-6">
+        <TabsList className="h-auto w-full justify-start overflow-x-auto rounded-[22px] border border-border/70 bg-[color:var(--surface-1)] p-1">
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="keamanan">Keamanan</TabsTrigger>
+          <TabsTrigger value="billing">Billing</TabsTrigger>
+          <TabsTrigger value="aboutfyntra">AboutFyntra</TabsTrigger>
+          <TabsTrigger value="notification">Notification</TabsTrigger>
+          <TabsTrigger value="auditlog">AuditLog</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="profile" className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Profil & tema</CardTitle>
+                <CardDescription>Pengaturan dasar yang paling sering dipakai.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div>
+                  <p className="font-medium">{data.currentUser.name}</p>
+                  <p className="text-sm text-muted-foreground">{data.currentUser.email}</p>
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium">Mode gelap</p>
+                    <p className="text-sm text-muted-foreground">Tema global dikendalikan dari toggle header dan preview di sini.</p>
+                  </div>
+                  <Switch defaultChecked={false} />
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium">Email update</p>
+                    <p className="text-sm text-muted-foreground">Ringkasan mingguan dan pemberitahuan akun.</p>
+                  </div>
+                  <Switch defaultChecked={data.currentUser.notificationSettings.email} />
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Preferensi akun</CardTitle>
+                <CardDescription>Kontrol harian untuk kenyamanan penggunaan.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                {[
+                  "Bahasa utama: Bahasa Indonesia",
+                  "Zona waktu akun: Asia/Jakarta",
+                  "Format angka: IDR compact",
+                  "Workspace ini berjalan dengan seeded mock data frontend-only"
+                ].map((item) => (
+                  <div key={item} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm text-muted-foreground">
+                    {item}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="keamanan" className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Keamanan akun</CardTitle>
+                <CardDescription>2FA, device checks, dan password routines.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium">Two-factor authentication</p>
+                    <p className="text-sm text-muted-foreground">Aktif untuk setiap login baru.</p>
+                  </div>
+                  <Switch defaultChecked={data.currentUser.twoFactorEnabled} />
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="font-medium">Device verification</p>
+                    <p className="text-sm text-muted-foreground">Minta konfirmasi untuk perangkat baru.</p>
+                  </div>
+                  <Switch defaultChecked />
+                </div>
+                <div className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm leading-6 text-muted-foreground">
+                  Perubahan keamanan sensitif akan tercatat di AuditLog dan memicu notifikasi akun.
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Security center</CardTitle>
+                <CardDescription>Status trust dan aktivitas terakhir.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {[
+                  {
+                    title: "2FA aktif",
+                    text: "Lapisan verifikasi tambahan sudah menyala untuk login baru.",
+                    icon: CheckCircle2
+                  },
+                  {
+                    title: "1 device baru diverifikasi",
+                    text: "Login terakhir dari MacBook Pro terkonfirmasi aman.",
+                    icon: ShieldCheck
+                  },
+                  {
+                    title: "Tidak ada anomali besar",
+                    text: "Tidak ada pola login mencurigakan di 7 hari terakhir.",
+                    icon: BrainCircuit
+                  }
+                ].map((item) => (
+                  <div key={item.title} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
+                    <div className="mb-2 flex items-center gap-3">
+                      <div className="flex size-10 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                        <item.icon className="size-4" />
+                      </div>
+                      <p className="font-medium">{item.title}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{item.text}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="billing" className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Billing & AI credits</CardTitle>
+                <CardDescription>Status plan premium dan sisa kuota fitur pintar.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="rounded-[24px] border border-primary/20 bg-primary/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
+                  <p className="font-medium">Premium plan aktif</p>
+                  <p className="text-sm text-muted-foreground">Unlimited wallets, advanced analytics, AI assistant.</p>
+                </div>
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>AI credits tersisa</span>
+                    <span>{data.currentUser.aiCredits}</span>
+                  </div>
+                  <Progress value={72} />
+                </div>
+                <Button asChild variant="outline" className="w-full">
+                  <Link href="/app/upgrade">Kelola paket</Link>
+                </Button>
+              </CardContent>
+            </Card>
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Ringkasan plan</CardTitle>
+                <CardDescription>Benefit utama paket yang sedang aktif.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {data.subscriptionPlans.find((plan) => plan.id === "premium")?.features.map((feature) => (
+                  <div key={feature} className="flex items-center gap-3 rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm">
+                    <CheckCircle2 className="size-4 text-primary" />
+                    {feature}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="aboutfyntra" className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>About fyntra.</CardTitle>
+                <CardDescription>Ringkasan produk dan positioning.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <p>fyntra. adalah dashboard finansial pribadi untuk budgeting, asset monitoring, goal tracking, dan security visibility.</p>
+                <div className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
+                  Faizax FinanceOS dirancang untuk membuat cashflow, asset, debt, dan goal lebih mudah dibaca dalam satu workspace.
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Help center</CardTitle>
+                <CardDescription>Konten bantuan kini disatukan ke dalam settings.</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {[
+                  "Memulai dengan wallet pertama dan saldo awal.",
+                  "Menghubungkan transaksi ke goal, debt, atau asset.",
+                  "Memahami budget alerts, audit logs, dan AI insights."
+                ].map((item) => (
+                  <div key={item} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm">
+                    <p className="font-medium text-foreground">{item}</p>
+                    <p className="mt-2 text-muted-foreground">Konten bantuan lengkap dapat dipasang nanti tanpa mengubah struktur settings ini.</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="notification" className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1fr_0.9fr]">
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Notification feed</CardTitle>
+                <CardDescription>Notifikasi penting dan reminder kini berada dalam satu section.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {data.notifications.map((item) => (
+                  <div key={item.id} className="rounded-[24px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
+                    <div className="mb-2 flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-2">
+                        <BellRing className="size-4 text-primary" />
+                        <p className="font-medium">{item.title}</p>
+                      </div>
+                      <Badge variant={item.unread ? "default" : "secondary"}>{item.channel}</Badge>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{item.body}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">{formatDateTime(item.createdAt)}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+            <div className="space-y-6">
+              <Card className="surface-card">
+                <CardHeader>
+                  <CardTitle>Channel preferences</CardTitle>
+                  <CardDescription>Kontrol kanal notifikasi dan reminder.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-5">
+                  {[
+                    { label: "Push alerts", checked: true },
+                    { label: "Email recap", checked: true },
+                    { label: "In-app updates", checked: true },
+                    { label: "Reminder harian", checked: true }
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center justify-between gap-4">
+                      <div>
+                        <p className="font-medium">{item.label}</p>
+                        <p className="text-sm text-muted-foreground">Kontrol kanal notifikasi sesuai preferensi.</p>
+                      </div>
+                      <Switch defaultChecked={item.checked} />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+              <Card className="surface-card">
+                <CardHeader>
+                  <CardTitle>Reminders</CardTitle>
+                  <CardDescription>Reminder tagihan dan habit dipindah ke section ini.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {data.reminders.map((reminder) => (
+                    <div key={reminder.id} className="flex items-center justify-between rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
+                      <div>
+                        <p className="font-medium">{reminder.title}</p>
+                        <p className="text-sm text-muted-foreground">{formatDate(reminder.dueDate)}</p>
+                      </div>
+                      <Badge variant={reminder.status === "today" ? "warning" : reminder.status === "done" ? "success" : "secondary"}>
+                        {reminder.status}
+                      </Badge>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             </div>
-            <Separator />
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="font-medium">Mode gelap</p>
-                <p className="text-sm text-muted-foreground">Tema global dikendalikan dari toggle header dan preview di sini.</p>
-              </div>
-              <Switch defaultChecked={false} />
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="font-medium">Push notifications</p>
-                <p className="text-sm text-muted-foreground">Aktifkan pengingat billing dan budget alerts.</p>
-              </div>
-              <Switch defaultChecked={data.currentUser.notificationSettings.push} />
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="surface-card">
-          <CardHeader>
-            <CardTitle>Billing & AI credits</CardTitle>
-            <CardDescription>Status plan premium dan sisa kuota fitur pintar.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-5">
-            <div className="rounded-[24px] border border-primary/20 bg-primary/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
-              <p className="font-medium">Premium plan aktif</p>
-              <p className="text-sm text-muted-foreground">Unlimited wallets, advanced analytics, AI assistant.</p>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span>AI credits tersisa</span>
-                <span>{data.currentUser.aiCredits}</span>
-              </div>
-              <Progress value={72} />
-            </div>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/app/upgrade">Kelola paket</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-      <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
-        <Card className="surface-card">
-          <CardHeader>
-            <CardTitle>Keamanan</CardTitle>
-            <CardDescription>2FA, device checks, dan password routines.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="font-medium">Two-factor authentication</p>
-                <p className="text-sm text-muted-foreground">Aktif untuk setiap login baru.</p>
-              </div>
-              <Switch defaultChecked={data.currentUser.twoFactorEnabled} />
-            </div>
-            <div className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm leading-6 text-muted-foreground">
-              Perubahan keamanan sensitif akan tercatat di Audit Logs dan memicu notifikasi.
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="surface-card">
-          <CardHeader>
-            <CardTitle>About fyntra.</CardTitle>
-            <CardDescription>Blok informasi produk dan pusat bantuan.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <p>fyntra. adalah dashboard finansial pribadi untuk budgeting, asset monitoring, goal tracking, dan security visibility.</p>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/app/help">Buka pusat bantuan</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="auditlog" className="space-y-6">
+          <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Activity history</CardTitle>
+                <CardDescription>Grouping per hari untuk memudahkan review device dan tindakan akun.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {data.auditEventGroups.map((group) => (
+                  <div key={group.date} className="space-y-4">
+                    <p className="text-sm font-medium uppercase tracking-[0.18em] text-muted-foreground">{group.date}</p>
+                    {group.items.map((item) => (
+                      <div key={item.id} className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4">
+                        <div className="flex items-center justify-between gap-4">
+                          <div>
+                            <p className="font-medium">{item.action}</p>
+                            <p className="text-sm text-muted-foreground">{item.deviceInfo}</p>
+                          </div>
+                          <Badge variant={item.severity === "warning" ? "warning" : "secondary"}>{item.severity}</Badge>
+                        </div>
+                        <p className="mt-2 text-xs text-muted-foreground">{formatDateTime(item.timestamp)}</p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+            <Card className="surface-card">
+              <CardHeader>
+                <CardTitle>Audit summary</CardTitle>
+                <CardDescription>Ringkasan cepat aktivitas sensitif akun.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm text-muted-foreground">
+                  Aktivitas login, perubahan transaksi, dan verifikasi device tercatat dalam satu feed yang mudah diaudit.
+                </div>
+                <div className="rounded-[22px] border border-border/70 bg-[color:var(--surface-2)] px-4 py-4 text-sm text-muted-foreground">
+                  Semua perubahan sensitif diposisikan dekat dengan section keamanan agar lebih mudah ditinjau.
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

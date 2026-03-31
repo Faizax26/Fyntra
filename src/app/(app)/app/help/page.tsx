@@ -1,5 +1,5 @@
-import { HelpView } from "@/components/app-views";
+import { redirect } from "next/navigation";
 
 export default function HelpPage() {
-  return <HelpView />;
+  redirect("/app/settings?tab=aboutfyntra");
 }

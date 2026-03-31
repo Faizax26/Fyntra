@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Check, LockKeyhole, Sparkles, Target, TrendingUp } from "lucide-react";
+import { Check, LockKeyhole, ShieldCheck, Sparkles, Target, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 
 import type { AppData } from "@/lib/data";

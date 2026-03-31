@@ -1,8 +1,5 @@
-import { NotificationsView } from "@/components/app-views";
-import { getAppData } from "@/lib/data";
+import { redirect } from "next/navigation";
 
-export default async function NotificationsPage() {
-  const data = await getAppData();
-
-  return <NotificationsView data={data} />;
+export default function NotificationsPage() {
+  redirect("/app/settings?tab=notification");
 }
