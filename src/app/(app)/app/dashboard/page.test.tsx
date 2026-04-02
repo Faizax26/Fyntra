@@ -16,7 +16,6 @@ describe("DashboardPage", () => {
     expect(screen.getByText("Total balance")).toBeInTheDocument();
     expect(screen.getByText("Income this month")).toBeInTheDocument();
     expect(screen.getByText("Expense this month")).toBeInTheDocument();
-    expect(screen.getByText("Savings rate")).toBeInTheDocument();
     expect(screen.getByText("Recent transactions")).toBeInTheDocument();
   });
 });

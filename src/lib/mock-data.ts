@@ -22,8 +22,7 @@ export const dashboardSnapshot: DashboardSnapshot = {
   metrics: [
     { label: "Total balance", value: 28750000, delta: "+8.2% vs last month", tone: "primary" },
     { label: "Income this month", value: 16800000, delta: "+1 freelance payout", tone: "positive" },
-    { label: "Expense this month", value: 7420000, delta: "42% of monthly inflow", tone: "neutral" },
-    { label: "Savings rate", value: 56, delta: "Target 50% this month", tone: "positive" }
+    { label: "Expense this month", value: 7420000, delta: "42% of monthly inflow", tone: "neutral" }
   ],
   wallets: [
     { id: "wallet-1", name: "BCA Payroll", balance: 16250000, type: "Bank" },

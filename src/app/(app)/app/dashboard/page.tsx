@@ -14,9 +14,9 @@ export default function DashboardPage() {
     <div className="grid gap-6">
       <section className="grid gap-4">
         <DashboardHeader />
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1.35fr_0.82fr_0.82fr]">
           {dashboardSnapshot.metrics.map((metric, index) => (
-            <MetricCard key={metric.label} metric={metric} index={index} />
+            <MetricCard key={metric.label} metric={metric} index={index} featured={metric.label === "Total balance"} />
           ))}
         </div>
       </section>
