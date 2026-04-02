@@ -10,11 +10,13 @@ import { dashboardSnapshot } from "@/lib/mock-data";
 export default function DashboardPage() {
   return (
     <div className="grid gap-6">
-      <DashboardHeader />
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        {dashboardSnapshot.metrics.map((metric, index) => (
-          <MetricCard key={metric.label} metric={metric} index={index} />
-        ))}
+      <section className="grid gap-4">
+        <DashboardHeader />
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {dashboardSnapshot.metrics.map((metric, index) => (
+            <MetricCard key={metric.label} metric={metric} index={index} />
+          ))}
+        </div>
       </section>
       <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
         <CashflowChart data={dashboardSnapshot.cashflow} />
