@@ -116,8 +116,9 @@ html {
 
 body {
   @apply bg-background text-foreground antialiased;
-  font-family: "Avenir Next", "Manrope", "Segoe UI", sans-serif;
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   font-feature-settings: "rlig" 1, "calt" 1;
+  font-variant-numeric: tabular-nums;
   background-image:
     radial-gradient(circle at top left, rgba(123, 179, 26, 0.14), transparent 24%),
     radial-gradient(circle at top right, rgba(13, 122, 112, 0.14), transparent 26%),
@@ -161,7 +162,7 @@ a {
 }
 
 .font-display {
-  font-family: "Space Grotesk", "Avenir Next Condensed", "Trebuchet MS", sans-serif;
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 .surface-card {
@@ -185,11 +186,11 @@ a {
 }
 
 .metric-figure {
-  font-family: "Space Grotesk", "Avenir Next Condensed", "Trebuchet MS", sans-serif;
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   @apply text-3xl font-semibold tracking-[-0.04em] md:text-4xl;
 }
 
 .section-title {
-  font-family: "Space Grotesk", "Avenir Next Condensed", "Trebuchet MS", sans-serif;
+  font-family: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   @apply text-4xl font-semibold tracking-[-0.04em] md:text-5xl;
 }
