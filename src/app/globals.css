@@ -3,26 +3,26 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #f5f7fb;
-  --foreground: #111827;
-  --card: rgba(255, 255, 255, 0.82);
+  --background: #f7f9fc;
+  --foreground: #0f172a;
+  --card: rgba(255, 255, 255, 0.8);
   --card-foreground: #111827;
-  --popover: rgba(255, 255, 255, 0.95);
+  --popover: rgba(255, 255, 255, 0.92);
   --popover-foreground: #111827;
   --primary: #3857ff;
   --primary-foreground: #f8faff;
-  --secondary: #edf2ff;
+  --secondary: #eef3ff;
   --secondary-foreground: #21317c;
-  --muted: #eef2f8;
+  --muted: #eef3f8;
   --muted-foreground: #64748b;
-  --accent: #e0e7ff;
+  --accent: #e7edff;
   --accent-foreground: #243076;
   --success: #0f9f6e;
   --warning: #d97706;
   --destructive: #dc2626;
   --destructive-foreground: #fff7f7;
-  --border: rgba(148, 163, 184, 0.24);
-  --input: rgba(148, 163, 184, 0.2);
+  --border: rgba(226, 232, 240, 0.96);
+  --input: rgba(203, 213, 225, 0.8);
   --ring: rgba(56, 87, 255, 0.32);
   --chart-1: #3857ff;
   --chart-2: #10b981;
@@ -33,10 +33,10 @@
   --sidebar-foreground: #eff5ff;
   --sidebar-muted: #94a3b8;
   --surface-shell: rgba(15, 23, 42, 0.96);
-  --surface-muted: rgba(255, 255, 255, 0.68);
+  --surface-muted: rgba(255, 255, 255, 0.72);
   --radius: 1.5rem;
-  --shadow-soft: 0 18px 45px -28px rgba(15, 23, 42, 0.24);
-  --shadow-strong: 0 28px 70px -36px rgba(15, 23, 42, 0.34);
+  --shadow-soft: 0 10px 28px -16px rgba(15, 23, 42, 0.12);
+  --shadow-strong: 0 18px 40px -20px rgba(15, 23, 42, 0.18);
 }
 
 .dark {
@@ -114,9 +114,9 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
   font-variant-numeric: tabular-nums;
   background-image:
-    radial-gradient(circle at top left, rgba(56, 87, 255, 0.14), transparent 26%),
-    radial-gradient(circle at top right, rgba(16, 185, 129, 0.1), transparent 22%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 34%);
+    radial-gradient(circle at top left, rgba(56, 87, 255, 0.1), transparent 24%),
+    radial-gradient(circle at top right, rgba(148, 163, 184, 0.12), transparent 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 38%);
 }
 
 body::before {
@@ -143,7 +143,12 @@ a {
 .surface-card {
   background: var(--card);
   box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
+  transition: box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.surface-card:hover {
+  box-shadow: var(--shadow-strong);
 }
 
 .surface-shell {

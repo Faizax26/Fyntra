@@ -35,20 +35,26 @@ export function MetricCard({
     >
       <Card
         className={cn(
-          "h-full overflow-hidden",
+          "h-full overflow-hidden border-slate-200 bg-white shadow-sm dark:border-border dark:bg-card dark:shadow-none",
           featured &&
-            "ring-1 ring-indigo-500/20 bg-[linear-gradient(135deg,rgba(56,87,255,0.16),rgba(125,211,252,0.08)_45%,rgba(16,185,129,0.08))] shadow-xl"
+            "!border-transparent !bg-[linear-gradient(135deg,rgba(56,87,255,0.22),rgba(125,211,252,0.12)_45%,rgba(16,185,129,0.1))] shadow-lg ring-1 ring-indigo-500/20 dark:!border-transparent dark:!bg-[linear-gradient(135deg,rgba(56,87,255,0.16),rgba(125,211,252,0.08)_45%,rgba(16,185,129,0.08))] dark:shadow-xl"
         )}
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className={cn("text-sm font-medium text-muted-foreground", featured && "text-lg opacity-70")}>
+            <CardTitle
+              className={cn(
+                "text-sm font-medium text-slate-500 dark:text-muted-foreground",
+                featured && "text-lg font-semibold text-slate-700/85 dark:text-muted-foreground dark:opacity-70"
+              )}
+            >
               {metric.label}
             </CardTitle>
             <span
               className={cn(
-                "flex size-9 items-center justify-center rounded-2xl bg-indigo-500/20 text-indigo-300",
-                featured && "size-11 bg-indigo-500/20 text-indigo-300 shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
+                "flex size-9 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-300",
+                featured &&
+                  "size-11 bg-white/45 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300 shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
               )}
             >
               <Sparkles className="size-4" />
@@ -58,13 +64,20 @@ export function MetricCard({
         <CardContent>
           <div
             className={cn(
-              "font-semibold tabular-nums tracking-tight",
-              featured ? "text-[2.8rem] leading-none sm:text-[3.35rem]" : "text-2xl sm:text-3xl"
+              "font-semibold tabular-nums tracking-tight text-slate-900 dark:text-foreground",
+              featured
+                ? "text-[2.8rem] leading-none text-slate-950 sm:text-[3.35rem] dark:text-foreground"
+                : "text-2xl sm:text-3xl"
             )}
           >
             {displayValue}
           </div>
-          <div className={cn("mt-4 inline-flex items-center gap-2 text-sm", getToneClass(metric.tone))}>
+          <div
+            className={cn(
+              "mt-4 inline-flex items-center gap-2 text-sm",
+              featured ? "text-slate-700/80 dark:text-primary" : getToneClass(metric.tone)
+            )}
+          >
             {trendUp ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
             <span>{metric.delta}</span>
           </div>
