@@ -42,7 +42,7 @@ export function MetricCard({
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className={cn("text-sm font-medium text-muted-foreground", featured && "opacity-70")}>
+            <CardTitle className={cn("text-sm font-medium text-muted-foreground", featured && "text-lg opacity-70")}>
               {metric.label}
             </CardTitle>
             <span
