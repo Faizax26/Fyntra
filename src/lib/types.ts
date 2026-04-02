@@ -37,6 +37,14 @@ export type BudgetSummary = {
   limit: number;
 };
 
+export type GoalSummary = {
+  id: string;
+  name: string;
+  current: number;
+  target: number;
+  deadline: string;
+};
+
 export type CashflowPoint = {
   month: string;
   income: number;
@@ -54,6 +62,7 @@ export type DashboardSnapshot = {
   wallets: WalletSummary[];
   transactions: TransactionSummary[];
   budgets: BudgetSummary[];
+  goals: GoalSummary[];
   cashflow: CashflowPoint[];
   quickActions: QuickAction[];
 };

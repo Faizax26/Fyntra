@@ -8,8 +8,8 @@ export function BudgetProgressList({ budgets }: { budgets: BudgetSummary[] }) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Budget health</CardTitle>
-        <CardDescription>Keep high-spend categories visible before they drift too far.</CardDescription>
+        <CardTitle>Budget</CardTitle>
+        <CardDescription>Keep each spending category within its planned monthly guardrail.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {budgets.map((budget) => {

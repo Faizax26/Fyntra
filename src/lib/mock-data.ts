@@ -70,6 +70,11 @@ export const dashboardSnapshot: DashboardSnapshot = {
     { id: "budget-2", category: "Transport", spent: 560000, limit: 800000 },
     { id: "budget-3", category: "Utilities", spent: 1040000, limit: 1200000 }
   ],
+  goals: [
+    { id: "goal-1", name: "Emergency fund", current: 10500000, target: 24000000, deadline: "2025-12-30T00:00:00.000Z" },
+    { id: "goal-2", name: "Japan trip", current: 6200000, target: 18000000, deadline: "2025-10-15T00:00:00.000Z" },
+    { id: "goal-3", name: "New MacBook", current: 7400000, target: 25000000, deadline: "2026-02-01T00:00:00.000Z" }
+  ],
   cashflow: [
     { month: "Nov", income: 12.5, expense: 7.2 },
     { month: "Dec", income: 13.8, expense: 8.3 },

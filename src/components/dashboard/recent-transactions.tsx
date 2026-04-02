@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { ArrowDownLeft, ArrowUpRight, Repeat } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCurrency, formatTransactionDate } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -20,9 +22,14 @@ function TransactionIcon({ type }: { type: TransactionSummary["type"] }) {
 export function RecentTransactions({ transactions }: { transactions: TransactionSummary[] }) {
   return (
     <Card className="h-full">
-      <CardHeader>
-        <CardTitle>Recent transactions</CardTitle>
-        <CardDescription>Readable activity for the manual-first experience described in the PRD.</CardDescription>
+      <CardHeader className="flex flex-row items-start justify-between gap-4">
+        <div>
+          <CardTitle>Recent transactions</CardTitle>
+          <CardDescription>Readable activity for the manual-first experience described in the PRD.</CardDescription>
+        </div>
+        <Button asChild variant="secondary" size="sm">
+          <Link href="/app/transactions">See details</Link>
+        </Button>
       </CardHeader>
       <CardContent className="space-y-3">
         {transactions.map((transaction) => (

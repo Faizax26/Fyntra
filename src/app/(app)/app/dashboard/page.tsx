@@ -1,6 +1,8 @@
+import { AiInsight } from "@/components/dashboard/ai-insight";
 import { BudgetProgressList } from "@/components/dashboard/budget-progress-list";
 import { CashflowChart } from "@/components/dashboard/cashflow-chart";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { GoalsOverview } from "@/components/dashboard/goals-overview";
 import { MetricCard } from "@/components/dashboard/metric-card";
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
@@ -21,13 +23,19 @@ export default function DashboardPage() {
       <section>
         <WalletOverview wallets={dashboardSnapshot.wallets} />
       </section>
-      <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <CashflowChart data={dashboardSnapshot.cashflow} />
+      <section>
         <QuickActions actions={dashboardSnapshot.quickActions} />
       </section>
+      <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
+        <CashflowChart data={dashboardSnapshot.cashflow} />
+        <AiInsight />
+      </section>
       <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <RecentTransactions transactions={dashboardSnapshot.transactions} />
         <BudgetProgressList budgets={dashboardSnapshot.budgets} />
+        <GoalsOverview goals={dashboardSnapshot.goals} />
+      </section>
+      <section>
+        <RecentTransactions transactions={dashboardSnapshot.transactions} />
       </section>
     </div>
   );

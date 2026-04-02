@@ -14,7 +14,7 @@ export function QuickActions({ actions }: { actions: QuickAction[] }) {
         <CardTitle>Quick actions</CardTitle>
         <CardDescription>Presentational shortcuts for the next feature phase.</CardDescription>
       </CardHeader>
-      <CardContent className="grid gap-3 sm:grid-cols-2">
+      <CardContent className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {actions.map((action) => (
           <button
             key={action.id}
@@ -33,7 +33,7 @@ export function QuickActions({ actions }: { actions: QuickAction[] }) {
             </div>
           </button>
         ))}
-        <Button variant="secondary" className="sm:col-span-2">
+        <Button variant="secondary" className="md:col-span-2 xl:col-span-4">
           View full workflow plan
         </Button>
       </CardContent>
