@@ -37,16 +37,18 @@ export function MetricCard({
         className={cn(
           "h-full overflow-hidden",
           featured &&
-            "border-primary/20 bg-[linear-gradient(135deg,rgba(56,87,255,0.16),rgba(125,211,252,0.08)_45%,rgba(16,185,129,0.08))] shadow-[0_30px_80px_-38px_rgba(56,87,255,0.45)]"
+            "ring-1 ring-indigo-500/20 bg-[linear-gradient(135deg,rgba(56,87,255,0.16),rgba(125,211,252,0.08)_45%,rgba(16,185,129,0.08))] shadow-xl"
         )}
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{metric.label}</CardTitle>
+            <CardTitle className={cn("text-sm font-medium text-muted-foreground", featured && "opacity-70")}>
+              {metric.label}
+            </CardTitle>
             <span
               className={cn(
-                "flex size-9 items-center justify-center rounded-2xl bg-primary/10 text-primary",
-                featured && "size-11 bg-primary text-primary-foreground shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
+                "flex size-9 items-center justify-center rounded-2xl bg-indigo-500/20 text-indigo-300",
+                featured && "size-11 bg-indigo-500/20 text-indigo-300 shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
               )}
             >
               <Sparkles className="size-4" />
@@ -56,7 +58,7 @@ export function MetricCard({
         <CardContent>
           <div
             className={cn(
-              "font-semibold tracking-[-0.05em]",
+              "font-semibold tabular-nums tracking-tight",
               featured ? "text-[2.8rem] leading-none sm:text-[3.35rem]" : "text-2xl sm:text-3xl"
             )}
           >
