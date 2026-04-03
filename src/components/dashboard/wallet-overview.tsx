@@ -7,7 +7,7 @@ export function WalletOverview({ wallets }: { wallets: WalletSummary[] }) {
   const totalBalance = wallets.reduce((sum, wallet) => sum + wallet.balance, 0);
 
   return (
-    <Card className="h-full">
+    <Card className="h-full border-slate-200/70 shadow-sm">
       <CardHeader>
         <CardTitle>Wallet balances</CardTitle>
       </CardHeader>
@@ -20,9 +20,9 @@ export function WalletOverview({ wallets }: { wallets: WalletSummary[] }) {
             <div
               key={wallet.id}
               className={cn(
-                "rounded-3xl border px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-lg hover:shadow-slate-200/70 dark:hover:bg-white/5 dark:hover:shadow-indigo-500/10",
+                "rounded-3xl border px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-xl hover:shadow-indigo-500/10 dark:hover:bg-white/5 dark:hover:shadow-indigo-500/10",
                 isPrimary
-                  ? "border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 to-transparent ring-1 ring-indigo-400/20"
+                  ? "border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 to-transparent shadow-lg shadow-indigo-500/10 ring-1 ring-indigo-400/20"
                   : "bg-background/55"
               )}
             >
@@ -51,8 +51,8 @@ export function WalletOverview({ wallets }: { wallets: WalletSummary[] }) {
                 <div className="h-1.5 rounded-full bg-slate-200 dark:bg-white/5">
                   <div
                     className={cn(
-                      "h-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-indigo-300",
-                      isPrimary && "from-indigo-500 to-indigo-400"
+                      "h-1.5 rounded-full bg-gradient-to-r from-indigo-400 via-indigo-300 to-indigo-200",
+                      isPrimary && "from-indigo-500 via-indigo-400 to-indigo-300"
                     )}
                     style={{ width: `${share}%` }}
                   />

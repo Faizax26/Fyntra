@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 
 import { Logo } from "@/components/brand/logo";
 import { useSidebar } from "@/components/providers/sidebar-provider";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -99,7 +98,7 @@ export function AppSidebar() {
   return (
     <aside
       className={cn(
-        "surface-shell hidden h-screen border-r border-white/6 text-sidebar-foreground lg:flex lg:flex-col",
+        "surface-shell hidden h-screen border-r border-white/6 text-sidebar-foreground lg:sticky lg:top-0 lg:flex lg:flex-col lg:self-start",
         collapsed ? "w-[92px]" : "w-[292px]"
       )}
     >
@@ -117,18 +116,6 @@ export function AppSidebar() {
       </div>
       <div className="min-h-0 flex-1 px-3 pb-4 pt-8">
         <AppSidebarNav />
-      </div>
-      <div className="border-t border-white/8 px-4 py-4">
-        <div className={cn("rounded-3xl border border-white/8 bg-white/5 p-4", collapsed && "px-2")}>
-          <Badge variant="neutral" className={cn("bg-white/8 text-sidebar-foreground", collapsed && "justify-center px-0 py-2")}>
-            {collapsed ? "Free" : "Free plan"}
-          </Badge>
-          {!collapsed ? (
-            <p className="mt-3 text-sm text-sidebar-muted">
-              Upgrade later for unlimited wallets, AI insights, and advanced analytics.
-            </p>
-          ) : null}
-        </div>
       </div>
     </aside>
   );
