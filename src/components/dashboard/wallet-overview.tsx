@@ -36,7 +36,7 @@ function WalletTrendChart({ trend }: { trend: WalletTrendPoint[] }) {
   const expensePath = buildLinePath(expenseValues, width, height, padding);
 
   return (
-    <div className="rounded-[1.75rem] border border-border/70 bg-background/60 p-4 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-background/60 p-5 shadow-sm dark:border-white/10">
       <div className="flex items-center justify-between gap-3">
         <div>
           <p className="text-sm font-medium text-foreground">Wallet activity</p>
@@ -82,11 +82,11 @@ function WalletTrendChart({ trend }: { trend: WalletTrendPoint[] }) {
 
 function WalletSummaryStat({ label, value, tone = "neutral" }: { label: string; value: string; tone?: "positive" | "negative" | "neutral" }) {
   return (
-    <div className="rounded-[1.5rem] border border-border/70 bg-background/60 p-4 shadow-sm">
+    <div className="rounded-2xl border border-gray-200 bg-background/60 p-4 shadow-sm dark:border-white/10 dark:bg-background/45">
       <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
       <p
         className={cn(
-          "mt-3 text-lg font-semibold tracking-tight",
+          "mt-3 text-xl font-semibold tracking-tight",
           tone === "positive" && "text-emerald-600 dark:text-emerald-400",
           tone === "negative" && "text-red-600 dark:text-red-400",
           tone === "neutral" && "text-foreground"
@@ -103,7 +103,7 @@ function WalletTransactionItem({ transaction }: { transaction: WalletActivity })
   const isNegative = transaction.type === "expense";
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-[1.35rem] border border-border/70 bg-background/55 px-4 py-3 transition hover:bg-muted/45">
+    <div className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-background/55 px-4 py-3.5 transition-all duration-200 hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5">
       <div className="min-w-0">
         <p className="truncate text-sm font-medium text-foreground">{transaction.title}</p>
         <p className="mt-1 text-xs text-muted-foreground">{formatTransactionDate(transaction.date)}</p>
@@ -224,32 +224,32 @@ export function WalletOverview({
         </CardContent>
       </Card>
       <Sheet open={Boolean(selectedWalletId)} onOpenChange={(open) => !open && setSelectedWalletId(null)}>
-        <SheetContent
+      <SheetContent
           side="right"
-          className="w-[94vw] max-w-[540px] overflow-y-auto border-l border-border/70 bg-background/95 backdrop-blur-xl"
+          className="w-[94vw] max-w-[540px] overflow-y-auto border-l border-border/70 bg-background/95 backdrop-blur-xl sm:rounded-l-2xl"
         >
           {selectedWallet && selectedDetail ? (
             <div className="flex min-h-full flex-col">
-              <div className="border-b border-border/70 px-6 pb-6 pt-6">
+              <div className="border-b border-gray-200 px-7 pb-7 pt-7 dark:border-white/10">
                 <SheetTitle className="text-2xl font-semibold tracking-tight text-foreground">{selectedWallet.name}</SheetTitle>
                 <SheetDescription className="sr-only">
                   Wallet detail panel with balance summary, activity chart, transactions, and actions.
                 </SheetDescription>
-                <div className="mt-5 flex items-start justify-between gap-4">
+                <div className="mt-6 flex items-start justify-between gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Current balance</p>
-                    <p className="mt-2 text-3xl font-semibold tracking-tight text-foreground">
+                    <p className="mt-3 text-4xl font-semibold tracking-tight text-foreground">
                       {formatCurrency(selectedWallet.balance)}
                     </p>
                   </div>
-                  <Badge variant="neutral" className="bg-muted/80 text-foreground">
+                  <Badge variant="neutral" className="border border-border/60 bg-muted/45 text-muted-foreground">
                     {selectedWallet.type}
                   </Badge>
                 </div>
               </div>
-              <div className="flex-1 space-y-6 px-6 py-6">
+              <div className="flex-1 space-y-8 px-7 py-7">
                 <WalletTrendChart trend={selectedDetail.trend} />
-                <div className="grid gap-3 sm:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-3">
                   <WalletSummaryStat label="Total income" value={formatCompactCurrency(totals.income)} tone="positive" />
                   <WalletSummaryStat label="Total expense" value={formatCompactCurrency(totals.expense)} tone="negative" />
                   <WalletSummaryStat
@@ -258,7 +258,7 @@ export function WalletOverview({
                     tone={totals.net >= 0 ? "positive" : "negative"}
                   />
                 </div>
-                <div className="rounded-[1.75rem] border border-border/70 bg-background/60 p-4 shadow-sm">
+                <div className="rounded-2xl border border-gray-200 bg-background/60 p-5 shadow-sm dark:border-white/10">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-sm font-medium text-foreground">Recent transactions</p>
@@ -268,13 +268,13 @@ export function WalletOverview({
                       {Math.min(selectedDetail.transactions.length, 10)} items
                     </span>
                   </div>
-                  <div className="mt-4 space-y-3">
+                  <div className="mt-5 space-y-3.5">
                     {selectedDetail.transactions.slice(0, 6).map((transaction) => (
                       <WalletTransactionItem key={transaction.id} transaction={transaction} />
                     ))}
                   </div>
                 </div>
-                <div className="rounded-[1.75rem] border border-border/70 bg-background/60 p-4 shadow-sm">
+                <div className="rounded-2xl border border-gray-200 bg-background/60 p-5 shadow-sm dark:border-white/10">
                   <p className="text-sm font-medium text-foreground">Actions</p>
                   <div className="mt-4 grid gap-3 sm:grid-cols-3">
                     <Button type="button" className="justify-start rounded-2xl">
