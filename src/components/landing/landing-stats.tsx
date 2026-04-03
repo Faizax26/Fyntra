@@ -31,7 +31,7 @@ export function LandingStats() {
           const Icon = stat.icon;
 
           return (
-            <Card key={stat.label} className="border-white/70 bg-white/72 p-6 backdrop-blur-xl">
+            <Card key={stat.label} className="border-border/70 bg-card/76 p-6 backdrop-blur-xl">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-4xl font-semibold tracking-[-0.06em] text-foreground sm:text-5xl">{stat.value}</p>

@@ -5,13 +5,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      storageKey="fyntra-theme"
-      disableTransitionOnChange
-    >
+    <NextThemesProvider attribute="class" defaultTheme="light" enableSystem={false} storageKey="fyntra-theme">
       {children}
     </NextThemesProvider>
   );

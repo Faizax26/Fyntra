@@ -23,7 +23,7 @@ export function LandingFeatures({
             return (
               <Card
                 key={item.title}
-                className="group border-white/70 bg-white/72 p-6 backdrop-blur-xl transition-transform duration-200 hover:-translate-y-1"
+                className="group border-border/70 bg-card/76 p-6 backdrop-blur-xl transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_24px_48px_-34px_rgba(56,87,255,0.22)]"
               >
                 <span className="flex size-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(56,87,255,0.14),rgba(14,165,233,0.12))] text-primary">
                   <Icon className="size-5" />

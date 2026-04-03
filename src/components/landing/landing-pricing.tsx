@@ -38,10 +38,10 @@ export function LandingPricing() {
             <Card
               key={plan.name}
               className={cn(
-                "border-white/70 p-8 backdrop-blur-xl",
+                "border-border/70 p-8 backdrop-blur-xl",
                 plan.highlight
-                  ? "bg-[linear-gradient(180deg,rgba(56,87,255,0.12),rgba(255,255,255,0.86))] ring-1 ring-primary/20"
-                  : "bg-white/72"
+                  ? "bg-[linear-gradient(180deg,rgba(56,87,255,0.14),rgba(247,249,252,0.88))] ring-1 ring-primary/20 dark:bg-[linear-gradient(180deg,rgba(56,87,255,0.16),rgba(9,17,31,0.9))]"
+                  : "bg-card/76"
               )}
             >
               <div className="flex items-start justify-between gap-4">
@@ -65,7 +65,11 @@ export function LandingPricing() {
                   </div>
                 ))}
               </div>
-              <Button asChild variant={plan.highlight ? "default" : "outline"} className="mt-8 h-12 w-full">
+              <Button
+                asChild
+                variant={plan.highlight ? "default" : "outline"}
+                className={cn("mt-8 h-12 w-full rounded-full", plan.highlight && "landing-cta-primary text-primary-foreground")}
+              >
                 <Link href="/app/dashboard">{plan.highlight ? "Choose Premium" : "Start Free"}</Link>
               </Button>
             </Card>

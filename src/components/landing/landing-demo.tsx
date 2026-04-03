@@ -30,7 +30,7 @@ export function LandingDemo() {
           title="See the product before you commit"
           description="Explore a lightweight demo of the Fyntra workspace to understand how money movement, goals, and insights come together."
         />
-        <div className="mt-10 rounded-[2rem] border border-white/70 bg-white/74 p-3 shadow-[0_32px_80px_-42px_rgba(15,23,42,0.22)] backdrop-blur-xl sm:p-4">
+        <div className="mt-10 rounded-[2rem] border border-border/70 bg-card/78 p-3 shadow-[0_32px_80px_-42px_rgba(15,23,42,0.22)] backdrop-blur-xl sm:p-4">
           <div className="grid gap-3 md:grid-cols-3">
             {tabs.map((tab) => (
               <button
@@ -69,7 +69,7 @@ export function LandingDemo() {
 function DashboardTab() {
   return (
     <div className="grid gap-4 lg:grid-cols-[1.24fr_0.76fr]">
-      <Card className="border-white/70 bg-background/72 p-6">
+      <Card className="border-border/70 bg-background/72 p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-foreground">Snapshot overview</p>
@@ -116,7 +116,7 @@ function DashboardTab() {
         </div>
       </Card>
       <div className="grid gap-4">
-        <Card className="border-white/70 bg-background/72 p-6">
+        <Card className="border-border/70 bg-background/72 p-6">
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-semibold text-foreground">AI insight</p>
             <BrainCircuit className="size-5 text-primary" />
@@ -135,7 +135,7 @@ function DashboardTab() {
             </div>
           </div>
         </Card>
-        <Card className="border-white/70 bg-background/72 p-6">
+        <Card className="border-border/70 bg-background/72 p-6">
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-semibold text-foreground">Recent transactions</p>
             <ArrowUpRight className="size-5 text-primary" />
@@ -162,7 +162,7 @@ function WalletsTab() {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[0.88fr_1.12fr]">
-      <Card className="border-white/70 bg-background/72 p-6">
+      <Card className="border-border/70 bg-background/72 p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-foreground">All wallets</p>
@@ -192,7 +192,7 @@ function WalletsTab() {
           ))}
         </div>
       </Card>
-      <Card className="border-white/70 bg-background/72 p-6">
+      <Card className="border-border/70 bg-background/72 p-6">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-foreground">{primaryWallet.name}</p>
@@ -252,7 +252,7 @@ function AnalyticsTab() {
 
   return (
     <div className="grid gap-4 lg:grid-cols-[1.14fr_0.86fr]">
-      <Card className="border-white/70 bg-background/72 p-6">
+      <Card className="border-border/70 bg-background/72 p-6">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-foreground">Monthly cashflow</p>
@@ -282,7 +282,7 @@ function AnalyticsTab() {
         </div>
       </Card>
       <div className="grid gap-4">
-        <Card className="border-white/70 bg-background/72 p-6">
+        <Card className="border-border/70 bg-background/72 p-6">
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-semibold text-foreground">Key signals</p>
             <Sparkles className="size-5 text-primary" />
@@ -293,7 +293,7 @@ function AnalyticsTab() {
             <InsightCard title="Goal contribution" description="Emergency fund contributions are pacing ahead of target by 8% this quarter." />
           </div>
         </Card>
-        <Card className="border-white/70 bg-background/72 p-6">
+        <Card className="border-border/70 bg-background/72 p-6">
           <p className="text-sm font-semibold text-foreground">Why this matters</p>
           <p className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-foreground">
             {formatCompactCurrency(dashboardSnapshot.metrics[0].value)}

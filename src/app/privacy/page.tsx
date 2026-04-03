@@ -14,7 +14,7 @@ export default function PrivacyPage() {
             <Link href="/">Back to home</Link>
           </Button>
         </div>
-        <Card className="mt-10 border-white/70 bg-white/78 p-8 backdrop-blur-xl">
+        <Card className="mt-10 border-border/70 bg-card/80 p-8 backdrop-blur-xl">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">Privacy</p>
           <h1 className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-foreground">Your financial data stays yours</h1>
           <div className="mt-6 space-y-5 text-sm leading-7 text-muted-foreground sm:text-base">

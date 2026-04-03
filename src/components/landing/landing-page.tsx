@@ -13,40 +13,42 @@ const features = [
   {
     icon: PiggyBank,
     title: "Budgeting made simple",
-    description: "Set category limits, catch budget drift early, and stay on top of your monthly plan."
+    description: "Know exactly where spending is drifting before the month gets away from you."
   },
   {
     icon: Wallet,
     title: "Track all your wallets",
-    description: "See bank accounts, e-wallets, cash, and goal balances together without the mess."
+    description: "Keep every account, reserve, and e-wallet visible without juggling tabs or notes."
   },
   {
     icon: Sparkles,
     title: "Smart insights",
-    description: "Spot patterns, rising categories, and savings opportunities with clear AI guidance."
+    description: "See the next best move faster with signals that turn raw activity into decisions."
   },
   {
     icon: Target,
     title: "Goals that stay visible",
-    description: "Turn long-term savings targets into a daily habit with live progress and milestones."
+    description: "Make long-term savings feel tangible with progress that stays in your daily view."
   },
   {
     icon: Landmark,
     title: "Assets and debts in one flow",
-    description: "Keep obligations, investments, and transfers connected to the rest of your money picture."
+    description: "Understand your full position, not just your cash balance, in one connected workspace."
   },
   {
     icon: ShieldCheck,
     title: "Secure and private",
-    description: "Built with audit logs, optional 2FA, and a privacy-first approach to financial data."
+    description: "Build trust with privacy-first controls, optional 2FA, and visible account activity."
   }
 ];
 
 export function LandingPage() {
   return (
-    <div className="relative min-h-screen overflow-x-clip">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.26),transparent_32%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.18),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.72),rgba(247,249,252,0))]" />
-      <div className="pointer-events-none absolute left-1/2 top-80 h-80 w-80 -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
+    <div className="landing-shell relative min-h-screen overflow-x-clip bg-background">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[46rem] bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.22),transparent_32%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.16),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.76),rgba(247,249,252,0))] dark:bg-[radial-gradient(circle_at_top_left,rgba(87,112,255,0.22),transparent_34%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.12),transparent_28%),linear-gradient(180deg,rgba(9,17,31,0.68),rgba(9,17,31,0))]" />
+      <div className="pointer-events-none absolute left-[22%] top-28 h-72 w-72 rounded-full bg-primary/12 blur-[110px]" />
+      <div className="pointer-events-none absolute right-[14%] top-44 h-80 w-80 rounded-full bg-sky-400/10 blur-[120px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-[32rem] h-64 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.35),transparent)] dark:bg-[linear-gradient(180deg,transparent,rgba(148,163,184,0.08),transparent)]" />
       <LandingNavbar />
       <main>
         <LandingHero />

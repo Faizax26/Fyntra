@@ -21,7 +21,7 @@ const socialLinks = [
 
 export function LandingFooter() {
   return (
-    <footer className="border-t border-white/70 px-4 py-10 sm:px-6 lg:px-8">
+    <footer className="border-t border-border/70 px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]">
         <div>
           <Logo href="/" />

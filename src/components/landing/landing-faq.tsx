@@ -42,7 +42,7 @@ export function LandingFaq() {
             const isOpen = openItem === index;
 
             return (
-              <Card key={item.question} className="border-white/70 bg-white/74 p-2 backdrop-blur-xl">
+              <Card key={item.question} className="border-border/70 bg-card/78 p-2 backdrop-blur-xl">
                 <button
                   type="button"
                   onClick={() => setOpenItem(isOpen ? -1 : index)}
