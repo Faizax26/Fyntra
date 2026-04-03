@@ -50,7 +50,7 @@ export function LandingPage() {
       <div className="pointer-events-none absolute right-[14%] top-44 h-80 w-80 rounded-full bg-sky-400/10 blur-[120px]" />
       <div className="pointer-events-none absolute inset-x-0 top-[32rem] h-64 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.35),transparent)] dark:bg-[linear-gradient(180deg,transparent,rgba(148,163,184,0.08),transparent)]" />
       <LandingNavbar />
-      <main>
+      <main className="relative z-10 pt-2">
         <LandingHero />
         <LandingStats />
         <LandingDemo />

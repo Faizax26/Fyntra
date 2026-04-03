@@ -33,13 +33,14 @@ export function LandingNavbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 px-4 pt-3 sm:px-6 lg:px-8">
       <div
+        data-scrolled={scrolled}
         className={cn(
-          "mx-auto flex max-w-7xl items-center justify-between rounded-full border px-4 py-3 transition-all duration-300 sm:px-6",
+          "landing-nav-shell mx-auto flex max-w-7xl items-center justify-between rounded-full border px-4 py-3.5 transition-all duration-300 sm:px-6",
           scrolled
-            ? "border-border/70 bg-background/78 shadow-[0_20px_48px_-28px_rgba(15,23,42,0.34)] backdrop-blur-2xl"
-            : "border-border/55 bg-background/56 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.22)] backdrop-blur-xl"
+            ? "border-border/70 bg-background/84 shadow-[0_24px_48px_-28px_rgba(15,23,42,0.42)] backdrop-blur-2xl"
+            : "border-border/55 bg-background/62 shadow-[0_18px_36px_-28px_rgba(15,23,42,0.28)] backdrop-blur-xl"
         )}
       >
         <Logo href="/" className="shrink-0" />
@@ -48,16 +49,20 @@ export function LandingNavbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="group relative text-sm font-medium text-muted-foreground transition hover:text-foreground"
+              className="group relative py-1 text-sm font-medium text-muted-foreground/90 transition hover:text-foreground"
             >
               {item.label}
-              <span className="absolute inset-x-0 -bottom-1 h-px origin-left scale-x-0 bg-foreground/60 transition-transform duration-200 group-hover:scale-x-100" />
+              <span className="absolute inset-x-0 -bottom-1 h-px origin-left scale-x-0 bg-gradient-to-r from-primary/70 via-foreground/60 to-transparent transition-transform duration-200 group-hover:scale-x-100" />
             </Link>
           ))}
         </nav>
         <div className="hidden items-center gap-3 md:flex">
-          <ThemeToggle compact={false} />
-          <Button asChild variant="ghost" className="rounded-full px-5 text-foreground/80 hover:bg-background/82 hover:text-foreground">
+          <ThemeToggle compact={false} className="h-10 px-3.5" />
+          <Button
+            asChild
+            variant="ghost"
+            className="rounded-full px-5 text-foreground/80 hover:bg-background/88 hover:text-foreground"
+          >
             <Link href="/app/dashboard">Login</Link>
           </Button>
           <Button asChild className="landing-cta-primary rounded-full px-5 text-primary-foreground">

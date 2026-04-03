@@ -14,8 +14,8 @@ export function LandingSectionHeading({
   return (
     <div className={cn("max-w-2xl", align === "center" ? "mx-auto text-center" : "text-left")}>
       <p className="text-sm font-semibold uppercase tracking-[0.24em] text-primary">{eyebrow}</p>
-      <h2 className="mt-4 text-3xl font-semibold tracking-[-0.05em] text-foreground sm:text-4xl">{title}</h2>
-      <p className="mt-4 text-base leading-7 text-muted-foreground sm:text-lg">{description}</p>
+      <h2 className="mt-4 text-3xl font-semibold tracking-[-0.055em] text-foreground sm:text-4xl">{title}</h2>
+      <p className="mt-3 text-base leading-7 text-muted-foreground sm:text-lg">{description}</p>
     </div>
   );
 }

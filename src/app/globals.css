@@ -298,6 +298,14 @@ a,
   @apply text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-muted-foreground;
 }
 
+.landing-section {
+  @apply px-4 py-14 sm:px-6 sm:py-16 lg:px-8 lg:py-20;
+}
+
+.landing-section-tight {
+  @apply px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14;
+}
+
 .landing-shell::before {
   content: "";
   position: absolute;
@@ -389,4 +397,58 @@ a,
 .landing-cta-secondary:hover {
   transform: scale(1.02);
   box-shadow: 0 18px 38px -28px rgba(15, 23, 42, 0.26);
+}
+
+.landing-nav-shell {
+  position: relative;
+}
+
+.landing-nav-shell::after {
+  content: "";
+  position: absolute;
+  inset: auto 12% -18px;
+  height: 26px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(9, 17, 31, 0.18), transparent);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.landing-nav-shell[data-scrolled="true"]::after {
+  opacity: 1;
+}
+
+.dark .landing-nav-shell::after {
+  background: linear-gradient(180deg, rgba(2, 8, 23, 0.42), transparent);
+}
+
+@keyframes landing-hero-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+.landing-hero-preview {
+  animation: landing-hero-float 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+.landing-surface {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 32%),
+    var(--card);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.dark .landing-surface {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 28%),
+    var(--card);
 }
