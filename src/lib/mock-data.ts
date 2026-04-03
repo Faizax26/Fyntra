@@ -30,6 +30,84 @@ export const dashboardSnapshot: DashboardSnapshot = {
     { id: "wallet-3", name: "Cash Reserve", balance: 750000, type: "Cash" },
     { id: "wallet-4", name: "Emergency Fund", balance: 10500000, type: "Goal wallet" }
   ],
+  walletDetails: [
+    {
+      walletId: "wallet-1",
+      trend: [
+        { label: "11 Mar", income: 0, expense: 220000 },
+        { label: "12 Mar", income: 14500000, expense: 0 },
+        { label: "13 Mar", income: 850000, expense: 560000 },
+        { label: "14 Mar", income: 0, expense: 138000 },
+        { label: "15 Mar", income: 0, expense: 420000 },
+        { label: "16 Mar", income: 0, expense: 489000 },
+        { label: "17 Mar", income: 375000, expense: 260000 }
+      ],
+      transactions: [
+        { id: "wallet-1-tx-1", title: "Monthly salary", date: "2025-03-12T08:00:00.000Z", amount: 14500000, type: "income" },
+        { id: "wallet-1-tx-2", title: "Freelance payout", date: "2025-03-13T14:20:00.000Z", amount: 850000, type: "income" },
+        { id: "wallet-1-tx-3", title: "Apartment rent", date: "2025-03-15T02:15:00.000Z", amount: 3200000, type: "expense" },
+        { id: "wallet-1-tx-4", title: "Internet bill", date: "2025-03-16T13:15:00.000Z", amount: 489000, type: "expense" },
+        { id: "wallet-1-tx-5", title: "Transfer to GoPay", date: "2025-03-17T10:10:00.000Z", amount: 300000, type: "transfer" }
+      ]
+    },
+    {
+      walletId: "wallet-2",
+      trend: [
+        { label: "11 Mar", income: 120000, expense: 54000 },
+        { label: "12 Mar", income: 300000, expense: 85000 },
+        { label: "13 Mar", income: 0, expense: 42000 },
+        { label: "14 Mar", income: 0, expense: 138000 },
+        { label: "15 Mar", income: 150000, expense: 72000 },
+        { label: "16 Mar", income: 0, expense: 98000 },
+        { label: "17 Mar", income: 250000, expense: 64000 }
+      ],
+      transactions: [
+        { id: "wallet-2-tx-1", title: "Top up from BCA", date: "2025-03-12T09:40:00.000Z", amount: 300000, type: "income" },
+        { id: "wallet-2-tx-2", title: "Coffee and lunch", date: "2025-03-14T05:00:00.000Z", amount: 138000, type: "expense" },
+        { id: "wallet-2-tx-3", title: "Ride to office", date: "2025-03-15T00:35:00.000Z", amount: 42000, type: "expense" },
+        { id: "wallet-2-tx-4", title: "Cashback rewards", date: "2025-03-17T03:15:00.000Z", amount: 250000, type: "income" },
+        { id: "wallet-2-tx-5", title: "Dinner order", date: "2025-03-17T12:30:00.000Z", amount: 64000, type: "expense" }
+      ]
+    },
+    {
+      walletId: "wallet-3",
+      trend: [
+        { label: "11 Mar", income: 50000, expense: 0 },
+        { label: "12 Mar", income: 0, expense: 35000 },
+        { label: "13 Mar", income: 0, expense: 0 },
+        { label: "14 Mar", income: 100000, expense: 22000 },
+        { label: "15 Mar", income: 0, expense: 18000 },
+        { label: "16 Mar", income: 0, expense: 0 },
+        { label: "17 Mar", income: 75000, expense: 30000 }
+      ],
+      transactions: [
+        { id: "wallet-3-tx-1", title: "Cash withdrawal", date: "2025-03-11T10:00:00.000Z", amount: 50000, type: "income" },
+        { id: "wallet-3-tx-2", title: "Parking", date: "2025-03-12T12:00:00.000Z", amount: 35000, type: "expense" },
+        { id: "wallet-3-tx-3", title: "Laundry", date: "2025-03-14T04:30:00.000Z", amount: 22000, type: "expense" },
+        { id: "wallet-3-tx-4", title: "Family reimbursement", date: "2025-03-17T06:45:00.000Z", amount: 75000, type: "income" },
+        { id: "wallet-3-tx-5", title: "Street snacks", date: "2025-03-17T13:20:00.000Z", amount: 30000, type: "expense" }
+      ]
+    },
+    {
+      walletId: "wallet-4",
+      trend: [
+        { label: "11 Mar", income: 500000, expense: 0 },
+        { label: "12 Mar", income: 0, expense: 0 },
+        { label: "13 Mar", income: 750000, expense: 0 },
+        { label: "14 Mar", income: 0, expense: 0 },
+        { label: "15 Mar", income: 750000, expense: 0 },
+        { label: "16 Mar", income: 0, expense: 0 },
+        { label: "17 Mar", income: 1000000, expense: 0 }
+      ],
+      transactions: [
+        { id: "wallet-4-tx-1", title: "Automatic savings", date: "2025-03-11T08:10:00.000Z", amount: 500000, type: "income" },
+        { id: "wallet-4-tx-2", title: "Goal transfer", date: "2025-03-13T09:15:00.000Z", amount: 750000, type: "income" },
+        { id: "wallet-4-tx-3", title: "Emergency fund top up", date: "2025-03-15T10:30:00.000Z", amount: 750000, type: "income" },
+        { id: "wallet-4-tx-4", title: "Monthly reserve", date: "2025-03-17T07:45:00.000Z", amount: 1000000, type: "income" },
+        { id: "wallet-4-tx-5", title: "Interest adjustment", date: "2025-03-17T15:00:00.000Z", amount: 50000, type: "income" }
+      ]
+    }
+  ],
   transactions: [
     {
       id: "trx-1",

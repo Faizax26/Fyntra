@@ -17,7 +17,11 @@ const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <DialogPrimitive.Overlay ref={ref} className={cn("fixed inset-0 z-50 bg-slate-950/45 backdrop-blur-sm", className)} {...props} />
+  <DialogPrimitive.Overlay
+    ref={ref}
+    className={cn("sheet-overlay fixed inset-0 z-50 bg-slate-950/45 backdrop-blur-sm", className)}
+    {...props}
+  />
 ));
 
 SheetOverlay.displayName = DialogPrimitive.Overlay.displayName;
@@ -38,7 +42,9 @@ const SheetContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 bg-background p-0 shadow-2xl outline-none",
+        "sheet-content fixed z-50 bg-background p-0 shadow-2xl outline-none",
+        side === "left" && "sheet-content-left",
+        side === "right" && "sheet-content-right",
         sheetVariants[side],
         className
       )}

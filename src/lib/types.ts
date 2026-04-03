@@ -21,6 +21,26 @@ export type WalletSummary = {
   type: string;
 };
 
+export type WalletTrendPoint = {
+  label: string;
+  income: number;
+  expense: number;
+};
+
+export type WalletActivity = {
+  id: string;
+  title: string;
+  date: string;
+  amount: number;
+  type: "income" | "expense" | "transfer";
+};
+
+export type WalletDetail = {
+  walletId: string;
+  trend: WalletTrendPoint[];
+  transactions: WalletActivity[];
+};
+
 export type TransactionSummary = {
   id: string;
   title: string;
@@ -60,6 +80,7 @@ export type QuickAction = {
 export type DashboardSnapshot = {
   metrics: DashboardMetric[];
   wallets: WalletSummary[];
+  walletDetails: WalletDetail[];
   transactions: TransactionSummary[];
   budgets: BudgetSummary[];
   goals: GoalSummary[];

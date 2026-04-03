@@ -21,7 +21,7 @@ export default function DashboardPage() {
         </div>
       </section>
       <section>
-        <WalletOverview wallets={dashboardSnapshot.wallets} />
+        <WalletOverview wallets={dashboardSnapshot.wallets} details={dashboardSnapshot.walletDetails} />
       </section>
       <section>
         <QuickActions actions={dashboardSnapshot.quickActions} />
