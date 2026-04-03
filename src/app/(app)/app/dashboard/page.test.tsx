@@ -34,4 +34,20 @@ describe("DashboardPage", () => {
     expect(screen.getByText("Current balance")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /add transaction/i })).toBeInTheDocument();
   });
+
+  it("opens the floating quick action fab menu", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Providers>
+        <DashboardPage />
+      </Providers>
+    );
+
+    await user.click(screen.getByRole("button", { name: /open quick actions/i }));
+
+    expect(screen.getAllByRole("button", { name: /add transaction/i })[0]).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /transfer/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /add wallet/i })[0]).toBeInTheDocument();
+  });
 });

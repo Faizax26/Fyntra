@@ -2,6 +2,7 @@ import { AiInsight } from "@/components/dashboard/ai-insight";
 import { BudgetProgressList } from "@/components/dashboard/budget-progress-list";
 import { CashflowChart } from "@/components/dashboard/cashflow-chart";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
+import { FloatingActionFab } from "@/components/dashboard/floating-action-fab";
 import { GoalsOverview } from "@/components/dashboard/goals-overview";
 import { MetricCard } from "@/components/dashboard/metric-card";
 import { QuickActions } from "@/components/dashboard/quick-actions";
@@ -37,6 +38,7 @@ export default function DashboardPage() {
       <section>
         <RecentTransactions transactions={dashboardSnapshot.transactions} />
       </section>
+      <FloatingActionFab />
     </div>
   );
 }
