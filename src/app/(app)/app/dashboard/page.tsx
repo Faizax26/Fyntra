@@ -5,7 +5,6 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { FloatingActionFab } from "@/components/dashboard/floating-action-fab";
 import { GoalsOverview } from "@/components/dashboard/goals-overview";
 import { MetricCard } from "@/components/dashboard/metric-card";
-import { QuickActions } from "@/components/dashboard/quick-actions";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import { WalletOverview } from "@/components/dashboard/wallet-overview";
 import { dashboardSnapshot } from "@/lib/mock-data";
@@ -23,9 +22,6 @@ export default function DashboardPage() {
       </section>
       <section>
         <WalletOverview wallets={dashboardSnapshot.wallets} details={dashboardSnapshot.walletDetails} />
-      </section>
-      <section>
-        <QuickActions actions={dashboardSnapshot.quickActions} />
       </section>
       <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
         <CashflowChart data={dashboardSnapshot.cashflow} />
