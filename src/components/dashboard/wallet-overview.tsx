@@ -65,8 +65,22 @@ function WalletTrendChart({ trend }: { trend: WalletTrendPoint[] }) {
               <stop offset="100%" stopColor="rgb(248 113 113)" stopOpacity="0.58" />
             </linearGradient>
           </defs>
-          <path d={incomePath} fill="none" stroke="url(#wallet-income-gradient)" strokeWidth="3" strokeLinecap="round" />
-          <path d={expensePath} fill="none" stroke="url(#wallet-expense-gradient)" strokeWidth="3" strokeLinecap="round" />
+          <path
+            d={incomePath}
+            fill="none"
+            stroke="url(#wallet-income-gradient)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            className="wallet-chart-line"
+          />
+          <path
+            d={expensePath}
+            fill="none"
+            stroke="url(#wallet-expense-gradient)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            className="wallet-chart-line wallet-chart-line-delay"
+          />
         </svg>
         <div className="mt-2 grid grid-cols-7 text-[11px] text-muted-foreground">
           {trend.map((point) => (
@@ -103,7 +117,7 @@ function WalletTransactionItem({ transaction }: { transaction: WalletActivity })
   const isNegative = transaction.type === "expense";
 
   return (
-    <div className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-background/55 px-4 py-3.5 transition-all duration-200 hover:bg-black/5 dark:border-white/10 dark:hover:bg-white/5">
+    <div className="flex cursor-pointer items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-background/55 px-4 py-3.5 transition-all duration-200 hover:bg-black/[0.035] dark:border-white/10 dark:hover:bg-white/[0.06]">
       <div className="min-w-0">
         <p className="truncate text-sm font-medium text-foreground">{transaction.title}</p>
         <p className="mt-1 text-xs text-muted-foreground">{formatTransactionDate(transaction.date)}</p>
@@ -230,15 +244,15 @@ export function WalletOverview({
         >
           {selectedWallet && selectedDetail ? (
             <div className="flex min-h-full flex-col">
-              <div className="border-b border-gray-200 px-7 pb-7 pt-7 dark:border-white/10">
+              <div className="border-b border-gray-200 px-7 pb-8 pt-7 dark:border-white/10">
                 <SheetTitle className="text-2xl font-semibold tracking-tight text-foreground">{selectedWallet.name}</SheetTitle>
                 <SheetDescription className="sr-only">
                   Wallet detail panel with balance summary, activity chart, transactions, and actions.
                 </SheetDescription>
-                <div className="mt-6 flex items-start justify-between gap-4">
+                <div className="mt-7 flex items-start justify-between gap-4">
                   <div>
-                    <p className="text-sm text-muted-foreground">Current balance</p>
-                    <p className="mt-3 text-4xl font-semibold tracking-tight text-foreground">
+                    <p className="text-sm text-muted-foreground/75">Current balance</p>
+                    <p className="mt-4 text-[2.5rem] font-semibold tracking-tight text-foreground">
                       {formatCurrency(selectedWallet.balance)}
                     </p>
                   </div>
@@ -277,15 +291,26 @@ export function WalletOverview({
                 <div className="rounded-2xl border border-gray-200 bg-background/60 p-5 shadow-sm dark:border-white/10">
                   <p className="text-sm font-medium text-foreground">Actions</p>
                   <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    <Button type="button" className="justify-start rounded-2xl">
+                    <Button
+                      type="button"
+                      className="justify-start rounded-2xl transition duration-200 hover:scale-[1.02] hover:brightness-105"
+                    >
                       <Plus className="size-4" />
                       Add transaction
                     </Button>
-                    <Button type="button" variant="outline" className="justify-start rounded-2xl">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="justify-start rounded-2xl transition duration-200 hover:scale-[1.02] hover:brightness-105"
+                    >
                       <SendHorizontal className="size-4" />
                       Transfer
                     </Button>
-                    <Button type="button" variant="outline" className="justify-start rounded-2xl">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="justify-start rounded-2xl transition duration-200 hover:scale-[1.02] hover:brightness-105"
+                    >
                       <Pencil className="size-4" />
                       Edit wallet
                     </Button>
