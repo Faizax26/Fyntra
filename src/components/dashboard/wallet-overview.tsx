@@ -20,10 +20,10 @@ export function WalletOverview({ wallets }: { wallets: WalletSummary[] }) {
             <div
               key={wallet.id}
               className={cn(
-                "rounded-3xl border px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 dark:hover:bg-white/5",
+                "rounded-3xl border px-5 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-slate-50 hover:shadow-lg hover:shadow-slate-200/70 dark:hover:bg-white/5 dark:hover:shadow-indigo-500/10",
                 isPrimary
-                  ? "border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 to-transparent shadow-sm ring-1 ring-indigo-400/20"
-                  : "bg-background/55 shadow-sm"
+                  ? "border-indigo-500/20 bg-gradient-to-br from-indigo-500/10 to-transparent ring-1 ring-indigo-400/20"
+                  : "bg-background/55"
               )}
             >
               <div className="flex items-start justify-between gap-3">
@@ -48,11 +48,11 @@ export function WalletOverview({ wallets }: { wallets: WalletSummary[] }) {
                 </span>
               </div>
               <div className="mt-4">
-                <div className="h-1.5 rounded-full bg-slate-200 dark:bg-white/10">
+                <div className="h-1.5 rounded-full bg-slate-200 dark:bg-white/5">
                   <div
                     className={cn(
-                      "h-1.5 rounded-full bg-indigo-300 dark:bg-indigo-300",
-                      isPrimary && "bg-indigo-500 dark:bg-indigo-400"
+                      "h-1.5 rounded-full bg-gradient-to-r from-indigo-400 to-indigo-300",
+                      isPrimary && "from-indigo-500 to-indigo-400"
                     )}
                     style={{ width: `${share}%` }}
                   />
@@ -61,7 +61,7 @@ export function WalletOverview({ wallets }: { wallets: WalletSummary[] }) {
               <div className="mt-4 flex items-center justify-between gap-3 border-t border-border/60 pt-3 text-sm">
                 <span className="font-medium text-slate-700 dark:text-white/80">{share}% of total</span>
                 {isPrimary ? (
-                  <span className="text-xs font-medium text-indigo-600 dark:text-indigo-300">Primary account</span>
+                  <span className="text-xs font-medium text-indigo-600/80 dark:text-indigo-300/80">Primary account</span>
                 ) : null}
               </div>
             </div>
