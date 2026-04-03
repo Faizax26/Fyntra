@@ -152,11 +152,11 @@ a {
 }
 
 .surface-card.kpi-card-featured {
-  background-color: #6366f1;
+  background-color: #4f46e5;
   background-image:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 18%),
-    linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
-  box-shadow: 0 18px 40px -20px rgba(79, 70, 229, 0.36);
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 18%),
+    linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  box-shadow: 0 16px 34px -22px rgba(79, 70, 229, 0.28);
 }
 
 .dark .surface-card.kpi-card-featured {

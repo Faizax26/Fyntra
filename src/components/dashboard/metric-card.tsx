@@ -27,13 +27,6 @@ export function MetricCard({
   const trendUp = metric.delta.startsWith("+") || metric.tone === "positive";
   const isIncome = metric.label === "Income this month";
   const isExpense = metric.label === "Expense this month";
-  const featuredStyle = featured
-    ? {
-        backgroundImage:
-          "radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 18%), linear-gradient(135deg, rgba(99, 102, 241, 0.92) 0%, rgba(129, 140, 248, 0.84) 60%, rgba(125, 211, 252, 0.72) 100%)",
-        backgroundColor: "#6366f1"
-      }
-    : undefined;
 
   return (
     <motion.div
@@ -48,9 +41,8 @@ export function MetricCard({
           isIncome && "border-emerald-500/20",
           isExpense && "border-red-500/20",
           featured &&
-            "kpi-card-featured border-transparent text-white shadow-lg ring-1 ring-indigo-500/20 dark:border-transparent dark:shadow-xl"
+            "kpi-card-featured !bg-[linear-gradient(135deg,#4f46e5_0%,#6366f1_100%)] !bg-[#4f46e5] border-transparent text-white shadow-sm ring-1 ring-white/10 transition hover:shadow-md dark:border-transparent dark:ring-indigo-500/20 dark:shadow-xl dark:hover:shadow-xl"
         )}
-        style={featuredStyle}
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -67,7 +59,8 @@ export function MetricCard({
                 "flex size-9 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-300",
                 isIncome && "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400",
                 isExpense && "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
-                featured && "size-11 bg-white/18 text-white dark:bg-white/12 dark:text-white shadow-[0_16px_34px_-18px_rgba(56,87,255,0.55)]"
+                featured &&
+                  "size-11 bg-white/5 text-white shadow-[0_12px_24px_-18px_rgba(255,255,255,0.22)] dark:bg-white/12 dark:text-white dark:shadow-[0_16px_34px_-18px_rgba(56,87,255,0.55)]"
               )}
             >
               <Sparkles className="size-4" />
