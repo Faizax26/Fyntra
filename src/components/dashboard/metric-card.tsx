@@ -25,6 +25,8 @@ export function MetricCard({
 }) {
   const displayValue = formatCurrency(metric.value);
   const trendUp = metric.delta.startsWith("+") || metric.tone === "positive";
+  const isIncome = metric.label === "Income this month";
+  const isExpense = metric.label === "Expense this month";
 
   return (
     <motion.div
@@ -35,9 +37,11 @@ export function MetricCard({
     >
       <Card
         className={cn(
-          "h-full overflow-hidden border-slate-200 bg-white shadow-sm dark:border-border dark:bg-card dark:shadow-none",
+          "h-full overflow-hidden border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-border dark:bg-card dark:shadow-none dark:hover:shadow-none",
+          isIncome && "border-emerald-500/20",
+          isExpense && "border-red-500/20",
           featured &&
-            "!border-transparent !bg-[linear-gradient(135deg,rgba(56,87,255,0.22),rgba(125,211,252,0.12)_45%,rgba(16,185,129,0.1))] shadow-lg ring-1 ring-indigo-500/20 dark:!border-transparent dark:!bg-[linear-gradient(135deg,rgba(56,87,255,0.16),rgba(125,211,252,0.08)_45%,rgba(16,185,129,0.08))] dark:shadow-xl"
+            "kpi-card-featured border-transparent text-white shadow-lg ring-1 ring-indigo-500/20 dark:border-transparent dark:shadow-xl"
         )}
       >
         <CardHeader className="pb-3">
@@ -45,7 +49,7 @@ export function MetricCard({
             <CardTitle
               className={cn(
                 "text-sm font-medium text-slate-500 dark:text-muted-foreground",
-                featured && "text-lg font-semibold text-slate-700/85 dark:text-muted-foreground dark:opacity-70"
+                featured && "text-lg font-semibold text-white/90 dark:text-white/90"
               )}
             >
               {metric.label}
@@ -53,8 +57,10 @@ export function MetricCard({
             <span
               className={cn(
                 "flex size-9 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-300",
+                isIncome && "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400",
+                isExpense && "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
                 featured &&
-                  "size-11 bg-white/45 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300 shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
+                  "size-11 bg-white/20 text-white dark:bg-indigo-500/20 dark:text-white shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
               )}
             >
               <Sparkles className="size-4" />
@@ -66,8 +72,10 @@ export function MetricCard({
             className={cn(
               "font-semibold tabular-nums tracking-tight text-slate-900 dark:text-foreground",
               featured
-                ? "text-[2.8rem] leading-none text-slate-950 sm:text-[3.35rem] dark:text-foreground"
-                : "text-2xl sm:text-3xl"
+                ? "text-[2.8rem] leading-none text-white sm:text-[3.35rem] dark:text-white"
+                : "text-2xl sm:text-3xl",
+              isIncome && "text-emerald-600 dark:text-emerald-400",
+              isExpense && "text-red-600 dark:text-red-400"
             )}
           >
             {displayValue}
@@ -75,7 +83,9 @@ export function MetricCard({
           <div
             className={cn(
               "mt-4 inline-flex items-center gap-2 text-sm",
-              featured ? "text-slate-700/80 dark:text-primary" : getToneClass(metric.tone)
+              featured ? "text-white/85 dark:text-white/85" : getToneClass(metric.tone),
+              isExpense && "text-red-600/90 dark:text-red-400/90",
+              isIncome && "text-emerald-600 dark:text-emerald-400"
             )}
           >
             {trendUp ? <ArrowUpRight className="size-4" /> : <ArrowDownRight className="size-4" />}
