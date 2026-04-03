@@ -27,6 +27,13 @@ export function MetricCard({
   const trendUp = metric.delta.startsWith("+") || metric.tone === "positive";
   const isIncome = metric.label === "Income this month";
   const isExpense = metric.label === "Expense this month";
+  const featuredStyle = featured
+    ? {
+        backgroundImage:
+          "radial-gradient(circle at top right, rgba(255, 255, 255, 0.12), transparent 18%), linear-gradient(135deg, rgba(99, 102, 241, 0.92) 0%, rgba(129, 140, 248, 0.84) 60%, rgba(125, 211, 252, 0.72) 100%)",
+        backgroundColor: "#6366f1"
+      }
+    : undefined;
 
   return (
     <motion.div
@@ -43,13 +50,14 @@ export function MetricCard({
           featured &&
             "kpi-card-featured border-transparent text-white shadow-lg ring-1 ring-indigo-500/20 dark:border-transparent dark:shadow-xl"
         )}
+        style={featuredStyle}
       >
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle
               className={cn(
                 "text-sm font-medium text-slate-500 dark:text-muted-foreground",
-                featured && "text-lg font-semibold text-white/90 dark:text-white/90"
+                featured && "text-lg font-semibold text-white/90 dark:text-white"
               )}
             >
               {metric.label}
@@ -59,8 +67,7 @@ export function MetricCard({
                 "flex size-9 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-500 dark:bg-indigo-500/20 dark:text-indigo-300",
                 isIncome && "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400",
                 isExpense && "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400",
-                featured &&
-                  "size-11 bg-white/20 text-white dark:bg-indigo-500/20 dark:text-white shadow-[0_16px_34px_-18px_rgba(56,87,255,0.8)]"
+                featured && "size-11 bg-white/18 text-white dark:bg-white/12 dark:text-white shadow-[0_16px_34px_-18px_rgba(56,87,255,0.55)]"
               )}
             >
               <Sparkles className="size-4" />
@@ -70,12 +77,8 @@ export function MetricCard({
         <CardContent>
           <div
             className={cn(
-              "font-semibold tabular-nums tracking-tight text-slate-900 dark:text-foreground",
-              featured
-                ? "text-[2.8rem] leading-none text-white sm:text-[3.35rem] dark:text-white"
-                : "text-2xl sm:text-3xl",
-              isIncome && "text-emerald-600 dark:text-emerald-400",
-              isExpense && "text-red-600 dark:text-red-400"
+              "font-semibold tabular-nums tracking-tight text-slate-900 dark:text-white",
+              featured ? "text-[2.8rem] leading-none text-white sm:text-[3.35rem] dark:text-white" : "text-2xl sm:text-3xl"
             )}
           >
             {displayValue}
