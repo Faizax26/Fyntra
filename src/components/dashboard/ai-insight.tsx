@@ -5,7 +5,7 @@ import { BrainCircuit, SendHorizontal, Sparkles, TrendingDown } from "lucide-rea
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
@@ -19,7 +19,11 @@ type ChatMessage = {
 
 const STORAGE_KEY = "fyntra:ai-insight-mode";
 
-const quickPrompts = ["How can I save more?", "Where am I overspending?", "Show budget risks"];
+const quickPrompts = [
+  "Where can I reduce spending this week?",
+  "What’s my biggest budget risk?",
+  "How can I improve my savings rate?"
+];
 
 const promptResponses: Record<string, string> = {
   "How can I save more?":
@@ -36,6 +40,17 @@ function getAssistantReply(prompt: string) {
   return (
     promptResponses[normalized] ??
     "Quick read:\n• Spending is still manageable overall\n• Dining and subscriptions deserve attention first\n• Income momentum is healthy enough to create more buffer"
+  );
+}
+
+function TypingDots() {
+  return (
+    <span className="inline-flex items-center gap-1 text-muted-foreground">
+      Thinking
+      <span className="typing-dot" />
+      <span className="typing-dot [animation-delay:120ms]" />
+      <span className="typing-dot [animation-delay:240ms]" />
+    </span>
   );
 }
 
@@ -125,7 +140,7 @@ export function AiInsight() {
     <div className="h-full">
       <Card className="h-full overflow-hidden border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.12),transparent_30%),linear-gradient(180deg,rgba(56,87,255,0.06),transparent_72%)] shadow-[0_24px_54px_-34px_rgba(56,87,255,0.32)]">
         <CardHeader className="relative">
-          <div className="absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.24),transparent_58%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_54%),linear-gradient(180deg,rgba(56,87,255,0.08),transparent_78%)]" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.24),transparent_58%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_54%),linear-gradient(180deg,rgba(56,87,255,0.08),transparent_78%)]" />
           <div className="relative flex items-start justify-between gap-3">
             <CardTitle>AI Insight</CardTitle>
             <span className="ai-insight-icon-glow flex size-10 items-center justify-center rounded-2xl border border-primary/15 bg-primary/10 text-primary shadow-[0_14px_28px_-20px_rgba(56,87,255,0.42)]">
@@ -134,7 +149,7 @@ export function AiInsight() {
           </div>
         </CardHeader>
         <CardContent className="space-y-5">
-          <div className="inline-flex rounded-full border border-border/70 bg-background/70 p-1">
+          <div className="inline-flex rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
             {([
               { id: "insights", label: "Insights" },
               { id: "chat", label: "AI Chat" }
@@ -146,8 +161,8 @@ export function AiInsight() {
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
                   mode === option.id
-                    ? "bg-gradient-to-r from-primary to-indigo-500 text-primary-foreground shadow-[0_12px_24px_-18px_rgba(56,87,255,0.58)]"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-gradient-to-r from-primary to-indigo-500 text-primary-foreground shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-background/70"
                 )}
               >
                 {option.label}
@@ -155,10 +170,10 @@ export function AiInsight() {
             ))}
           </div>
 
-          <div className="ai-insight-mode-panel">
+          <div key={mode} className="ai-insight-mode-panel">
             {mode === "insights" ? (
               <div className="space-y-5">
-                <div className="rounded-3xl border border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.12),transparent_48%),linear-gradient(180deg,rgba(56,87,255,0.06),transparent_100%)] p-5 shadow-[0_18px_38px_-26px_rgba(56,87,255,0.22)]">
+                <div className="rounded-3xl border border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.12),transparent_48%),linear-gradient(180deg,rgba(56,87,255,0.06),transparent_100%)] p-5 shadow-[0_18px_38px_-26px_rgba(56,87,255,0.24)] ring-1 ring-primary/8">
                   <Badge className="border border-primary/15 bg-primary/12 text-primary shadow-[0_10px_24px_-18px_rgba(56,87,255,0.45)]">
                     Top signal
                   </Badge>
@@ -170,8 +185,8 @@ export function AiInsight() {
                   </p>
                 </div>
 
-                <div className="grid gap-3">
-                  <div className="flex items-start gap-3 rounded-3xl border bg-background/55 p-4 transition hover:bg-background/70">
+                <div className="grid gap-4">
+                  <div className="flex items-start gap-3 rounded-3xl border bg-background/50 p-4 shadow-sm transition hover:bg-background/66">
                     <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl border border-emerald-500/12 bg-emerald-500/12 text-emerald-600 shadow-[0_14px_28px_-22px_rgba(16,185,129,0.42)] dark:text-emerald-400">
                       <Sparkles className="size-4" />
                     </span>
@@ -182,7 +197,7 @@ export function AiInsight() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3 rounded-3xl border bg-background/55 p-4 transition hover:bg-background/70">
+                  <div className="flex items-start gap-3 rounded-3xl border bg-background/50 p-4 shadow-sm transition hover:bg-background/66">
                     <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-2xl border border-amber-500/12 bg-amber-500/12 text-amber-600 shadow-[0_14px_28px_-22px_rgba(245,158,11,0.36)] dark:text-amber-400">
                       <TrendingDown className="size-4" />
                     </span>
@@ -196,7 +211,7 @@ export function AiInsight() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-3xl border border-primary/10 bg-background/60 p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)]">
+              <div className="rounded-3xl border border-primary/10 bg-background/60 p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-medium text-foreground">Ask Fyntra AI</p>
@@ -213,7 +228,7 @@ export function AiInsight() {
                       key={prompt}
                       type="button"
                       onClick={() => submitPrompt(prompt)}
-                      className="rounded-full border border-border/70 bg-background/75 px-3.5 py-2 text-sm text-foreground/88 transition hover:border-primary/18 hover:bg-primary/8"
+                      className="rounded-full border border-border/70 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/18 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.3)]"
                     >
                       {prompt}
                     </button>
@@ -229,16 +244,12 @@ export function AiInsight() {
                       <div
                         className={
                           message.role === "user"
-                            ? "ai-insight-bubble max-w-[88%] rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.45)]"
-                            : "ai-insight-bubble max-w-[92%] rounded-[1.4rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.08),transparent_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-26px_rgba(15,23,42,0.24)]"
+                            ? "ai-insight-bubble max-w-[88%] rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
+                            : "ai-insight-bubble max-w-[92%] rounded-[1.4rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
                         }
                       >
                         <div className="whitespace-pre-line leading-6">
-                          {message.text || (
-                            <span className="inline-flex items-center gap-1 text-muted-foreground">
-                              Typing<span className="animate-pulse">...</span>
-                            </span>
-                          )}
+                          {message.text || <TypingDots />}
                         </div>
                       </div>
                     </div>
@@ -256,7 +267,7 @@ export function AiInsight() {
                     value={inputValue}
                     onChange={(event) => setInputValue(event.target.value)}
                     placeholder="Ask about your spending..."
-                    className="rounded-2xl border-border/70 bg-background/80"
+                    className="rounded-2xl border-border/70 bg-background/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_8px_20px_-18px_rgba(15,23,42,0.28)] focus-visible:ring-primary/25"
                   />
                   <Button type="submit" size="icon" className="rounded-2xl">
                     <SendHorizontal className="size-4" />

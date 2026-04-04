@@ -75,11 +75,13 @@ function buildAreaPath(points: ChartPoint[], baselineY: number) {
 export function CashflowChart({ data }: { data: CashflowPoint[] }) {
   const [range, setRange] = useState<RangeMode>("12M");
   const [hovered, setHovered] = useState<{ index: number; series: "income" | "expense" } | null>(null);
+  const [focusedSeries, setFocusedSeries] = useState<"income" | "expense" | null>(null);
 
   const visibleData = useMemo(() => (range === "6M" ? data.slice(-6) : data), [data, range]);
 
   useEffect(() => {
     setHovered(null);
+    setFocusedSeries(null);
   }, [range]);
 
   const width = 640;
@@ -116,8 +118,13 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
   const activeExpense = visibleData[activeIndex]?.expense ?? 0;
   const activeMonth = visibleData[activeIndex]?.month ?? "";
   const activePointX = incomePoints[activeIndex]?.x ?? paddingX;
-  const highlightIncome = hovered?.series === "income";
-  const highlightExpense = hovered?.series === "expense";
+  const activeSeries = hovered?.series ?? focusedSeries;
+  const activePointY =
+    activeSeries === "expense"
+      ? expensePoints[activeIndex]?.y ?? height - paddingY
+      : incomePoints[activeIndex]?.y ?? height - paddingY;
+  const highlightIncome = activeSeries === "income";
+  const highlightExpense = activeSeries === "expense";
 
   return (
     <Card className="h-full overflow-hidden">
@@ -158,20 +165,49 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
       </CardHeader>
       <CardContent>
         <div className="rounded-[1.75rem] border bg-background/55 p-4">
-          <div className="mb-4 flex items-center justify-between gap-3">
-            <div>
-              <p className="text-sm font-medium text-foreground">Income momentum is improving while expenses remain controlled, widening monthly surplus.</p>
-              <p className="mt-1 text-xs text-muted-foreground">Switch views to compare recent acceleration against the full-year trend.</p>
+          <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="rounded-2xl border border-border/70 bg-background/88 px-3.5 py-3 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl">
+                <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
+                <div className="mt-2 grid gap-1.5 text-sm">
+                  <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                    <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
+                    {formatCompactCurrency(activeIncome)}
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
+                    <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
+                    {formatCompactCurrency(activeExpense)}
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="hidden items-center gap-4 text-sm text-muted-foreground sm:flex">
-              <span className="inline-flex items-center gap-2">
-                <span className="size-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.45)]" />
-                Income
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="size-2.5 rounded-full bg-indigo-400 shadow-[0_0_16px_rgba(129,140,248,0.4)]" />
-                Expense
-              </span>
+            <div className="flex items-start gap-3 self-start lg:min-w-[220px] lg:justify-end">
+              <div className="hidden flex-col gap-3 text-sm text-muted-foreground sm:flex">
+                <button
+                  type="button"
+                  onMouseEnter={() => setFocusedSeries("income")}
+                  onMouseLeave={() => setFocusedSeries(null)}
+                  className={cn(
+                    "inline-flex items-center gap-2 text-left transition-all duration-200",
+                    highlightExpense && "opacity-55"
+                  )}
+                >
+                  <span className="size-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.45)]" />
+                  Income
+                </button>
+                <button
+                  type="button"
+                  onMouseEnter={() => setFocusedSeries("expense")}
+                  onMouseLeave={() => setFocusedSeries(null)}
+                  className={cn(
+                    "inline-flex items-center gap-2 text-left transition-all duration-200",
+                    highlightIncome && "opacity-55"
+                  )}
+                >
+                  <span className="size-2.5 rounded-full bg-indigo-400 shadow-[0_0_16px_rgba(129,140,248,0.4)]" />
+                  Expense
+                </button>
+              </div>
             </div>
           </div>
 
@@ -233,7 +269,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <path
                 d={incomeLine}
                 fill="none"
-                stroke="rgba(52,211,153,0.34)"
+                stroke="rgba(52,211,153,0.24)"
                 strokeWidth="9"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -243,7 +279,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <path
                 d={expenseLine}
                 fill="none"
-                stroke="rgba(129,140,248,0.28)"
+                stroke="rgba(129,140,248,0.22)"
                 strokeWidth="9"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -254,19 +290,25 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 d={incomeLine}
                 fill="none"
                 stroke="rgb(52 211 153)"
-                strokeWidth="3"
+                strokeWidth={highlightIncome ? "3.8" : "3"}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={cn("cashflow-line cashflow-line-delay-1 transition-opacity duration-200", hovered && !highlightIncome && "opacity-45")}
+                className={cn(
+                  "cashflow-line cashflow-line-delay-1 transition-all duration-200",
+                  activeSeries && !highlightIncome && "opacity-40"
+                )}
               />
               <path
                 d={expenseLine}
                 fill="none"
                 stroke="rgb(129 140 248)"
-                strokeWidth="3"
+                strokeWidth={highlightExpense ? "3.8" : "3"}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={cn("cashflow-line cashflow-line-delay-2 transition-opacity duration-200", hovered && !highlightExpense && "opacity-45")}
+                className={cn(
+                  "cashflow-line cashflow-line-delay-2 transition-all duration-200",
+                  activeSeries && !highlightExpense && "opacity-40"
+                )}
               />
 
               <line
@@ -326,19 +368,28 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               })}
             </svg>
 
-            <div className="pointer-events-none absolute right-4 top-4 min-w-[132px] rounded-2xl border border-border/70 bg-background/92 px-3.5 py-3 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl transition-all duration-200 ease-out">
-              <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
-              <div className="mt-2 grid gap-1.5 text-sm">
-                <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                  <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
-                  {formatCompactCurrency(activeIncome)}
-                </span>
-                <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
-                  <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
-                  {formatCompactCurrency(activeExpense)}
-                </span>
+            {hovered ? (
+              <div
+                className="cashflow-tooltip pointer-events-none absolute z-10 min-w-[128px] rounded-2xl border border-border/70 bg-background/94 px-3 py-2.5 shadow-[0_18px_34px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl"
+                style={{
+                  left: `${(activePointX / width) * 100}%`,
+                  top: `${(activePointY / height) * 100}%`,
+                  transform: "translate(-50%, calc(-100% - 14px))"
+                }}
+              >
+                <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
+                <div className="mt-2 grid gap-1.5 text-sm">
+                  <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                    <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
+                    {formatCompactCurrency(activeIncome)}
+                  </span>
+                  <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
+                    <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
+                    {formatCompactCurrency(activeExpense)}
+                  </span>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground sm:hidden">
