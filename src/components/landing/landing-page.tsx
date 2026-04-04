@@ -1,5 +1,6 @@
 import { Landmark, PiggyBank, ShieldCheck, Sparkles, Target, Wallet } from "lucide-react";
 
+import { LandingCursorGlow } from "@/components/landing/landing-cursor-glow";
 import { LandingDemo } from "@/components/landing/landing-demo";
 import { LandingFaq } from "@/components/landing/landing-faq";
 import { LandingFeatures } from "@/components/landing/landing-features";
@@ -7,6 +8,7 @@ import { LandingFooter } from "@/components/landing/landing-footer";
 import { LandingHero } from "@/components/landing/landing-hero";
 import { LandingNavbar } from "@/components/landing/landing-navbar";
 import { LandingPricing } from "@/components/landing/landing-pricing";
+import { LandingScrollProgress } from "@/components/landing/landing-scroll-progress";
 import { LandingStats } from "@/components/landing/landing-stats";
 
 const features = [
@@ -45,6 +47,8 @@ const features = [
 export function LandingPage() {
   return (
     <div className="landing-shell relative min-h-screen overflow-x-clip bg-background">
+      <LandingScrollProgress />
+      <LandingCursorGlow />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[48rem] bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.22),transparent_32%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.16),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.76),rgba(247,249,252,0))] dark:bg-[radial-gradient(circle_at_top_left,rgba(87,112,255,0.28),transparent_30%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.18),transparent_26%),linear-gradient(180deg,rgba(6,12,24,0.96),rgba(9,17,31,0))]" />
       <div className="pointer-events-none absolute left-[16%] top-16 h-96 w-96 rounded-full bg-primary/14 blur-[130px]" />
       <div className="pointer-events-none absolute right-[10%] top-28 h-[28rem] w-[28rem] rounded-full bg-sky-400/10 blur-[150px]" />

@@ -1,10 +1,11 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ArrowUpRight, BrainCircuit, CalendarRange, Sparkles, Target } from "lucide-react";
-import { motion, useMotionValueEvent, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValueEvent, useTransform } from "framer-motion";
 
+import { useLandingSectionProgress } from "@/components/landing/landing-hooks";
 import { LandingReveal } from "@/components/landing/landing-motion";
 import { LandingSectionHeading } from "@/components/landing/landing-section-heading";
 import { Badge } from "@/components/ui/badge";
@@ -41,19 +42,17 @@ const scenes: {
 ];
 
 export function LandingDemo() {
-  const ref = useRef<HTMLElement | null>(null);
+  const { ref, scrollYProgress } = useLandingSectionProgress<HTMLElement>(["start start", "end end"]);
   const [activeScene, setActiveScene] = useState<DemoScene>("capture");
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"]
-  });
 
   const deviceScale = useTransform(scrollYProgress, [0, 0.18], [0.9, 1]);
   const deviceOpacity = useTransform(scrollYProgress, [0, 0.14], [0.3, 1]);
   const deviceY = useTransform(scrollYProgress, [0, 0.18], [60, 0]);
+  const deviceRotateX = useTransform(scrollYProgress, [0, 0.18], [10, 0]);
   const introY = useTransform(scrollYProgress, [0, 1], [0, -80]);
   const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const miniCardY = useTransform(scrollYProgress, [0, 1], [0, -24]);
+  const screenShift = useTransform(scrollYProgress, [0, 1], [0, -24]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (latest < 0.34) {
@@ -102,7 +101,7 @@ export function LandingDemo() {
 
       <div className="relative mx-auto mt-10 max-w-7xl">
         <div className="absolute left-0 top-0 hidden h-full w-[18rem] lg:block" />
-        <div className="relative h-[220vh]">
+        <div className="relative h-[240vh]">
           <div className="sticky top-24 grid gap-8 lg:grid-cols-[0.28fr_0.72fr] lg:items-start">
             <motion.div style={{ y: introY }} className="hidden lg:block">
               <div className="relative rounded-[2rem] border border-border/70 bg-card/62 p-6 backdrop-blur-xl">
@@ -131,7 +130,10 @@ export function LandingDemo() {
               </div>
             </motion.div>
 
-            <motion.div style={{ scale: deviceScale, opacity: deviceOpacity, y: deviceY }} className="relative">
+            <motion.div
+              style={{ scale: deviceScale, opacity: deviceOpacity, y: deviceY, rotateX: deviceRotateX }}
+              className="relative [transform-style:preserve-3d]"
+            >
               <motion.div style={{ y: miniCardY }} className="pointer-events-none absolute -left-4 top-24 hidden xl:block">
                 <MiniFloatCard
                   title="Net position"
@@ -159,6 +161,19 @@ export function LandingDemo() {
 
                 <div className="overflow-hidden rounded-b-[2.35rem] border border-border/70 bg-[#09111f] p-3 shadow-[0_40px_90px_-48px_rgba(56,87,255,0.44)]">
                   <div className="relative overflow-hidden rounded-[1.8rem] border border-white/6 bg-[linear-gradient(180deg,#0d172b_0%,#0b1322_100%)] p-3 sm:p-4">
+                    <motion.div style={{ x: screenShift }} className="mb-3 flex items-center gap-2 overflow-hidden rounded-full border border-white/6 bg-white/4 px-3 py-2">
+                      {scenes.map((scene) => (
+                        <div
+                          key={scene.id}
+                          className={cn(
+                            "rounded-full px-3 py-1 text-xs font-medium transition-all duration-200",
+                            activeScene === scene.id ? "bg-primary/18 text-white" : "text-white/55"
+                          )}
+                        >
+                          {scene.eyebrow}
+                        </div>
+                      ))}
+                    </motion.div>
                     <motion.div
                       key={activeScene}
                       initial={{ opacity: 0, x: 36 }}

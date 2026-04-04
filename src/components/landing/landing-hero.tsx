@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useTransform } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Play, Sparkles, TrendingUp, Wallet2 } from "lucide-react";
 
+import { useLandingSectionProgress } from "@/components/landing/landing-hooks";
 import { LandingMotionItem, LandingStagger } from "@/components/landing/landing-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,16 +12,16 @@ import { dashboardSnapshot } from "@/lib/mock-data";
 import { formatCompactCurrency, formatCurrency } from "@/lib/format";
 
 export function LandingHero() {
-  const ref = useRef<HTMLElement | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"]
-  });
+  const { ref, scrollYProgress } = useLandingSectionProgress<HTMLElement>(["start start", "end start"]);
 
   const spotlightY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const layerOneY = useTransform(scrollYProgress, [0, 1], [0, -36]);
   const layerTwoY = useTransform(scrollYProgress, [0, 1], [0, 28]);
   const layerThreeY = useTransform(scrollYProgress, [0, 1], [0, -18]);
+  const contentScale = useTransform(scrollYProgress, [0, 0.55], [1, 0.94]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.55], [1, 0.36]);
+  const contentY = useTransform(scrollYProgress, [0, 0.55], [0, -36]);
+  const haloScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
   return (
     <section ref={ref} className="relative overflow-hidden px-4 pb-14 pt-16 sm:px-6 sm:pb-16 sm:pt-20 lg:px-8 lg:pb-18 lg:pt-24">
@@ -29,11 +29,18 @@ export function LandingHero() {
         <div className="landing-ribbon landing-ribbon-primary absolute left-[-6%] top-2 h-64 w-[44rem] rotate-[10deg] rounded-full blur-3xl" />
         <div className="landing-ribbon landing-ribbon-secondary absolute right-[-8%] top-20 h-72 w-[36rem] -rotate-[20deg] rounded-full blur-3xl" />
         <div className="landing-ribbon landing-ribbon-accent absolute left-[20%] top-56 h-44 w-[28rem] rotate-[4deg] rounded-full blur-3xl" />
-        <div className="absolute right-[16%] top-20 h-[25rem] w-[25rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(56,87,255,0.24),transparent_64%)] blur-[110px]" />
+        <motion.div
+          style={{ scale: haloScale }}
+          className="absolute right-[16%] top-20 h-[25rem] w-[25rem] rounded-full bg-[radial-gradient(circle_at_center,rgba(56,87,255,0.24),transparent_64%)] blur-[110px]"
+        />
+        <div className="landing-particle absolute left-[12%] top-28 size-2 rounded-full bg-sky-300/40" />
+        <div className="landing-particle landing-particle-delay absolute right-[18%] top-36 size-1.5 rounded-full bg-indigo-300/36" />
+        <div className="landing-particle landing-particle-delay-2 absolute left-[28%] top-64 size-1.5 rounded-full bg-violet-300/30" />
       </motion.div>
 
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-10">
         <motion.div
+          style={{ scale: contentScale, opacity: contentOpacity, y: contentY }}
           className="relative z-10 max-w-2xl"
           initial="hidden"
           animate="show"

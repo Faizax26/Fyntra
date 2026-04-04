@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpRight, ShieldCheck, Sparkles, Star } from "lucide-react";
+import { motion } from "framer-motion";
 
-import { LandingMotionItem, LandingReveal, LandingStagger } from "@/components/landing/landing-motion";
+import { LandingReveal, LandingStagger } from "@/components/landing/landing-motion";
 import { Card } from "@/components/ui/card";
 
 const stats = [
@@ -51,9 +52,32 @@ export function LandingStats() {
       <LandingReveal className="mx-auto max-w-6xl">
         <LandingStagger className="grid gap-4 md:grid-cols-2 xl:grid-cols-4" stagger={0.08}>
           {stats.map((stat) => (
-            <LandingMotionItem key={stat.label}>
+            <motion.div
+              key={stat.label}
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  y: 40,
+                  scale: 0.95,
+                  rotateX: 10,
+                  filter: "blur(10px)"
+                },
+                show: {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  rotateX: 0,
+                  filter: "blur(0px)",
+                  transition: {
+                    duration: 0.6,
+                    ease: [0.22, 1, 0.36, 1]
+                  }
+                }
+              }}
+              style={{ transformPerspective: 1200 }}
+            >
               <StatCard {...stat} />
-            </LandingMotionItem>
+            </motion.div>
           ))}
         </LandingStagger>
       </LandingReveal>
