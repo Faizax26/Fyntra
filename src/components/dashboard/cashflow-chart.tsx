@@ -127,23 +127,30 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
   const highlightExpense = activeSeries === "expense";
   const tooltipLeft = Math.min(Math.max((activePointX / width) * 100, 14), 86);
   const tooltipTop = Math.min(Math.max((activePointY / height) * 100, 20), 88);
+  const displayedIncome = formatCompactCurrency(activeIncome);
+  const displayedExpense = formatCompactCurrency(activeExpense);
 
   return (
-    <Card className="h-full overflow-hidden">
-      <CardHeader>
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <CardTitle>Cashflow trend</CardTitle>
-          <div className="flex items-center gap-2.5">
-            <div className="inline-flex h-8 items-center gap-2 rounded-full border border-emerald-500/15 bg-emerald-500/8 px-3 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+    <Card className="h-full overflow-hidden border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0)_28%)] shadow-[0_24px_60px_-38px_rgba(15,23,42,0.42)]">
+      <CardHeader className="pb-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="space-y-1">
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-muted-foreground/80">
+              Analytics
+            </p>
+            <CardTitle className="tracking-tight">Cashflow trend</CardTitle>
+          </div>
+          <div className="inline-flex items-center gap-2 rounded-[1.35rem] border border-white/8 bg-slate-950/45 px-2 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            <div className="inline-flex h-9 items-center gap-2 rounded-full border border-emerald-500/12 bg-emerald-500/10 px-3.5 text-xs font-medium text-emerald-600 shadow-[0_14px_28px_-24px_rgba(16,185,129,0.32)] dark:text-emerald-400">
               <ArrowUpRight className="size-3.5" />
               {`${incomeDelta >= 0 ? "+" : ""}${incomeDelta.toFixed(0)}% vs previous month`}
             </div>
-            <div className="relative inline-grid h-8 w-[112px] grid-cols-2 items-center rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+            <div className="relative inline-grid h-9 w-[118px] grid-cols-2 items-center rounded-full border border-white/8 bg-slate-950/78 p-[3px] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
               <span
                 aria-hidden="true"
-                className="absolute bottom-1 left-1 top-1 w-[calc(50%-6px)] rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)] transition-transform duration-300 ease-out"
+                className="absolute bottom-[3px] left-[3px] top-[3px] w-[53px] rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_16px_28px_-20px_rgba(56,87,255,0.52)] transition-transform duration-200 ease-out"
                 style={{
-                  transform: range === "12M" ? "translateX(calc(100% + 4px))" : "translateX(0)"
+                  transform: range === "12M" ? "translateX(59px)" : "translateX(0)"
                 }}
               />
               {(["6M", "12M"] as RangeMode[]).map((option) => (
@@ -152,7 +159,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                   type="button"
                   onClick={() => setRange(option)}
                   className={cn(
-                    "relative flex h-full w-full items-center justify-center rounded-full px-0 py-1 text-xs font-medium transition-all duration-200",
+                    "relative z-[1] flex h-full items-center justify-center rounded-full text-xs font-semibold transition-colors duration-150",
                     range === option
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
@@ -165,37 +172,54 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-[1.75rem] border bg-background/55 p-4">
-          <div className="mb-2 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-            <div />
-            <div className="flex items-start gap-3 self-start lg:min-w-[220px] lg:justify-end">
-              <div className="hidden flex-col gap-3 text-sm text-muted-foreground sm:flex">
-                <button
-                  type="button"
-                  onMouseEnter={() => setFocusedSeries("income")}
-                  onMouseLeave={() => setFocusedSeries(null)}
-                  className={cn(
-                    "inline-flex items-center gap-2 text-left transition-all duration-200",
-                    highlightExpense && "opacity-55"
-                  )}
-                >
-                  <span className="size-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.45)]" />
-                  Income
-                </button>
-                <button
-                  type="button"
-                  onMouseEnter={() => setFocusedSeries("expense")}
-                  onMouseLeave={() => setFocusedSeries(null)}
-                  className={cn(
-                    "inline-flex items-center gap-2 text-left transition-all duration-200",
-                    highlightIncome && "opacity-55"
-                  )}
-                >
-                  <span className="size-2.5 rounded-full bg-indigo-400 shadow-[0_0_16px_rgba(129,140,248,0.4)]" />
-                  Expense
-                </button>
+      <CardContent className="pt-0">
+        <div className="rounded-[1.85rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0)_24%)] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <div className="mb-4 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <div className="rounded-2xl border border-white/8 bg-background/70 px-3.5 py-2.5">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
+                  Focus month
+                </p>
+                <p className="mt-1 text-sm font-medium text-foreground">{activeMonth}</p>
               </div>
+              <div className="rounded-2xl border border-emerald-500/10 bg-emerald-500/6 px-3.5 py-2.5">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-emerald-500/80 dark:text-emerald-400/80">
+                  Income
+                </p>
+                <p className="mt-1 text-sm font-semibold text-emerald-700 dark:text-emerald-300">{displayedIncome}</p>
+              </div>
+              <div className="rounded-2xl border border-indigo-500/10 bg-indigo-500/6 px-3.5 py-2.5">
+                <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-indigo-500/80 dark:text-indigo-300/80">
+                  Expense
+                </p>
+                <p className="mt-1 text-sm font-semibold text-indigo-700 dark:text-indigo-200">{displayedExpense}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5 self-start xl:self-auto">
+              <button
+                type="button"
+                onMouseEnter={() => setFocusedSeries("income")}
+                onMouseLeave={() => setFocusedSeries(null)}
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full border border-white/8 bg-background/62 px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all duration-150 hover:border-emerald-500/15 hover:text-foreground",
+                  highlightExpense && "opacity-55"
+                )}
+              >
+                <span className="size-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.34)]" />
+                Income
+              </button>
+              <button
+                type="button"
+                onMouseEnter={() => setFocusedSeries("expense")}
+                onMouseLeave={() => setFocusedSeries(null)}
+                className={cn(
+                  "inline-flex items-center gap-2 rounded-full border border-white/8 bg-background/62 px-3 py-1.5 text-sm font-medium text-muted-foreground transition-all duration-150 hover:border-indigo-500/15 hover:text-foreground",
+                  highlightIncome && "opacity-55"
+                )}
+              >
+                <span className="size-2.5 rounded-full bg-indigo-400 shadow-[0_0_16px_rgba(129,140,248,0.3)]" />
+                Expense
+              </button>
             </div>
           </div>
 
@@ -387,17 +411,6 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 </span>
               </div>
             </div>
-          </div>
-
-          <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground sm:hidden">
-            <span className="inline-flex items-center gap-2">
-              <span className="size-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.45)]" />
-              Income
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span className="size-2.5 rounded-full bg-indigo-400 shadow-[0_0_16px_rgba(129,140,248,0.4)]" />
-              Expense
-            </span>
           </div>
         </div>
       </CardContent>
