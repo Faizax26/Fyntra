@@ -123,6 +123,13 @@ body {
     background-image 280ms ease;
 }
 
+.dark body {
+  background-image:
+    radial-gradient(circle at top left, rgba(56, 87, 255, 0.2), transparent 24%),
+    radial-gradient(circle at top right, rgba(56, 189, 248, 0.12), transparent 24%),
+    linear-gradient(180deg, rgba(4, 10, 22, 0.98), rgba(8, 13, 24, 1));
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -322,6 +329,39 @@ a,
   opacity: 0.22;
 }
 
+@keyframes landing-grain-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(-1.5%, 1.5%, 0);
+  }
+  50% {
+    transform: translate3d(1%, -1%, 0);
+  }
+  75% {
+    transform: translate3d(1.5%, 1%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.landing-film-grain {
+  opacity: 0.08;
+  mix-blend-mode: soft-light;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.11) 0.7px, transparent 0.7px),
+    radial-gradient(rgba(148, 163, 184, 0.08) 0.8px, transparent 0.8px);
+  background-position: 0 0, 14px 14px;
+  background-size: 14px 14px, 18px 18px;
+  animation: landing-grain-shift 12s steps(6) infinite;
+}
+
+.dark .landing-film-grain {
+  opacity: 0.12;
+}
+
 @keyframes landing-preview-float {
   0%,
   100% {
@@ -493,6 +533,8 @@ a,
 }
 
 .landing-surface {
+  position: relative;
+  isolation: isolate;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 32%),
     var(--card);
@@ -505,4 +547,20 @@ a,
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 28%),
     var(--card);
+}
+
+.landing-surface::before {
+  content: "";
+  position: absolute;
+  inset: 1px 1px auto;
+  height: 34%;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), transparent 82%);
+  opacity: 0.85;
+  z-index: -1;
+}
+
+.dark .landing-surface::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), transparent 82%);
 }

@@ -13,9 +13,9 @@ describe("HomePage", () => {
       </Providers>
     );
 
-    expect(screen.getByRole("heading", { name: /take control of your money in one place/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /your money,\s*orchestrated\s*into one calm system/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /get started for free/i })).toHaveAttribute("href", "/app/dashboard");
-    expect(screen.getByText(/transactions tracked/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /the product assembles itself in layers/i })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Free" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Premium" })).toBeInTheDocument();
   });
