@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BrainCircuit, SendHorizontal, Sparkles, TrendingDown } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -10,12 +10,6 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 type Mode = "insights" | "chat";
-
-type ChatMessage = {
-  id: string;
-  role: "user" | "assistant";
-  text: string;
-};
 
 const STORAGE_KEY = "fyntra:ai-insight-mode";
 
@@ -57,19 +51,12 @@ function TypingDots() {
 export function AiInsight() {
   const [mode, setMode] = useState<Mode>("insights");
   const [inputValue, setInputValue] = useState("");
-  const [hasStartedChat, setHasStartedChat] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: "assistant-initial",
-      role: "assistant",
-      text: "I can help summarize spending patterns, budget risk, and quick savings opportunities."
-    }
-  ]);
-  const [typingMessageId, setTypingMessageId] = useState<string | null>(null);
-  const [typingTarget, setTypingTarget] = useState("");
-  const [typedText, setTypedText] = useState("");
-  const listRef = useRef<HTMLDivElement>(null);
+  const [submittedPrompt, setSubmittedPrompt] = useState("");
+  const [replyTarget, setReplyTarget] = useState("");
+  const [typedReply, setTypedReply] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const thinkingTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -84,39 +71,43 @@ export function AiInsight() {
   }, [mode]);
 
   useEffect(() => {
-    if (!typingMessageId) {
+    if (!replyTarget) {
       return;
     }
 
-    setTypedText("");
     let index = 0;
     const timer = window.setInterval(() => {
       index += 1;
-      setTypedText(typingTarget.slice(0, index));
+      setTypedReply(replyTarget.slice(0, index));
 
-      if (index >= typingTarget.length) {
+      if (index >= replyTarget.length) {
         window.clearInterval(timer);
-        setMessages((current) =>
-          current.map((message) => (message.id === typingMessageId ? { ...message, text: typingTarget } : message))
-        );
-        setTypingMessageId(null);
       }
     }, 18);
 
     return () => window.clearInterval(timer);
-  }, [typingMessageId, typingTarget]);
-
-  useEffect(() => {
-    if (typeof listRef.current?.scrollTo === "function") {
-      listRef.current.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
-    }
-  }, [messages, typedText, mode]);
+  }, [replyTarget]);
 
   useEffect(() => {
     if (mode === "chat") {
       inputRef.current?.focus();
     }
-  }, [mode, messages.length]);
+  }, [mode]);
+
+  useEffect(() => {
+    return () => {
+      if (thinkingTimerRef.current) {
+        window.clearTimeout(thinkingTimerRef.current);
+      }
+    };
+  }, []);
+
+  function handleChipSelect(prompt: string) {
+    setInputValue(prompt);
+    window.requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+  }
 
   function submitPrompt(prompt: string) {
     const trimmed = prompt.trim();
@@ -125,28 +116,23 @@ export function AiInsight() {
       return;
     }
 
-    const userMessage: ChatMessage = { id: `user-${Date.now()}`, role: "user", text: trimmed };
-    const assistantId = `assistant-${Date.now() + 1}`;
-    const reply = getAssistantReply(trimmed);
+    if (thinkingTimerRef.current) {
+      window.clearTimeout(thinkingTimerRef.current);
+    }
 
-    setHasStartedChat(true);
-    setMessages((current) => [...current, userMessage, { id: assistantId, role: "assistant", text: "" }]);
-    setTypingMessageId(assistantId);
-    setTypingTarget(reply);
+    setSubmittedPrompt(trimmed);
+    setReplyTarget("");
+    setTypedReply("");
+    setIsThinking(true);
     setInputValue("");
-    window.requestAnimationFrame(() => {
-      inputRef.current?.focus();
-    });
+    thinkingTimerRef.current = window.setTimeout(() => {
+      setIsThinking(false);
+      setReplyTarget(getAssistantReply(trimmed));
+      window.requestAnimationFrame(() => {
+        inputRef.current?.focus();
+      });
+    }, 280);
   }
-
-  const renderedMessages = useMemo(
-    () =>
-      messages.map((message) => ({
-        ...message,
-        text: typingMessageId === message.id ? typedText : message.text
-      })),
-    [messages, typedText, typingMessageId]
-  );
 
   return (
     <div className="h-full">
@@ -236,57 +222,35 @@ export function AiInsight() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-[1.9rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(56,87,255,0.05),rgba(255,255,255,0)_22%)] p-5 pb-8 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
-                <div className="flex items-start justify-between gap-3 rounded-[1.5rem] border border-white/8 bg-background/42 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Ask Fyntra AI</p>
-                    <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                      Get a fast read on spending pressure, budget risk, and your next best move.
-                    </p>
-                  </div>
-                  <span className="flex size-10 items-center justify-center rounded-2xl border border-primary/12 bg-primary/10 text-primary shadow-[0_14px_28px_-22px_rgba(56,87,255,0.42)]">
-                    <BrainCircuit className="size-4" />
-                  </span>
-                </div>
-
-                {!hasStartedChat ? (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {quickPrompts.map((prompt) => (
-                      <button
-                        key={prompt}
-                        type="button"
-                        onClick={() => submitPrompt(prompt)}
-                        className="rounded-full border border-white/8 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.28)]"
-                      >
-                        {prompt}
-                      </button>
-                    ))}
-                  </div>
-                ) : null}
-
-                <div
-                  ref={listRef}
-                  className={cn(
-                    "mt-4 space-y-3 overflow-y-auto rounded-[1.55rem] border border-white/8 bg-background/55 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] transition-[max-height] duration-300 ease-out",
-                    hasStartedChat ? "max-h-[280px]" : "max-h-[168px]"
-                  )}
-                >
-                  {renderedMessages.map((message) => (
-                    <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
-                      <div
-                        className={
-                          message.role === "user"
-                            ? "ai-insight-bubble max-w-[72%] rounded-[1.45rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
-                            : "ai-insight-bubble max-w-[74%] rounded-[1.45rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
-                        }
-                      >
-                        <div className="whitespace-pre-line leading-6">
-                          {message.text || <TypingDots />}
-                        </div>
-                      </div>
-                    </div>
+              <div className="rounded-[1.9rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(56,87,255,0.05),rgba(255,255,255,0)_22%)] p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
+                <div className="flex flex-wrap gap-2.5">
+                  {quickPrompts.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      onClick={() => handleChipSelect(prompt)}
+                      className="rounded-full border border-white/8 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.28)]"
+                    >
+                      {prompt}
+                    </button>
                   ))}
                 </div>
+
+                <p className="mt-3 text-xs text-muted-foreground">
+                  I can help with insights, risks, and savings ideas.
+                </p>
+
+                {(submittedPrompt || isThinking || typedReply) ? (
+                  <div className="mt-4 rounded-[1.45rem] border border-white/8 bg-background/50 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
+                      Latest request
+                    </p>
+                    <p className="mt-1 text-sm font-medium text-foreground/90">{submittedPrompt}</p>
+                    <div className="mt-3 rounded-[1.25rem] border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]">
+                      <div className="whitespace-pre-line leading-6">{isThinking ? <TypingDots /> : typedReply}</div>
+                    </div>
+                  </div>
+                ) : null}
 
                 <form
                   className="mt-4 flex items-center gap-2 rounded-[1.45rem] border border-primary/10 bg-background/78 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_24px_-20px_rgba(15,23,42,0.34)] transition-shadow duration-200 focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_28px_-18px_rgba(56,87,255,0.2)]"
