@@ -297,6 +297,55 @@ a,
   animation-delay: 80ms;
 }
 
+@keyframes cashflow-line-in {
+  from {
+    opacity: 0;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  to {
+    opacity: 1;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes cashflow-area-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cashflow-line {
+  animation: cashflow-line-in 850ms ease-out both;
+}
+
+.cashflow-line-delay-1 {
+  animation-delay: 40ms;
+}
+
+.cashflow-line-delay-2 {
+  animation-delay: 110ms;
+}
+
+.cashflow-area {
+  animation: cashflow-area-in 550ms ease-out both;
+  transform-origin: bottom center;
+}
+
+.cashflow-area-delay-1 {
+  animation-delay: 60ms;
+}
+
+.cashflow-area-delay-2 {
+  animation-delay: 120ms;
+}
+
 .surface-shell {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 22%), var(--surface-shell);
 }
