@@ -57,6 +57,7 @@ function TypingDots() {
 export function AiInsight() {
   const [mode, setMode] = useState<Mode>("insights");
   const [inputValue, setInputValue] = useState("");
+  const [hasStartedChat, setHasStartedChat] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "assistant-initial",
@@ -68,6 +69,7 @@ export function AiInsight() {
   const [typingTarget, setTypingTarget] = useState("");
   const [typedText, setTypedText] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY);
@@ -110,6 +112,12 @@ export function AiInsight() {
     }
   }, [messages, typedText, mode]);
 
+  useEffect(() => {
+    if (mode === "chat") {
+      inputRef.current?.focus();
+    }
+  }, [mode, messages.length]);
+
   function submitPrompt(prompt: string) {
     const trimmed = prompt.trim();
 
@@ -121,10 +129,14 @@ export function AiInsight() {
     const assistantId = `assistant-${Date.now() + 1}`;
     const reply = getAssistantReply(trimmed);
 
+    setHasStartedChat(true);
     setMessages((current) => [...current, userMessage, { id: assistantId, role: "assistant", text: "" }]);
     setTypingMessageId(assistantId);
     setTypingTarget(reply);
     setInputValue("");
+    window.requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
   }
 
   const renderedMessages = useMemo(
@@ -211,7 +223,7 @@ export function AiInsight() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-3xl border border-primary/10 bg-background/60 p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
+              <div className="rounded-3xl border border-primary/10 bg-background/60 p-5 pb-8 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-medium text-foreground">Ask Fyntra AI</p>
@@ -222,30 +234,35 @@ export function AiInsight() {
                   </span>
                 </div>
 
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {quickPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      type="button"
-                      onClick={() => submitPrompt(prompt)}
-                      className="rounded-full border border-border/70 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/18 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.3)]"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
+                {!hasStartedChat ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {quickPrompts.map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        onClick={() => submitPrompt(prompt)}
+                        className="rounded-full border border-border/70 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/18 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.3)]"
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
 
                 <div
                   ref={listRef}
-                  className="mt-4 max-h-[272px] space-y-3 overflow-y-auto rounded-[1.5rem] border border-border/70 bg-background/55 p-3"
+                  className={cn(
+                    "mt-4 space-y-3 overflow-y-auto rounded-[1.5rem] border border-border/70 bg-background/55 p-3.5 transition-[max-height] duration-300 ease-out",
+                    hasStartedChat ? "max-h-[280px]" : "max-h-[168px]"
+                  )}
                 >
                   {renderedMessages.map((message) => (
                     <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
                       <div
                         className={
                           message.role === "user"
-                            ? "ai-insight-bubble max-w-[88%] rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
-                            : "ai-insight-bubble max-w-[92%] rounded-[1.4rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
+                            ? "ai-insight-bubble max-w-[74%] rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
+                            : "ai-insight-bubble max-w-[76%] rounded-[1.4rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
                         }
                       >
                         <div className="whitespace-pre-line leading-6">
@@ -257,19 +274,20 @@ export function AiInsight() {
                 </div>
 
                 <form
-                  className="mt-4 flex items-center gap-2"
+                  className="mt-4 flex items-center gap-2 rounded-[1.35rem] border border-border/70 bg-background/74 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_10px_24px_-20px_rgba(15,23,42,0.34)]"
                   onSubmit={(event) => {
                     event.preventDefault();
                     submitPrompt(inputValue);
                   }}
                 >
                   <Input
+                    ref={inputRef}
                     value={inputValue}
                     onChange={(event) => setInputValue(event.target.value)}
                     placeholder="Ask about your spending..."
-                    className="rounded-2xl border-border/70 bg-background/82 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_8px_20px_-18px_rgba(15,23,42,0.28)] focus-visible:ring-primary/25"
+                    className="rounded-2xl border-border/70 bg-background/88 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] focus-visible:ring-primary/25"
                   />
-                  <Button type="submit" size="icon" className="rounded-2xl">
+                  <Button type="submit" size="icon" className="rounded-2xl shadow-sm transition-transform duration-200 hover:scale-[1.02]">
                     <SendHorizontal className="size-4" />
                   </Button>
                 </form>

@@ -62,12 +62,12 @@ export function FloatingActionFab() {
         aria-label="Close quick actions"
         tabIndex={open ? 0 : -1}
         className={cn(
-          "fixed inset-0 z-40 bg-slate-950/8 backdrop-blur-[0.8px] transition-opacity duration-200 ease-out",
+          "fixed inset-0 z-40 bg-slate-950/6 backdrop-blur-[0.6px] transition-opacity duration-200 ease-out",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         )}
         onClick={() => setOpen(false)}
       />
-      <div ref={containerRef} className="fixed bottom-5 right-6 z-50 flex flex-col items-end gap-3">
+      <div ref={containerRef} className="fixed bottom-8 right-5 z-50 flex flex-col items-end gap-3">
         <div className="flex flex-col items-end gap-3">
           {fabActions.map((action, index) => {
             const Icon = action.icon;
@@ -115,10 +115,10 @@ export function FloatingActionFab() {
           aria-expanded={open}
           onClick={() => setOpen((current) => !current)}
           className={cn(
-            "flex size-[52px] cursor-pointer items-center justify-center rounded-full outline-none transition duration-200 ease-out hover:scale-[1.03] active:scale-[0.97]",
+            "flex size-[48px] cursor-pointer items-center justify-center rounded-full outline-none transition duration-200 ease-out hover:scale-[1.02] active:scale-[0.97]",
             open
-              ? "bg-slate-900/88 text-white shadow-[0_14px_28px_-20px_rgba(15,23,42,0.38)] ring-1 ring-white/10 hover:bg-slate-900 dark:bg-slate-900/84"
-              : "bg-gradient-to-br from-primary/95 to-indigo-500/95 text-primary-foreground shadow-[0_18px_34px_-22px_rgba(56,87,255,0.48)] ring-1 ring-primary/15 hover:brightness-105"
+              ? "bg-slate-900/80 text-white shadow-[0_14px_28px_-20px_rgba(15,23,42,0.28)] ring-1 ring-white/10 hover:bg-slate-900/90 dark:bg-slate-900/80"
+              : "bg-gradient-to-br from-primary/92 to-indigo-500/92 text-primary-foreground shadow-[0_16px_30px_-22px_rgba(56,87,255,0.34)] ring-1 ring-primary/12 hover:brightness-[1.03]"
           )}
         >
           <span className={cn("transition-transform duration-200 ease-out", open && "rotate-45")}>

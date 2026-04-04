@@ -87,7 +87,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
   const width = 640;
   const height = 320;
   const paddingX = range === "12M" ? 22 : 28;
-  const paddingY = 24;
+  const paddingY = 20;
   const labels = visibleData.map((item) => item.month);
   const maxValue = Math.max(...visibleData.flatMap((item) => [item.income, item.expense]));
   const incomeValues = visibleData.map((item) => item.income);
@@ -125,23 +125,25 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
       : incomePoints[activeIndex]?.y ?? height - paddingY;
   const highlightIncome = activeSeries === "income";
   const highlightExpense = activeSeries === "expense";
+  const tooltipLeft = Math.min(Math.max((activePointX / width) * 100, 14), 86);
+  const tooltipTop = Math.min(Math.max((activePointY / height) * 100, 20), 88);
 
   return (
     <Card className="h-full overflow-hidden">
       <CardHeader>
-        <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <CardTitle>Cashflow trend</CardTitle>
-          <div className="flex items-center gap-3">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/15 bg-emerald-500/8 px-3 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+          <div className="flex items-center gap-2.5">
+            <div className="inline-flex h-8 items-center gap-2 rounded-full border border-emerald-500/15 bg-emerald-500/8 px-3 text-xs font-medium text-emerald-600 dark:text-emerald-400">
               <ArrowUpRight className="size-3.5" />
               {`${incomeDelta >= 0 ? "+" : ""}${incomeDelta.toFixed(0)}% vs previous month`}
             </div>
-            <div className="relative inline-flex rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+            <div className="relative inline-flex h-8 items-center rounded-full border border-border/70 bg-background/70 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
               <span
                 aria-hidden="true"
                 className={cn(
-                  "absolute bottom-1 top-1 rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.58)] transition-all duration-300 ease-out",
-                  range === "6M" ? "left-1 w-[47px]" : "left-[51px] w-[54px]"
+                  "absolute bottom-0.5 top-0.5 rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)] transition-all duration-300 ease-out",
+                  range === "6M" ? "left-0.5 w-[45px]" : "left-[49px] w-[52px]"
                 )}
               />
               {(["6M", "12M"] as RangeMode[]).map((option) => (
@@ -150,7 +152,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                   type="button"
                   onClick={() => setRange(option)}
                   className={cn(
-                    "relative rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200",
+                    "relative rounded-full px-3 py-1 text-xs font-medium transition-all duration-200",
                     range === option
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
@@ -165,22 +167,8 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
       </CardHeader>
       <CardContent>
         <div className="rounded-[1.75rem] border bg-background/55 p-4">
-          <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="rounded-2xl border border-border/70 bg-background/88 px-3.5 py-3 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl">
-                <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
-                <div className="mt-2 grid gap-1.5 text-sm">
-                  <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                    <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
-                    {formatCompactCurrency(activeIncome)}
-                  </span>
-                  <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
-                    <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
-                    {formatCompactCurrency(activeExpense)}
-                  </span>
-                </div>
-              </div>
-            </div>
+          <div className="mb-2 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+            <div />
             <div className="flex items-start gap-3 self-start lg:min-w-[220px] lg:justify-end">
               <div className="hidden flex-col gap-3 text-sm text-muted-foreground sm:flex">
                 <button
@@ -212,30 +200,30 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
           </div>
 
           <div className="relative">
-            <svg key={range} viewBox={`0 0 ${width} ${height}`} className="h-[320px] w-full" role="img" aria-label="Cashflow trend chart">
+            <svg key={range} viewBox={`0 0 ${width} ${height}`} className="h-[288px] w-full" role="img" aria-label="Cashflow trend chart">
               <defs>
                 <filter id="incomeGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur" />
                   <feMerge>
                     <feMergeNode in="coloredBlur" />
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
                 <filter id="expenseGlow" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                  <feGaussianBlur stdDeviation="5" result="coloredBlur" />
                   <feMerge>
                     <feMergeNode in="coloredBlur" />
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
                 <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgb(52 211 153)" stopOpacity="0.38" />
-                  <stop offset="75%" stopColor="rgb(16 185 129)" stopOpacity="0.08" />
+                  <stop offset="0%" stopColor="rgb(52 211 153)" stopOpacity="0.3" />
+                  <stop offset="75%" stopColor="rgb(16 185 129)" stopOpacity="0.07" />
                   <stop offset="100%" stopColor="rgb(16 185 129)" stopOpacity="0.02" />
                 </linearGradient>
                 <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="rgb(129 140 248)" stopOpacity="0.3" />
-                  <stop offset="72%" stopColor="rgb(99 102 241)" stopOpacity="0.08" />
+                  <stop offset="0%" stopColor="rgb(129 140 248)" stopOpacity="0.24" />
+                  <stop offset="72%" stopColor="rgb(99 102 241)" stopOpacity="0.07" />
                   <stop offset="100%" stopColor="rgb(99 102 241)" stopOpacity="0.02" />
                 </linearGradient>
               </defs>
@@ -250,7 +238,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                     y1={y}
                     x2={width - paddingX}
                     y2={y}
-                    stroke="rgba(148,163,184,0.12)"
+                    stroke="rgba(148,163,184,0.1)"
                     strokeDasharray="4 8"
                   />
                 );
@@ -260,17 +248,17 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <path d={expenseArea} fill="url(#expenseGradient)" className="cashflow-area cashflow-area-delay-2" />
 
               {highlightIncome ? (
-                <path d={incomeLine} fill="none" stroke="rgba(52,211,153,0.15)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={incomeLine} fill="none" stroke="rgba(52,211,153,0.12)" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
               ) : null}
               {highlightExpense ? (
-                <path d={expenseLine} fill="none" stroke="rgba(129,140,248,0.14)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={expenseLine} fill="none" stroke="rgba(129,140,248,0.12)" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
               ) : null}
 
               <path
                 d={incomeLine}
                 fill="none"
-                stroke="rgba(52,211,153,0.24)"
-                strokeWidth="9"
+                stroke="rgba(52,211,153,0.18)"
+                strokeWidth="8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#incomeGlow)"
@@ -279,8 +267,8 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <path
                 d={expenseLine}
                 fill="none"
-                stroke="rgba(129,140,248,0.22)"
-                strokeWidth="9"
+                stroke="rgba(129,140,248,0.16)"
+                strokeWidth="8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#expenseGlow)"
@@ -322,8 +310,8 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
 
               {incomePoints.map((point, index) => (
                 <g key={`income-${point.label}`}>
-                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 11 : 0} fill="rgba(52,211,153,0.18)" className="transition-all duration-200" />
-                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 5.4 : 3} fill="rgb(52 211 153)" className="transition-all duration-200" />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 12 : 0} fill="rgba(52,211,153,0.16)" className="transition-all duration-200" />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 5.8 : 3} fill="rgb(52 211 153)" className="transition-all duration-200" />
                   <circle
                     cx={point.x}
                     cy={point.y}
@@ -337,8 +325,8 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
 
               {expensePoints.map((point, index) => (
                 <g key={`expense-${point.label}`}>
-                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 11 : 0} fill="rgba(129,140,248,0.18)" className="transition-all duration-200" />
-                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 5.4 : 3} fill="rgb(129 140 248)" className="transition-all duration-200" />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 12 : 0} fill="rgba(129,140,248,0.16)" className="transition-all duration-200" />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 5.8 : 3} fill="rgb(129 140 248)" className="transition-all duration-200" />
                   <circle
                     cx={point.x}
                     cy={point.y}
@@ -368,31 +356,32 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               })}
             </svg>
 
-            {hovered ? (
-              <div
-                className="cashflow-tooltip pointer-events-none absolute z-10 min-w-[128px] rounded-2xl border border-border/70 bg-background/94 px-3 py-2.5 shadow-[0_18px_34px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl"
-                style={{
-                  left: `${(activePointX / width) * 100}%`,
-                  top: `${(activePointY / height) * 100}%`,
-                  transform: "translate(-50%, calc(-100% - 14px))"
-                }}
-              >
-                <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
-                <div className="mt-2 grid gap-1.5 text-sm">
-                  <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                    <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
-                    {formatCompactCurrency(activeIncome)}
-                  </span>
-                  <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
-                    <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
-                    {formatCompactCurrency(activeExpense)}
-                  </span>
-                </div>
+            <div
+              className={cn(
+                "cashflow-tooltip pointer-events-none absolute z-10 min-w-[128px] rounded-2xl border border-border/70 bg-background/94 px-3 py-2.5 shadow-[0_18px_34px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl transition-all duration-200",
+                hovered ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              )}
+              style={{
+                left: `${tooltipLeft}%`,
+                top: `${tooltipTop}%`,
+                transform: "translate(-50%, calc(-100% - 14px))"
+              }}
+            >
+              <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
+              <div className="mt-2 grid gap-1.5 text-sm">
+                <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
+                  <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
+                  {formatCompactCurrency(activeIncome)}
+                </span>
+                <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
+                  <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
+                  {formatCompactCurrency(activeExpense)}
+                </span>
               </div>
-            ) : null}
+            </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground sm:hidden">
+          <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-muted-foreground sm:hidden">
             <span className="inline-flex items-center gap-2">
               <span className="size-2.5 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.45)]" />
               Income
