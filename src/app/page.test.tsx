@@ -1,17 +1,22 @@
-import { describe, expect, it, vi } from "vitest";
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
-const redirect = vi.fn();
-
-vi.mock("next/navigation", () => ({
-  redirect
-}));
+import HomePage from "@/app/page";
+import { Providers } from "@/app/providers";
 
 describe("HomePage", () => {
-  it("redirects to /app/dashboard", async () => {
-    const { default: HomePage } = await import("@/app/page");
+  it("renders the landing page content", () => {
+    render(
+      <Providers>
+        <HomePage />
+      </Providers>
+    );
 
-    HomePage();
-
-    expect(redirect).toHaveBeenCalledWith("/app/dashboard");
+    expect(screen.getByRole("heading", { name: /your money,\s*orchestrated\s*into one calm system/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /get started for free/i })).toHaveAttribute("href", "/app/dashboard");
+    expect(screen.getByRole("heading", { name: /the product assembles itself in layers/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Free" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Premium" })).toBeInTheDocument();
   });
 });
