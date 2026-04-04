@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BrainCircuit, SendHorizontal, Sparkles, TrendingDown } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +10,12 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 type Mode = "insights" | "chat";
+
+type ChatMessage = {
+  id: string;
+  role: "user" | "assistant";
+  text: string;
+};
 
 const STORAGE_KEY = "fyntra:ai-insight-mode";
 
@@ -51,11 +57,13 @@ function TypingDots() {
 export function AiInsight() {
   const [mode, setMode] = useState<Mode>("insights");
   const [inputValue, setInputValue] = useState("");
-  const [submittedPrompt, setSubmittedPrompt] = useState("");
-  const [replyTarget, setReplyTarget] = useState("");
-  const [typedReply, setTypedReply] = useState("");
-  const [isThinking, setIsThinking] = useState(false);
+  const [hasStartedChat, setHasStartedChat] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [typingMessageId, setTypingMessageId] = useState<string | null>(null);
+  const [typingTarget, setTypingTarget] = useState("");
+  const [typedText, setTypedText] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const thinkingTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -71,28 +79,39 @@ export function AiInsight() {
   }, [mode]);
 
   useEffect(() => {
-    if (!replyTarget) {
+    if (!typingMessageId) {
       return;
     }
 
+    setTypedText("");
     let index = 0;
     const timer = window.setInterval(() => {
       index += 1;
-      setTypedReply(replyTarget.slice(0, index));
+      setTypedText(typingTarget.slice(0, index));
 
-      if (index >= replyTarget.length) {
+      if (index >= typingTarget.length) {
         window.clearInterval(timer);
+        setMessages((current) =>
+          current.map((message) => (message.id === typingMessageId ? { ...message, text: typingTarget } : message))
+        );
+        setTypingMessageId(null);
       }
     }, 18);
 
     return () => window.clearInterval(timer);
-  }, [replyTarget]);
+  }, [typingMessageId, typingTarget]);
 
   useEffect(() => {
     if (mode === "chat") {
       inputRef.current?.focus();
     }
   }, [mode]);
+
+  useEffect(() => {
+    if (typeof listRef.current?.scrollTo === "function") {
+      listRef.current.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+    }
+  }, [messages, typedText, mode]);
 
   useEffect(() => {
     return () => {
@@ -103,10 +122,7 @@ export function AiInsight() {
   }, []);
 
   function handleChipSelect(prompt: string) {
-    setInputValue(prompt);
-    window.requestAnimationFrame(() => {
-      inputRef.current?.focus();
-    });
+    submitPrompt(prompt);
   }
 
   function submitPrompt(prompt: string) {
@@ -120,19 +136,32 @@ export function AiInsight() {
       window.clearTimeout(thinkingTimerRef.current);
     }
 
-    setSubmittedPrompt(trimmed);
-    setReplyTarget("");
-    setTypedReply("");
-    setIsThinking(true);
+    const userMessage: ChatMessage = { id: `user-${Date.now()}`, role: "user", text: trimmed };
+    const assistantId = `assistant-${Date.now() + 1}`;
+
+    setHasStartedChat(true);
+    setMessages((current) => [...current, userMessage, { id: assistantId, role: "assistant", text: "" }]);
+    setTypingMessageId(null);
+    setTypingTarget("");
+    setTypedText("");
     setInputValue("");
     thinkingTimerRef.current = window.setTimeout(() => {
-      setIsThinking(false);
-      setReplyTarget(getAssistantReply(trimmed));
+      setTypingMessageId(assistantId);
+      setTypingTarget(getAssistantReply(trimmed));
       window.requestAnimationFrame(() => {
         inputRef.current?.focus();
       });
     }, 280);
   }
+
+  const renderedMessages = useMemo(
+    () =>
+      messages.map((message) => ({
+        ...message,
+        text: typingMessageId === message.id ? typedText : message.text
+      })),
+    [messages, typedText, typingMessageId]
+  );
 
   return (
     <div className="h-full">
@@ -240,15 +269,24 @@ export function AiInsight() {
                   I can help with insights, risks, and savings ideas.
                 </p>
 
-                {(submittedPrompt || isThinking || typedReply) ? (
-                  <div className="mt-4 rounded-[1.45rem] border border-white/8 bg-background/50 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-                    <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-muted-foreground/80">
-                      Latest request
-                    </p>
-                    <p className="mt-1 text-sm font-medium text-foreground/90">{submittedPrompt}</p>
-                    <div className="mt-3 rounded-[1.25rem] border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]">
-                      <div className="whitespace-pre-line leading-6">{isThinking ? <TypingDots /> : typedReply}</div>
-                    </div>
+                {hasStartedChat ? (
+                  <div
+                    ref={listRef}
+                    className="mt-4 max-h-[240px] space-y-3 overflow-y-auto rounded-[1.45rem] border border-white/8 bg-background/50 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]"
+                  >
+                    {renderedMessages.map((message) => (
+                      <div key={message.id} className={message.role === "user" ? "flex justify-end" : "flex justify-start"}>
+                        <div
+                          className={
+                            message.role === "user"
+                              ? "ai-insight-bubble max-w-[72%] rounded-[1.45rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
+                              : "ai-insight-bubble max-w-[74%] rounded-[1.45rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
+                          }
+                        >
+                          <div className="whitespace-pre-line leading-6">{message.text || <TypingDots />}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ) : null}
 
@@ -267,8 +305,9 @@ export function AiInsight() {
                     className="rounded-2xl border-white/0 bg-transparent shadow-none focus-visible:ring-primary/25"
                   />
                   <Button
-                    type="submit"
+                    type="button"
                     size="icon"
+                    onClick={() => submitPrompt(inputValue)}
                     className="rounded-2xl bg-gradient-to-br from-primary to-indigo-500 shadow-[0_14px_26px_-18px_rgba(56,87,255,0.46)] transition-all duration-200 hover:scale-[1.02] hover:brightness-105"
                   >
                     <SendHorizontal className="size-4" />
