@@ -164,8 +164,8 @@ export function AiInsight() {
   );
 
   return (
-    <div className="relative z-[2] min-w-0 h-full">
-      <Card className="relative z-[2] min-w-0 h-full overflow-hidden border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.16),transparent_32%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.08),transparent_44%),linear-gradient(180deg,rgba(56,87,255,0.06),rgba(255,255,255,0)_78%)] shadow-[0_24px_54px_-34px_rgba(56,87,255,0.32)]">
+    <div className="h-full">
+      <Card className="h-full overflow-hidden border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.16),transparent_32%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.08),transparent_44%),linear-gradient(180deg,rgba(56,87,255,0.06),rgba(255,255,255,0)_78%)] shadow-[0_24px_54px_-34px_rgba(56,87,255,0.32)]">
         <CardHeader className="relative pb-5">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.16),transparent_54%),linear-gradient(180deg,rgba(56,87,255,0.05),transparent_78%)]" />
           <div className="relative flex flex-wrap items-center justify-between gap-4">
@@ -251,7 +251,7 @@ export function AiInsight() {
                 </div>
               </div>
             ) : (
-              <div className="relative z-[3] rounded-[1.9rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(56,87,255,0.05),rgba(255,255,255,0)_22%)] p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
+              <div className="rounded-[1.9rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(56,87,255,0.05),rgba(255,255,255,0)_22%)] p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
                 {!hasStartedChat ? (
                   <div className="flex flex-wrap gap-2.5">
                     {quickPrompts.map((prompt) => (
@@ -293,7 +293,7 @@ export function AiInsight() {
                 ) : null}
 
                 <form
-                  className="relative z-[4] mt-4 flex items-center gap-2 rounded-[1.45rem] border border-primary/10 bg-background/78 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_24px_-20px_rgba(15,23,42,0.34)] transition-shadow duration-200 focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_28px_-18px_rgba(56,87,255,0.2)]"
+                  className="mt-4 flex items-center gap-2 rounded-[1.45rem] border border-primary/10 bg-background/78 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_12px_24px_-20px_rgba(15,23,42,0.34)] transition-shadow duration-200 focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_16px_28px_-18px_rgba(56,87,255,0.2)]"
                   onSubmit={(event) => {
                     event.preventDefault();
                     submitPrompt(inputValue);
@@ -304,13 +304,13 @@ export function AiInsight() {
                     value={inputValue}
                     onChange={(event) => setInputValue(event.target.value)}
                     placeholder="Ask anything about your money..."
-                    className="relative z-[5] rounded-2xl border-white/0 bg-transparent shadow-none focus-visible:ring-primary/25"
+                    className="rounded-2xl border-white/0 bg-transparent shadow-none focus-visible:ring-primary/25"
                   />
                   <Button
                     type="button"
                     size="icon"
                     onClick={() => submitPrompt(inputValue)}
-                    className="relative z-[5] rounded-2xl bg-gradient-to-br from-primary to-indigo-500 shadow-[0_14px_26px_-18px_rgba(56,87,255,0.46)] transition-all duration-200 hover:scale-[1.02] hover:brightness-105"
+                    className="rounded-2xl bg-gradient-to-br from-primary to-indigo-500 shadow-[0_14px_26px_-18px_rgba(56,87,255,0.46)] transition-all duration-200 hover:scale-[1.02] hover:brightness-105"
                   >
                     <SendHorizontal className="size-4" />
                   </Button>
