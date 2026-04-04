@@ -151,8 +151,8 @@ export function AiInsight() {
   return (
     <div className="h-full">
       <Card className="h-full overflow-hidden border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.12),transparent_30%),linear-gradient(180deg,rgba(56,87,255,0.06),transparent_72%)] shadow-[0_24px_54px_-34px_rgba(56,87,255,0.32)]">
-        <CardHeader className="relative">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.24),transparent_58%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_54%),linear-gradient(180deg,rgba(56,87,255,0.08),transparent_78%)]" />
+        <CardHeader className="relative pb-6">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.22),transparent_58%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.12),transparent_54%),linear-gradient(180deg,rgba(56,87,255,0.07),transparent_78%)]" />
           <div className="relative flex flex-wrap items-center justify-between gap-3">
             <div className="flex min-w-0 flex-1 items-center gap-3">
               <CardTitle className="text-[1.05rem]">Fyntra AI</CardTitle>
@@ -182,7 +182,7 @@ export function AiInsight() {
             </span>
           </div>
         </CardHeader>
-        <CardContent className="space-y-5 pt-2">
+        <CardContent className="space-y-5 pt-6">
           <div key={mode} className="ai-insight-mode-panel">
             {mode === "insights" ? (
               <div className="space-y-5">
@@ -224,7 +224,7 @@ export function AiInsight() {
                 </div>
               </div>
             ) : (
-              <div className="rounded-3xl border border-primary/10 bg-background/60 p-5 pb-8 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
+              <div className="rounded-3xl border border-primary/10 bg-background/60 p-5 pb-9 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <p className="text-sm font-medium text-foreground">Ask Fyntra AI</p>
@@ -262,8 +262,8 @@ export function AiInsight() {
                       <div
                         className={
                           message.role === "user"
-                            ? "ai-insight-bubble max-w-[74%] rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
-                            : "ai-insight-bubble max-w-[76%] rounded-[1.4rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
+                            ? "ai-insight-bubble max-w-[72%] rounded-[1.4rem] rounded-br-md bg-primary px-4 py-3 text-sm text-primary-foreground shadow-[0_16px_34px_-24px_rgba(56,87,255,0.38)]"
+                            : "ai-insight-bubble max-w-[74%] rounded-[1.4rem] rounded-bl-md border border-primary/12 bg-[linear-gradient(180deg,rgba(56,87,255,0.1),rgba(56,87,255,0.02)_100%)] px-4 py-3 text-sm text-foreground shadow-[0_16px_34px_-28px_rgba(15,23,42,0.24)]"
                         }
                       >
                         <div className="whitespace-pre-line leading-6">
@@ -275,7 +275,7 @@ export function AiInsight() {
                 </div>
 
                 <form
-                  className="mt-4 flex items-center gap-2 rounded-[1.35rem] border border-border/70 bg-background/74 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_10px_24px_-20px_rgba(15,23,42,0.34)]"
+                  className="mt-3 flex items-center gap-2 rounded-[1.35rem] border border-border/70 bg-background/74 p-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_10px_24px_-20px_rgba(15,23,42,0.34)]"
                   onSubmit={(event) => {
                     event.preventDefault();
                     submitPrompt(inputValue);

@@ -87,7 +87,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
   const width = 640;
   const height = 320;
   const paddingX = range === "12M" ? 22 : 28;
-  const paddingY = 20;
+  const paddingY = 18;
   const labels = visibleData.map((item) => item.month);
   const maxValue = Math.max(...visibleData.flatMap((item) => [item.income, item.expense]));
   const incomeValues = visibleData.map((item) => item.income);
@@ -138,13 +138,13 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <ArrowUpRight className="size-3.5" />
               {`${incomeDelta >= 0 ? "+" : ""}${incomeDelta.toFixed(0)}% vs previous month`}
             </div>
-            <div className="relative inline-grid h-8 w-[102px] grid-cols-2 items-center rounded-full border border-border/70 bg-background/70 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+            <div className="relative inline-grid h-8 w-[112px] grid-cols-2 items-center rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
               <span
                 aria-hidden="true"
-                className={cn(
-                  "absolute bottom-0.5 top-0.5 rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)] transition-all duration-300 ease-out",
-                  range === "6M" ? "left-0.5 w-[50px]" : "left-[51px] w-[50px]"
-                )}
+                className="absolute bottom-1 left-1 top-1 w-[calc(50%-6px)] rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)] transition-transform duration-300 ease-out"
+                style={{
+                  transform: range === "12M" ? "translateX(calc(100% + 4px))" : "translateX(0)"
+                }}
               />
               {(["6M", "12M"] as RangeMode[]).map((option) => (
                 <button
@@ -152,7 +152,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                   type="button"
                   onClick={() => setRange(option)}
                   className={cn(
-                    "relative flex h-full w-[50px] items-center justify-center rounded-full px-0 py-1 text-xs font-medium transition-all duration-200",
+                    "relative flex h-full w-full items-center justify-center rounded-full px-0 py-1 text-xs font-medium transition-all duration-200",
                     range === option
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"
@@ -200,7 +200,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
           </div>
 
           <div className="relative">
-            <svg key={range} viewBox={`0 0 ${width} ${height}`} className="h-[288px] w-full" role="img" aria-label="Cashflow trend chart">
+            <svg key={range} viewBox={`0 0 ${width} ${height}`} className="h-[284px] w-full" role="img" aria-label="Cashflow trend chart">
               <defs>
                 <filter id="incomeGlow" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur stdDeviation="5" result="coloredBlur" />
@@ -262,7 +262,11 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#incomeGlow)"
-                className={cn("cashflow-line-shadow cashflow-line-delay-1", hovered && !highlightIncome && "opacity-40")}
+                className={cn(
+                  "cashflow-line-shadow cashflow-line-delay-1 transition-all duration-200",
+                  highlightIncome && "opacity-100",
+                  hovered && !highlightIncome && "opacity-35"
+                )}
               />
               <path
                 d={expenseLine}
@@ -272,7 +276,11 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 filter="url(#expenseGlow)"
-                className={cn("cashflow-line-shadow cashflow-line-delay-2", hovered && !highlightExpense && "opacity-40")}
+                className={cn(
+                  "cashflow-line-shadow cashflow-line-delay-2 transition-all duration-200",
+                  highlightExpense && "opacity-100",
+                  hovered && !highlightExpense && "opacity-35"
+                )}
               />
               <path
                 d={incomeLine}
