@@ -22,7 +22,7 @@ const socialLinks = [
 
 export function LandingFooter() {
   return (
-    <footer className="relative border-t border-border/70 px-4 pb-10 pt-12 sm:px-6 lg:px-8">
+    <footer className="relative border-t border-border/70 px-4 pb-10 pt-14 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[linear-gradient(180deg,rgba(56,87,255,0.08),transparent)] dark:bg-[linear-gradient(180deg,rgba(56,87,255,0.1),transparent)]" />
       <LandingReveal className="mx-auto max-w-7xl">
         <LandingStagger className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]" stagger={0.08}>

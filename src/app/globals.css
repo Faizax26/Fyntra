@@ -438,6 +438,35 @@ a,
   will-change: transform;
 }
 
+@keyframes landing-ribbon-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.03);
+  }
+}
+
+.landing-ribbon {
+  animation: landing-ribbon-drift 16s ease-in-out infinite;
+  opacity: 0.88;
+}
+
+.landing-ribbon-primary {
+  background: linear-gradient(90deg, rgba(56, 87, 255, 0.2), rgba(56, 189, 248, 0.12), rgba(168, 85, 247, 0.12));
+}
+
+.landing-ribbon-secondary {
+  animation-delay: 2s;
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.14), rgba(56, 87, 255, 0.16), rgba(236, 72, 153, 0.1));
+}
+
+.landing-ribbon-accent {
+  animation-delay: 4s;
+  background: linear-gradient(90deg, rgba(56, 189, 248, 0.14), rgba(56, 87, 255, 0.16), rgba(244, 114, 182, 0.08));
+}
+
 .landing-surface {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 32%),

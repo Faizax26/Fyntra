@@ -46,7 +46,7 @@ export function LandingFaq() {
 
             return (
               <LandingMotionItem key={item.question}>
-                <Card className="border-border/70 bg-card/78 p-2 backdrop-blur-xl">
+                <Card className="border-border/70 bg-card/78 p-2 backdrop-blur-xl transition-all duration-200 hover:border-primary/16 hover:shadow-[0_22px_48px_-38px_rgba(56,87,255,0.18)]">
                   <button
                     type="button"
                     onClick={() => setOpenItem(isOpen ? -1 : index)}

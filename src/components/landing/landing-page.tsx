@@ -45,10 +45,12 @@ const features = [
 export function LandingPage() {
   return (
     <div className="landing-shell relative min-h-screen overflow-x-clip bg-background">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[46rem] bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.22),transparent_32%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.16),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.76),rgba(247,249,252,0))] dark:bg-[radial-gradient(circle_at_top_left,rgba(87,112,255,0.22),transparent_34%),radial-gradient(circle_at_top_right,rgba(56,189,248,0.12),transparent_28%),linear-gradient(180deg,rgba(9,17,31,0.68),rgba(9,17,31,0))]" />
-      <div className="pointer-events-none absolute left-[22%] top-28 h-72 w-72 rounded-full bg-primary/12 blur-[110px]" />
-      <div className="pointer-events-none absolute right-[14%] top-44 h-80 w-80 rounded-full bg-sky-400/10 blur-[120px]" />
-      <div className="pointer-events-none absolute inset-x-0 top-[32rem] h-64 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.35),transparent)] dark:bg-[linear-gradient(180deg,transparent,rgba(148,163,184,0.08),transparent)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[48rem] bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.22),transparent_32%),radial-gradient(circle_at_top_right,rgba(14,165,233,0.16),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.76),rgba(247,249,252,0))] dark:bg-[radial-gradient(circle_at_top_left,rgba(87,112,255,0.28),transparent_30%),radial-gradient(circle_at_top_right,rgba(168,85,247,0.18),transparent_26%),linear-gradient(180deg,rgba(6,12,24,0.96),rgba(9,17,31,0))]" />
+      <div className="pointer-events-none absolute left-[16%] top-16 h-96 w-96 rounded-full bg-primary/14 blur-[130px]" />
+      <div className="pointer-events-none absolute right-[10%] top-28 h-[28rem] w-[28rem] rounded-full bg-sky-400/10 blur-[150px]" />
+      <div className="pointer-events-none absolute right-[22%] top-[26rem] h-64 w-64 rounded-full bg-fuchsia-500/10 blur-[130px]" />
+      <div className="pointer-events-none absolute inset-x-0 top-[40rem] h-72 bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.18),transparent)] dark:bg-[linear-gradient(180deg,transparent,rgba(80,96,255,0.1),transparent)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-[78rem] h-80 bg-[radial-gradient(circle_at_center,rgba(56,87,255,0.08),transparent_64%)] dark:bg-[radial-gradient(circle_at_center,rgba(56,87,255,0.14),transparent_62%)]" />
       <LandingNavbar />
       <main className="relative z-10 pt-2">
         <LandingHero />

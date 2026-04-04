@@ -41,9 +41,9 @@ export function LandingPricing() {
             <LandingMotionItem key={plan.name}>
               <Card
                 className={cn(
-                  "border-border/70 p-7 backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:shadow-[0_26px_52px_-34px_rgba(56,87,255,0.2)] lg:p-8",
+                  "border-border/70 p-7 backdrop-blur-xl transition-all duration-200 hover:-translate-y-1 hover:border-primary/18 hover:shadow-[0_30px_58px_-36px_rgba(56,87,255,0.22)] lg:p-8",
                   plan.highlight
-                    ? "bg-[linear-gradient(180deg,rgba(56,87,255,0.16),rgba(247,249,252,0.88))] ring-1 ring-primary/20 dark:bg-[linear-gradient(180deg,rgba(56,87,255,0.18),rgba(9,17,31,0.9))]"
+                    ? "bg-[linear-gradient(180deg,rgba(56,87,255,0.16),rgba(247,249,252,0.88))] ring-1 ring-primary/20 dark:bg-[linear-gradient(180deg,rgba(56,87,255,0.2),rgba(9,17,31,0.92))]"
                     : "bg-card/76"
                 )}
               >
@@ -60,7 +60,7 @@ export function LandingPricing() {
                 </div>
                 <div className="mt-6 space-y-2.5">
                   {plan.features.map((feature) => (
-                    <div key={feature} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/68 px-4 py-3">
+                    <div key={feature} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/60 px-4 py-3">
                       <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
                         <Check className="size-4" />
                       </span>
