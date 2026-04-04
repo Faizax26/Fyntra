@@ -153,11 +153,18 @@ export const dashboardSnapshot: DashboardSnapshot = {
     { id: "goal-3", name: "New MacBook", current: 7400000, target: 25000000, deadline: "2026-02-01T00:00:00.000Z" }
   ],
   cashflow: [
-    { month: "Nov", income: 12.5, expense: 7.2 },
-    { month: "Dec", income: 13.8, expense: 8.3 },
-    { month: "Jan", income: 15.1, expense: 8.9 },
-    { month: "Feb", income: 14.4, expense: 8.1 },
-    { month: "Mar", income: 16.8, expense: 7.4 }
+    { month: "Jan", income: 12.8, expense: 7.4 },
+    { month: "Feb", income: 13.6, expense: 8.1 },
+    { month: "Mar", income: 14.2, expense: 7.8 },
+    { month: "Apr", income: 13.9, expense: 8.6 },
+    { month: "May", income: 15.1, expense: 8.9 },
+    { month: "Jun", income: 14.7, expense: 8.3 },
+    { month: "Jul", income: 15.9, expense: 9.1 },
+    { month: "Aug", income: 16.4, expense: 8.8 },
+    { month: "Sep", income: 15.6, expense: 8.2 },
+    { month: "Oct", income: 16.1, expense: 8.5 },
+    { month: "Nov", income: 16.9, expense: 8.1 },
+    { month: "Dec", income: 17.8, expense: 7.6 }
   ],
   quickActions: [
     { id: "add-transaction", label: "Add transaction", description: "Record today's spending or income." },

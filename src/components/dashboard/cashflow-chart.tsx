@@ -1,12 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatCompactCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { CashflowPoint } from "@/lib/types";
+
+type RangeMode = "6M" | "12M";
 
 type ChartPoint = {
   x: number;
@@ -35,8 +37,31 @@ function buildPoints(
   }));
 }
 
-function buildLinePath(points: ChartPoint[]) {
-  return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
+function buildSmoothLinePath(points: ChartPoint[]) {
+  if (points.length < 2) {
+    return points.length === 1 ? `M ${points[0]!.x} ${points[0]!.y}` : "";
+  }
+
+  const first = points[0]!;
+  const commands = [`M ${first.x} ${first.y}`];
+
+  for (let index = 0; index < points.length - 1; index += 1) {
+    const current = points[index]!;
+    const next = points[index + 1]!;
+    const previous = points[index - 1] ?? current;
+    const following = points[index + 2] ?? next;
+
+    const controlPoint1X = current.x + (next.x - previous.x) / 6;
+    const controlPoint1Y = current.y + (next.y - previous.y) / 6;
+    const controlPoint2X = next.x - (following.x - current.x) / 6;
+    const controlPoint2Y = next.y - (following.y - current.y) / 6;
+
+    commands.push(
+      `C ${controlPoint1X.toFixed(2)} ${controlPoint1Y.toFixed(2)} ${controlPoint2X.toFixed(2)} ${controlPoint2Y.toFixed(2)} ${next.x.toFixed(2)} ${next.y.toFixed(2)}`
+    );
+  }
+
+  return commands.join(" ");
 }
 
 function buildAreaPath(points: ChartPoint[], baselineY: number) {
@@ -44,21 +69,33 @@ function buildAreaPath(points: ChartPoint[], baselineY: number) {
     return "";
   }
 
-  return `${buildLinePath(points)} L ${points[points.length - 1]!.x} ${baselineY} L ${points[0]!.x} ${baselineY} Z`;
+  return `${buildSmoothLinePath(points)} L ${points[points.length - 1]!.x} ${baselineY} L ${points[0]!.x} ${baselineY} Z`;
 }
 
 export function CashflowChart({ data }: { data: CashflowPoint[] }) {
+  const [range, setRange] = useState<RangeMode>("12M");
   const [hovered, setHovered] = useState<{ index: number; series: "income" | "expense" } | null>(null);
+
+  const visibleData = useMemo(() => (range === "6M" ? data.slice(-6) : data), [data, range]);
+
+  useEffect(() => {
+    setHovered(null);
+  }, [range]);
 
   const width = 640;
   const height = 320;
-  const paddingX = 28;
+  const paddingX = range === "12M" ? 22 : 28;
   const paddingY = 24;
-  const labels = data.map((item) => item.month);
-  const maxValue = Math.max(...data.flatMap((item) => [item.income, item.expense]));
-  const incomeValues = data.map((item) => item.income);
-  const expenseValues = data.map((item) => item.expense);
-  const incomeDelta = data.length > 1 ? ((data[data.length - 1]!.income - data[data.length - 2]!.income) / data[data.length - 2]!.income) * 100 : 0;
+  const labels = visibleData.map((item) => item.month);
+  const maxValue = Math.max(...visibleData.flatMap((item) => [item.income, item.expense]));
+  const incomeValues = visibleData.map((item) => item.income);
+  const expenseValues = visibleData.map((item) => item.expense);
+  const incomeDelta =
+    visibleData.length > 1
+      ? ((visibleData[visibleData.length - 1]!.income - visibleData[visibleData.length - 2]!.income) /
+          visibleData[visibleData.length - 2]!.income) *
+        100
+      : 0;
 
   const { incomePoints, expensePoints, incomeLine, expenseLine, incomeArea, expenseArea } = useMemo(() => {
     const nextIncomePoints = buildPoints(incomeValues, labels, width, height, paddingX, paddingY, maxValue);
@@ -67,18 +104,18 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
     return {
       incomePoints: nextIncomePoints,
       expensePoints: nextExpensePoints,
-      incomeLine: buildLinePath(nextIncomePoints),
-      expenseLine: buildLinePath(nextExpensePoints),
+      incomeLine: buildSmoothLinePath(nextIncomePoints),
+      expenseLine: buildSmoothLinePath(nextExpensePoints),
       incomeArea: buildAreaPath(nextIncomePoints, height - paddingY),
       expenseArea: buildAreaPath(nextExpensePoints, height - paddingY)
     };
-  }, [expenseValues, incomeValues, labels, maxValue]);
+  }, [expenseValues, incomeValues, labels, maxValue, paddingX]);
 
-  const activeIndex = hovered?.index ?? data.length - 1;
+  const activeIndex = hovered?.index ?? visibleData.length - 1;
+  const activeIncome = visibleData[activeIndex]?.income ?? 0;
+  const activeExpense = visibleData[activeIndex]?.expense ?? 0;
+  const activeMonth = visibleData[activeIndex]?.month ?? "";
   const activePointX = incomePoints[activeIndex]?.x ?? paddingX;
-  const activeIncome = data[activeIndex]?.income ?? 0;
-  const activeExpense = data[activeIndex]?.expense ?? 0;
-  const activeMonth = data[activeIndex]?.month ?? "";
   const highlightIncome = hovered?.series === "income";
   const highlightExpense = hovered?.series === "expense";
 
@@ -86,13 +123,36 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
     <Card className="h-full overflow-hidden">
       <CardHeader>
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <CardTitle>Cashflow trend</CardTitle>
-            <CardDescription>Monthly inflow versus outflow in compact millions of Rupiah.</CardDescription>
-          </div>
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/15 bg-emerald-500/8 px-3 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
-            <ArrowUpRight className="size-3.5" />
-            {`${incomeDelta >= 0 ? "+" : ""}${incomeDelta.toFixed(0)}% vs last month`}
+          <CardTitle>Cashflow trend</CardTitle>
+          <div className="flex items-center gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/15 bg-emerald-500/8 px-3 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+              <ArrowUpRight className="size-3.5" />
+              {`${incomeDelta >= 0 ? "+" : ""}${incomeDelta.toFixed(0)}% vs previous month`}
+            </div>
+            <div className="relative inline-flex rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute bottom-1 top-1 rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.58)] transition-all duration-300 ease-out",
+                  range === "6M" ? "left-1 w-[47px]" : "left-[51px] w-[54px]"
+                )}
+              />
+              {(["6M", "12M"] as RangeMode[]).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => setRange(option)}
+                  className={cn(
+                    "relative rounded-full px-3 py-1.5 text-xs font-medium transition-all duration-200",
+                    range === option
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </CardHeader>
@@ -100,8 +160,8 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
         <div className="rounded-[1.75rem] border bg-background/55 p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <p className="text-sm font-medium text-foreground">Income growing faster than expenses</p>
-              <p className="mt-1 text-xs text-muted-foreground">The current curve shows healthier operating room than last month.</p>
+              <p className="text-sm font-medium text-foreground">Income momentum is improving while expenses remain controlled, widening monthly surplus.</p>
+              <p className="mt-1 text-xs text-muted-foreground">Switch views to compare recent acceleration against the full-year trend.</p>
             </div>
             <div className="hidden items-center gap-4 text-sm text-muted-foreground sm:flex">
               <span className="inline-flex items-center gap-2">
@@ -114,9 +174,24 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               </span>
             </div>
           </div>
+
           <div className="relative">
-            <svg viewBox={`0 0 ${width} ${height}`} className="h-[320px] w-full" role="img" aria-label="Cashflow trend chart">
+            <svg key={range} viewBox={`0 0 ${width} ${height}`} className="h-[320px] w-full" role="img" aria-label="Cashflow trend chart">
               <defs>
+                <filter id="incomeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="expenseGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
                 <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="rgb(52 211 153)" stopOpacity="0.38" />
                   <stop offset="75%" stopColor="rgb(16 185 129)" stopOpacity="0.08" />
@@ -139,7 +214,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                     y1={y}
                     x2={width - paddingX}
                     y2={y}
-                    stroke="rgba(148,163,184,0.16)"
+                    stroke="rgba(148,163,184,0.12)"
                     strokeDasharray="4 8"
                   />
                 );
@@ -149,12 +224,32 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <path d={expenseArea} fill="url(#expenseGradient)" className="cashflow-area cashflow-area-delay-2" />
 
               {highlightIncome ? (
-                <path d={incomeLine} fill="none" stroke="rgba(52,211,153,0.22)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={incomeLine} fill="none" stroke="rgba(52,211,153,0.15)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
               ) : null}
               {highlightExpense ? (
-                <path d={expenseLine} fill="none" stroke="rgba(129,140,248,0.2)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
+                <path d={expenseLine} fill="none" stroke="rgba(129,140,248,0.14)" strokeWidth="10" strokeLinecap="round" strokeLinejoin="round" />
               ) : null}
 
+              <path
+                d={incomeLine}
+                fill="none"
+                stroke="rgba(52,211,153,0.34)"
+                strokeWidth="9"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#incomeGlow)"
+                className={cn("cashflow-line-shadow cashflow-line-delay-1", hovered && !highlightIncome && "opacity-40")}
+              />
+              <path
+                d={expenseLine}
+                fill="none"
+                stroke="rgba(129,140,248,0.28)"
+                strokeWidth="9"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#expenseGlow)"
+                className={cn("cashflow-line-shadow cashflow-line-delay-2", hovered && !highlightExpense && "opacity-40")}
+              />
               <path
                 d={incomeLine}
                 fill="none"
@@ -162,7 +257,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="cashflow-line cashflow-line-delay-1"
+                className={cn("cashflow-line cashflow-line-delay-1 transition-opacity duration-200", hovered && !highlightIncome && "opacity-45")}
               />
               <path
                 d={expenseLine}
@@ -171,27 +266,22 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="cashflow-line cashflow-line-delay-2"
+                className={cn("cashflow-line cashflow-line-delay-2 transition-opacity duration-200", hovered && !highlightExpense && "opacity-45")}
               />
 
-              <line x1={activePointX} y1={paddingY} x2={activePointX} y2={height - paddingY} stroke="rgba(148,163,184,0.2)" strokeDasharray="4 8" />
+              <line
+                x1={activePointX}
+                y1={paddingY}
+                x2={activePointX}
+                y2={height - paddingY}
+                stroke="rgba(148,163,184,0.18)"
+                strokeDasharray="4 8"
+              />
 
               {incomePoints.map((point, index) => (
                 <g key={`income-${point.label}`}>
-                  <circle
-                    cx={point.x}
-                    cy={point.y}
-                    r={hovered?.index === index ? 6 : 0}
-                    fill="rgba(52,211,153,0.16)"
-                    className="transition-all duration-200"
-                  />
-                  <circle
-                    cx={point.x}
-                    cy={point.y}
-                    r={hovered?.index === index ? 4 : 3}
-                    fill="rgb(52 211 153)"
-                    className="transition-all duration-200"
-                  />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 11 : 0} fill="rgba(52,211,153,0.18)" className="transition-all duration-200" />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 5.4 : 3} fill="rgb(52 211 153)" className="transition-all duration-200" />
                   <circle
                     cx={point.x}
                     cy={point.y}
@@ -205,20 +295,8 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
 
               {expensePoints.map((point, index) => (
                 <g key={`expense-${point.label}`}>
-                  <circle
-                    cx={point.x}
-                    cy={point.y}
-                    r={hovered?.index === index ? 6 : 0}
-                    fill="rgba(129,140,248,0.16)"
-                    className="transition-all duration-200"
-                  />
-                  <circle
-                    cx={point.x}
-                    cy={point.y}
-                    r={hovered?.index === index ? 4 : 3}
-                    fill="rgb(129 140 248)"
-                    className="transition-all duration-200"
-                  />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 11 : 0} fill="rgba(129,140,248,0.18)" className="transition-all duration-200" />
+                  <circle cx={point.x} cy={point.y} r={hovered?.index === index ? 5.4 : 3} fill="rgb(129 140 248)" className="transition-all duration-200" />
                   <circle
                     cx={point.x}
                     cy={point.y}
@@ -230,26 +308,33 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                 </g>
               ))}
 
-              {data.map((item, index) => {
-                const x = paddingX + ((width - paddingX * 2) / Math.max(data.length - 1, 1)) * index;
+              {visibleData.map((item, index) => {
+                const x = paddingX + ((width - paddingX * 2) / Math.max(visibleData.length - 1, 1)) * index;
 
                 return (
-                  <text key={item.month} x={x} y={height - 4} textAnchor="middle" fontSize="12" fill="var(--color-muted-foreground)">
+                  <text
+                    key={item.month}
+                    x={x}
+                    y={height - 4}
+                    textAnchor="middle"
+                    fontSize={range === "12M" ? "11" : "12"}
+                    fill="var(--color-muted-foreground)"
+                  >
                     {item.month}
                   </text>
                 );
               })}
             </svg>
 
-            <div className="pointer-events-none absolute right-4 top-4 rounded-2xl border border-border/70 bg-background/92 px-3 py-2 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.35)] backdrop-blur-xl">
+            <div className="pointer-events-none absolute right-4 top-4 min-w-[132px] rounded-2xl border border-border/70 bg-background/92 px-3.5 py-3 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.28)] backdrop-blur-xl transition-all duration-200 ease-out">
               <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
               <div className="mt-2 grid gap-1.5 text-sm">
                 <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                  <span className="size-2 rounded-full bg-emerald-400" />
+                  <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
                   {formatCompactCurrency(activeIncome)}
                 </span>
                 <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
-                  <span className="size-2 rounded-full bg-indigo-400" />
+                  <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
                   {formatCompactCurrency(activeExpense)}
                 </span>
               </div>
