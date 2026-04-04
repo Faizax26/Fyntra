@@ -325,6 +325,11 @@ a,
   animation: cashflow-line-in 850ms ease-out both;
 }
 
+.cashflow-line-shadow {
+  animation: cashflow-line-in 900ms ease-out both;
+  opacity: 0.8;
+}
+
 .cashflow-line-delay-1 {
   animation-delay: 40ms;
 }
@@ -344,6 +349,35 @@ a,
 
 .cashflow-area-delay-2 {
   animation-delay: 120ms;
+}
+
+@keyframes ai-insight-icon-glow {
+  0%,
+  100% {
+    box-shadow: 0 14px 28px -20px rgba(56, 87, 255, 0.42);
+  }
+  50% {
+    box-shadow: 0 16px 34px -18px rgba(56, 87, 255, 0.54);
+  }
+}
+
+@keyframes ai-insight-bubble-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-insight-icon-glow {
+  animation: ai-insight-icon-glow 2.8s ease-in-out infinite;
+}
+
+.ai-insight-bubble {
+  animation: ai-insight-bubble-in 220ms ease-out both;
 }
 
 .surface-shell {

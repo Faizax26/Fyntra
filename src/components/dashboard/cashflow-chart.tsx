@@ -117,6 +117,20 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
           <div className="relative">
             <svg viewBox={`0 0 ${width} ${height}`} className="h-[320px] w-full" role="img" aria-label="Cashflow trend chart">
               <defs>
+                <filter id="incomeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="expenseGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="coloredBlur" />
+                  <feMerge>
+                    <feMergeNode in="coloredBlur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
                 <linearGradient id="incomeGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="rgb(52 211 153)" stopOpacity="0.38" />
                   <stop offset="75%" stopColor="rgb(16 185 129)" stopOpacity="0.08" />
@@ -158,6 +172,26 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <path
                 d={incomeLine}
                 fill="none"
+                stroke="rgba(52,211,153,0.34)"
+                strokeWidth="9"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#incomeGlow)"
+                className="cashflow-line-shadow cashflow-line-delay-1"
+              />
+              <path
+                d={expenseLine}
+                fill="none"
+                stroke="rgba(129,140,248,0.28)"
+                strokeWidth="9"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                filter="url(#expenseGlow)"
+                className="cashflow-line-shadow cashflow-line-delay-2"
+              />
+              <path
+                d={incomeLine}
+                fill="none"
                 stroke="rgb(52 211 153)"
                 strokeWidth="3"
                 strokeLinecap="round"
@@ -181,14 +215,14 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                   <circle
                     cx={point.x}
                     cy={point.y}
-                    r={hovered?.index === index ? 6 : 0}
-                    fill="rgba(52,211,153,0.16)"
+                    r={hovered?.index === index ? 10 : 0}
+                    fill="rgba(52,211,153,0.18)"
                     className="transition-all duration-200"
                   />
                   <circle
                     cx={point.x}
                     cy={point.y}
-                    r={hovered?.index === index ? 4 : 3}
+                    r={hovered?.index === index ? 4.8 : 3}
                     fill="rgb(52 211 153)"
                     className="transition-all duration-200"
                   />
@@ -208,14 +242,14 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                   <circle
                     cx={point.x}
                     cy={point.y}
-                    r={hovered?.index === index ? 6 : 0}
-                    fill="rgba(129,140,248,0.16)"
+                    r={hovered?.index === index ? 10 : 0}
+                    fill="rgba(129,140,248,0.18)"
                     className="transition-all duration-200"
                   />
                   <circle
                     cx={point.x}
                     cy={point.y}
-                    r={hovered?.index === index ? 4 : 3}
+                    r={hovered?.index === index ? 4.8 : 3}
                     fill="rgb(129 140 248)"
                     className="transition-all duration-200"
                   />
@@ -241,15 +275,15 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               })}
             </svg>
 
-            <div className="pointer-events-none absolute right-4 top-4 rounded-2xl border border-border/70 bg-background/92 px-3 py-2 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.35)] backdrop-blur-xl">
+            <div className="pointer-events-none absolute right-4 top-4 rounded-2xl border border-border/70 bg-background/92 px-3 py-2 shadow-[0_18px_38px_-24px_rgba(15,23,42,0.35)] backdrop-blur-xl transition-all duration-200 ease-out">
               <p className="text-xs font-medium text-muted-foreground">{activeMonth}</p>
               <div className="mt-2 grid gap-1.5 text-sm">
                 <span className="inline-flex items-center gap-2 text-emerald-600 dark:text-emerald-400">
-                  <span className="size-2 rounded-full bg-emerald-400" />
+                  <span className="size-2 rounded-full bg-emerald-400 shadow-[0_0_14px_rgba(52,211,153,0.45)]" />
                   {formatCompactCurrency(activeIncome)}
                 </span>
                 <span className="inline-flex items-center gap-2 text-indigo-500 dark:text-indigo-300">
-                  <span className="size-2 rounded-full bg-indigo-400" />
+                  <span className="size-2 rounded-full bg-indigo-400 shadow-[0_0_14px_rgba(129,140,248,0.42)]" />
                   {formatCompactCurrency(activeExpense)}
                 </span>
               </div>
