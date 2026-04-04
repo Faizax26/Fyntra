@@ -276,16 +276,17 @@ erDiagram
 
 Mengingat aplikasi web ini membutuhkan kecepatan pengembangan, desain yang modern, keamanan yang ketat, serta efisiensi untuk menekan biaya awal, berikut adalah tumpukan teknologi (tech stack) yang direkomendasikan:
 
-- **Frontend & Backend (Full-stack Framework):** **Next.js**. Sangat bagus untuk membangun antarmuka web yang cepat dan menangani logika sisi server (API) di dalam satu tempat.
-- **Styling (Desain Tampilan):** **Tailwind CSS**. Memungkinkan pembuatan desain yang rapi, _responsive_ untuk web dan HP dengan sangat cepat.
-- **UI Komponen:** **shadcn/ui**. Katalog komponen siap pakai (tombol, formulir, modal, **Sidebar**, **Navigation Menu**) yang cantik dan bersih. Sangat cocok untuk dashboard finansial berbasis SaaS yang dapat dikolaps.
-- **Animasi & Interaksi:** **Framer Motion**. Untuk animasi halus pada Hero section dan efek scroll reveal di elemen Landing Page.
-- **Ikon:** **Lucide React**. Koleksi ikon modern dan konsisten untuk menu Settings dan navigasi.
-- **Database Relasional:** **SQLite**. Sangat ekonomis, cepat, dan mudah di-_setup_ untuk tahap awal pengembangan. Dapat dengan mudah bermigrasi ke PostgreSQL nanti jika data membesar.
-- **ORM (Penghubung Kode & Database):** **Drizzle ORM**. Alat modern yang sangat efisien dan aman untuk melakukan operasi baca/tulis ke database.
-- **Autentikasi (Sistem Login):** **Better Auth**. Mengelola login, pembuatan akun, dan penjagaan kerahasiaan sesi secara modern dan aman (mendukung 2FA).
-- **Deployment (Hosting):** Aplikasi ini paling cocok di-hosting secara gratis/murah di **Vercel**, yang sangat optimal untuk ekosistem Next.js.
-- **Library Notifikasi:** **Sonner** atau **React Hot Toast** (untuk Toast) dan integrasi **Web Push API**.
-- **Library Ekspor Data:** **ExcelJS** (untuk Excel) dan **React-pdf** atau **jspdf** (untuk PDF).
-- **AI & Smart Features:** **Vercel AI SDK** atau **OpenAI API**. Digunakan untuk memproses analisis pola pengeluaran, deteksi anomali, dan fitur asisten chat keuangan.
-- **Task Scheduling:** **node-cron** atau **Trigger.dev**. Digunakan untuk manajemen sistem reminder terjadwal (tagihan, input harian) dan proses background lainnya.
+Frontend & Backend (Full-stack Framework): Next.js. Sangat bagus untuk membangun antarmuka web yang cepat dan menangani logika sisi server (API) di dalam satu tempat.
+Styling (Desain Tampilan): Tailwind CSS. Memungkinkan pembuatan desain yang rapi, responsive untuk web dan HP dengan sangat cepat.
+UI Komponen: shadcn/ui. Katalog komponen siap pakai (tombol, formulir, modal, Sidebar, Navigation Menu) yang cantik dan bersih. Sangat cocok untuk dashboard finansial berbasis SaaS yang dapat dikolaps.
+Animasi & Interaksi: Framer Motion. Untuk animasi halus pada Hero section dan efek scroll reveal di elemen Landing Page.
+Ikon: Lucide React. Koleksi ikon modern dan konsisten untuk menu Settings dan navigasi.
+Database Relasional: Supabase (PostgreSQL). Database PostgreSQL yang dikelola (managed) dengan skalabilitas tinggi, dilengkapi dashboard, backup, dan kemudahan integrasi tanpa perlu mengelola server database secara manual.
+Storage (Penyimpanan File): Supabase Storage. Digunakan untuk menyimpan file seperti lampiran transaksi, dokumen, atau aset pengguna secara aman dan scalable.
+ORM (Penghubung Kode & Database): Drizzle ORM. Alat modern yang efisien dan type-safe untuk melakukan operasi baca/tulis database serta mengelola migrasi schema.
+Autentikasi (Sistem Login): Better Auth. Mengelola login, pembuatan akun, dan penjagaan sesi secara modern dan aman (mendukung fitur seperti 2FA).
+Deployment (Hosting): Aplikasi ini paling cocok di-hosting di Vercel, yang sangat optimal untuk ekosistem Next.js dan mendukung skalabilitas aplikasi.
+Library Notifikasi: Sonner atau React Hot Toast (untuk Toast) dan integrasi Web Push API untuk notifikasi real-time ke pengguna.
+Library Ekspor Data: ExcelJS (untuk Excel) dan React-pdf atau jspdf (untuk PDF).
+AI & Smart Features: Vercel AI SDK atau OpenAI API. Digunakan untuk analisis pola pengeluaran, deteksi anomali, dan fitur asisten keuangan berbasis AI.
+Task Scheduling: Trigger.dev. Digunakan untuk manajemen sistem reminder terjadwal (tagihan, input harian) dan proses background lainnya, lebih cocok untuk environment serverless dibanding node-cron.

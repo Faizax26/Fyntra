@@ -252,20 +252,22 @@ export function AiInsight() {
               </div>
             ) : (
               <div className="rounded-[1.9rem] border border-primary/10 bg-[linear-gradient(180deg,rgba(56,87,255,0.05),rgba(255,255,255,0)_22%)] p-5 shadow-[0_18px_38px_-28px_rgba(15,23,42,0.28)] ring-1 ring-primary/7">
-                <div className="flex flex-wrap gap-2.5">
-                  {quickPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      type="button"
-                      onClick={() => handleChipSelect(prompt)}
-                      className="rounded-full border border-white/8 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.28)]"
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
+                {!hasStartedChat ? (
+                  <div className="flex flex-wrap gap-2.5">
+                    {quickPrompts.map((prompt) => (
+                      <button
+                        key={prompt}
+                        type="button"
+                        onClick={() => handleChipSelect(prompt)}
+                        className="rounded-full border border-white/8 bg-background/78 px-3.5 py-2 text-sm text-foreground/88 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/20 hover:bg-primary/8 hover:shadow-[0_14px_28px_-24px_rgba(56,87,255,0.28)]"
+                      >
+                        {prompt}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
 
-                <p className="mt-3 text-xs text-muted-foreground">
+                <p className={cn("text-xs text-muted-foreground", !hasStartedChat && "mt-3")}>
                   I can help with insights, risks, and savings ideas.
                 </p>
 
