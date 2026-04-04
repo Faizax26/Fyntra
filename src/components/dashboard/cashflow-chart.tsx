@@ -131,7 +131,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
   const displayedExpense = formatCompactCurrency(activeExpense);
 
   return (
-    <Card className="h-full overflow-hidden border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0)_28%)] shadow-[0_24px_60px_-38px_rgba(15,23,42,0.42)]">
+    <Card className="min-w-0 h-full overflow-hidden border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0)_28%)] shadow-[0_24px_60px_-38px_rgba(15,23,42,0.42)]">
       <CardHeader className="pb-4">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="space-y-1">

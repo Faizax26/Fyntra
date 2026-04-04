@@ -23,9 +23,13 @@ export default function DashboardPage() {
       <section>
         <WalletOverview wallets={dashboardSnapshot.wallets} details={dashboardSnapshot.walletDetails} />
       </section>
-      <section className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <CashflowChart data={dashboardSnapshot.cashflow} />
-        <AiInsight />
+      <section className="grid items-start gap-6 xl:grid-cols-[1.5fr_1fr]">
+        <div className="min-w-0">
+          <CashflowChart data={dashboardSnapshot.cashflow} />
+        </div>
+        <div className="min-w-0">
+          <AiInsight />
+        </div>
       </section>
       <section className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
         <BudgetProgressList budgets={dashboardSnapshot.budgets} />
