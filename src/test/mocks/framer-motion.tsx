@@ -44,3 +44,41 @@ function MockMotionDiv({
 export const motion = {
   div: MockMotionDiv
 };
+
+type MotionValue<T> = {
+  get: () => T;
+  on: (_event: string, _handler: (value: T) => void) => () => void;
+};
+
+function createMotionValue<T>(value: T): MotionValue<T> {
+  return {
+    get: () => value,
+    on: (_event: string, _handler: (latest: T) => void) => {
+      void _event;
+      void _handler;
+      return () => {};
+    }
+  };
+}
+
+export function useScroll() {
+  return {
+    scrollY: createMotionValue(0),
+    scrollYProgress: createMotionValue(0)
+  };
+}
+
+export function useTransform<TOutput>(_: unknown, __: unknown, output: TOutput[] | TOutput) {
+  if (Array.isArray(output)) {
+    return output[0];
+  }
+
+  return output;
+}
+
+export function useMotionValueEvent<T>(_: MotionValue<T>, __: string, ___: (value: T) => void) {
+  void _;
+  void __;
+  void ___;
+  return undefined;
+}
