@@ -138,12 +138,12 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
               <ArrowUpRight className="size-3.5" />
               {`${incomeDelta >= 0 ? "+" : ""}${incomeDelta.toFixed(0)}% vs previous month`}
             </div>
-            <div className="relative inline-flex h-8 items-center rounded-full border border-border/70 bg-background/70 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+            <div className="relative inline-grid h-8 w-[102px] grid-cols-2 items-center rounded-full border border-border/70 bg-background/70 p-0.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
               <span
                 aria-hidden="true"
                 className={cn(
                   "absolute bottom-0.5 top-0.5 rounded-full bg-gradient-to-r from-primary to-indigo-500 shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)] transition-all duration-300 ease-out",
-                  range === "6M" ? "left-0.5 w-[45px]" : "left-[49px] w-[52px]"
+                  range === "6M" ? "left-0.5 w-[50px]" : "left-[51px] w-[50px]"
                 )}
               />
               {(["6M", "12M"] as RangeMode[]).map((option) => (
@@ -152,7 +152,7 @@ export function CashflowChart({ data }: { data: CashflowPoint[] }) {
                   type="button"
                   onClick={() => setRange(option)}
                   className={cn(
-                    "relative rounded-full px-3 py-1 text-xs font-medium transition-all duration-200",
+                    "relative flex h-full w-[50px] items-center justify-center rounded-full px-0 py-1 text-xs font-medium transition-all duration-200",
                     range === option
                       ? "text-primary-foreground"
                       : "text-muted-foreground hover:text-foreground"

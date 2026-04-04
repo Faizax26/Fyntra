@@ -153,35 +153,36 @@ export function AiInsight() {
       <Card className="h-full overflow-hidden border-primary/12 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.12),transparent_30%),linear-gradient(180deg,rgba(56,87,255,0.06),transparent_72%)] shadow-[0_24px_54px_-34px_rgba(56,87,255,0.32)]">
         <CardHeader className="relative">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-[radial-gradient(circle_at_top_left,rgba(56,87,255,0.24),transparent_58%),radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_54%),linear-gradient(180deg,rgba(56,87,255,0.08),transparent_78%)]" />
-          <div className="relative flex items-start justify-between gap-3">
-            <CardTitle>AI Insight</CardTitle>
-            <span className="ai-insight-icon-glow flex size-10 items-center justify-center rounded-2xl border border-primary/15 bg-primary/10 text-primary shadow-[0_14px_28px_-20px_rgba(56,87,255,0.42)]">
+          <div className="relative flex flex-wrap items-center justify-between gap-3">
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+              <CardTitle className="text-[1.05rem]">Fyntra AI</CardTitle>
+              <div className="inline-flex rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                {([
+                  { id: "insights", label: "Insights" },
+                  { id: "chat", label: "AI Chat" }
+                ] as const).map((option) => (
+                  <button
+                    key={option.id}
+                    type="button"
+                    onClick={() => setMode(option.id)}
+                    className={cn(
+                      "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                      mode === option.id
+                        ? "bg-gradient-to-r from-primary to-indigo-500 text-primary-foreground shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)]"
+                        : "text-muted-foreground hover:text-foreground hover:bg-background/70"
+                    )}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <span className="ai-insight-icon-glow flex size-10 shrink-0 items-center justify-center rounded-2xl border border-primary/15 bg-primary/10 text-primary shadow-[0_14px_28px_-20px_rgba(56,87,255,0.42)]">
               <BrainCircuit className="size-5" />
             </span>
           </div>
         </CardHeader>
-        <CardContent className="space-y-5">
-          <div className="inline-flex rounded-full border border-border/70 bg-background/70 p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-            {([
-              { id: "insights", label: "Insights" },
-              { id: "chat", label: "AI Chat" }
-            ] as const).map((option) => (
-              <button
-                key={option.id}
-                type="button"
-                onClick={() => setMode(option.id)}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
-                  mode === option.id
-                    ? "bg-gradient-to-r from-primary to-indigo-500 text-primary-foreground shadow-[0_12px_24px_-18px_rgba(56,87,255,0.52)]"
-                    : "text-muted-foreground hover:text-foreground hover:bg-background/70"
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-
+        <CardContent className="space-y-5 pt-2">
           <div key={mode} className="ai-insight-mode-panel">
             {mode === "insights" ? (
               <div className="space-y-5">
